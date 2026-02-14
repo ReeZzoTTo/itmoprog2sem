@@ -11,6 +11,8 @@ public class CommandManager {
         String commandName, 
         AbstractCommand command
     ) {
-        commandList.put(commandName, command);
+        this.commandList.put(commandName, command);
     }
+
+    public Map<String, AbstractCommand> getCommandList() { return this.commandList; }
 }

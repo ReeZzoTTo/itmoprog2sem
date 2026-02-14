@@ -2,9 +2,13 @@ package com.andreysankov.itmoprog2sem;
 
 import java.util.Scanner;
 
+import com.andreysankov.itmoprog2sem.commands.AbstractCommand;
+import com.andreysankov.itmoprog2sem.commands.ExitCommand;
 import com.andreysankov.itmoprog2sem.commands.HelpCommand;
 import com.andreysankov.itmoprog2sem.exceptions.FilenameIsEmpty;
+import com.andreysankov.itmoprog2sem.managers.CollectionManager;
 import com.andreysankov.itmoprog2sem.managers.CommandManager;
+import com.andreysankov.itmoprog2sem.managers.Context;
 import com.andreysankov.itmoprog2sem.managers.FileManager;
 
 public class App {
@@ -19,28 +23,25 @@ public class App {
             System.exit(1);
         }
 
-        Scanner scanner = new Scanner(System.in);
-        FileManager fileManager = new FileManager(args[0]);
-        CommandManager commandManager = new CommandManager();
+        Context context = new Context(
+            new FileManager(args[0]),
+            new CommandManager(),
+            new CollectionManager(),
+            new Scanner(System.in)
+        );
+        CommandManager commandManager = context.getCommandManager();
 
-        commandManager.registerCommand("help", new HelpCommand());
-
-        System.out.println(fileManager.getFileName());
-
-        
-
+        commandManager.registerCommand("help", new HelpCommand(context));
+        commandManager.registerCommand("exit", new ExitCommand(context));
+    
         while (true) {
-            String input = scanner.nextLine();
+            String input = context.getScanner().nextLine();
+            String[] inputSplit = input.split(" ");
 
-            switch(input) {
-                case "exit", "exit()": {
-                    scanner.close();
-                    System.out.println("Goodbye!");
-                    System.exit(0);
-                }
-            }
+            AbstractCommand command = context.getCommandManager().getCommandList().get(inputSplit[0]);
 
-            System.out.println("Input " + input);
+            if (command != null) { command.execute(); }
+            else { System.out.println("Неизвестная команда : Введите help"); }            
         }
     }
 }
