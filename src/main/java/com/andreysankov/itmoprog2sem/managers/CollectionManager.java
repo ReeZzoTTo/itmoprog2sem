@@ -21,6 +21,10 @@ public class CollectionManager {
         return collection.size(); 
     }
 
+    public void clearCollection() {
+        this.collection.clear();
+    }
+
     public Date getInitializationDate() { return this.initializationDate; }
     public LinkedHashSet<LabWork> getCollection() { return this.collection; }
 

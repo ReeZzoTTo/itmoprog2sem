@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import com.andreysankov.itmoprog2sem.commands.AbstractCommand;
 import com.andreysankov.itmoprog2sem.commands.AddCommand;
+import com.andreysankov.itmoprog2sem.commands.ClearCommand;
 import com.andreysankov.itmoprog2sem.commands.ExitCommand;
 import com.andreysankov.itmoprog2sem.commands.HelpCommand;
 import com.andreysankov.itmoprog2sem.commands.InfoCommand;
@@ -40,6 +41,7 @@ public class App {
         commandManager.registerCommand("info", new InfoCommand(context));
         commandManager.registerCommand("show", new ShowCommand(context));
         commandManager.registerCommand("add", new AddCommand(context));
+        commandManager.registerCommand("clear", new ClearCommand(context));
         commandManager.registerCommand("exit", new ExitCommand(context));
     
         while (true) {
