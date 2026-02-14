@@ -6,7 +6,7 @@ public class HelpCommand extends AbstractCommand {
     public HelpCommand(Context context) {
         super(context);
         this.setName("help");
-        this.setDescription("вывести справку по доступным командам");
+        this.setDescription(" : вывести справку по доступным командам");
     }
 
     @Override
@@ -15,7 +15,7 @@ public class HelpCommand extends AbstractCommand {
             .getCommandManager()
             .getCommandList()
             .forEach((commandName, command) -> {
-            System.out.println(commandName + " : " + command.getDescription());
+            System.out.println(commandName + command.getDescription());
         });
         return true;
     }

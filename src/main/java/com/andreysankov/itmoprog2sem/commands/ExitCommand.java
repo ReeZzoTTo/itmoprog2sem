@@ -6,7 +6,7 @@ public class ExitCommand extends AbstractCommand {
     public ExitCommand(Context context) {
         super(context);
         this.setName("exit");
-        this.setDescription("завершить программу (без сохранения в файл)");
+        this.setDescription(" : завершить программу (без сохранения в файл)");
     }
 
     @Override
