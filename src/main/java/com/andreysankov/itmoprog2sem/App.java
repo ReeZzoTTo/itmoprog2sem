@@ -9,6 +9,7 @@ import com.andreysankov.itmoprog2sem.commands.ClearCommand;
 import com.andreysankov.itmoprog2sem.commands.ExitCommand;
 import com.andreysankov.itmoprog2sem.commands.HelpCommand;
 import com.andreysankov.itmoprog2sem.commands.InfoCommand;
+import com.andreysankov.itmoprog2sem.commands.RemoveByIdCommand;
 import com.andreysankov.itmoprog2sem.commands.ShowCommand;
 import com.andreysankov.itmoprog2sem.exceptions.FilenameIsEmpty;
 import com.andreysankov.itmoprog2sem.managers.CollectionManager;
@@ -41,6 +42,7 @@ public class App {
         commandManager.registerCommand("info", new InfoCommand(context));
         commandManager.registerCommand("show", new ShowCommand(context));
         commandManager.registerCommand("add", new AddCommand(context));
+        commandManager.registerCommand("remove_by_id", new RemoveByIdCommand(context));
         commandManager.registerCommand("clear", new ClearCommand(context));
         commandManager.registerCommand("exit", new ExitCommand(context));
     

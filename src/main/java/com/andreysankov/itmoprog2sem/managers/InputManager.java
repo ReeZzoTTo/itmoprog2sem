@@ -34,7 +34,12 @@ public class InputManager {
 
     private class InputLabWork {
         private Long inputId() {
-            return context.getCollectionManager().getCollectionSize();
+            long collectionSize = context.getCollectionManager().getCollectionSize();
+            if (collectionSize == 0) {
+                return 0L;
+            } else {
+                return context.getCollectionManager().getLastIdElement() + 1;
+            }
         }
 
         private String inputName(String message) {

@@ -25,6 +25,14 @@ public class CollectionManager {
         this.collection.clear();
     }
 
+    public Long getLastIdElement() {
+        return this.collection.getLast().getId();
+    }
+
+    public boolean deleteElementByID(long id) {
+        return this.collection.removeIf(element -> element.getId() == id);
+    }
+
     public Date getInitializationDate() { return this.initializationDate; }
     public LinkedHashSet<LabWork> getCollection() { return this.collection; }
 
