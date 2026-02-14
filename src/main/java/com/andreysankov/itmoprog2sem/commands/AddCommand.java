@@ -16,7 +16,6 @@ public class AddCommand extends AbstractCommand {
         InputManager inputManager = getContext().getInputManager();
         inputManager.setContext(getContext());
         LabWork labWork = inputManager.readLabWork();
-        System.out.println(labWork.getName());
         getContext().getCollectionManager().addElement(labWork);
 
         return true;

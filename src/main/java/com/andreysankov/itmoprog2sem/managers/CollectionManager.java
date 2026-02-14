@@ -9,15 +9,18 @@ public class CollectionManager {
     private LinkedHashSet<LabWork> collection = new LinkedHashSet<>();
     private Date initializationDate;
 
+    public CollectionManager() {
+        if (this.getCollectionSize() == 0) initializationDate = new Date();
+    }
+
     public void addElement(LabWork element) {
         this.collection.add(element);
     }
 
     public long getCollectionSize() { 
-        if (collection == null) {
-            return 0;
-        }
         return collection.size(); 
     }
+
+    public Date getInitializationDate() { return this.initializationDate; }
 
 }

@@ -7,6 +7,7 @@ import com.andreysankov.itmoprog2sem.commands.AbstractCommand;
 import com.andreysankov.itmoprog2sem.commands.AddCommand;
 import com.andreysankov.itmoprog2sem.commands.ExitCommand;
 import com.andreysankov.itmoprog2sem.commands.HelpCommand;
+import com.andreysankov.itmoprog2sem.commands.InfoCommand;
 import com.andreysankov.itmoprog2sem.exceptions.FilenameIsEmpty;
 import com.andreysankov.itmoprog2sem.managers.CollectionManager;
 import com.andreysankov.itmoprog2sem.managers.CommandManager;
@@ -35,6 +36,7 @@ public class App {
         CommandManager commandManager = context.getCommandManager();
 
         commandManager.registerCommand("help", new HelpCommand(context));
+        commandManager.registerCommand("info", new InfoCommand(context));
         commandManager.registerCommand("add", new AddCommand(context));
         commandManager.registerCommand("exit", new ExitCommand(context));
     
