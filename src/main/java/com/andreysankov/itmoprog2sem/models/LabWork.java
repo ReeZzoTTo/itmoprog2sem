@@ -49,6 +49,9 @@ public class LabWork implements Comparable<LabWork>{
             + "\n                         Labs Count = " + this.getDiscipline().getLabsCount();
     }
 
+    public void setId(long id) { this.id = id; }
+    public void setDate(Date date) { this.creationDate = date; }
+
     public long getId() { return this.id; }
     public String getName() { return this.name; }
     public Coordinates getCoordinates() { return this.coordinates; }

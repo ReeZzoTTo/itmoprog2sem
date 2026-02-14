@@ -1,6 +1,7 @@
 package com.andreysankov.itmoprog2sem.managers;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 
 import com.andreysankov.itmoprog2sem.models.LabWork;
@@ -27,6 +28,15 @@ public class CollectionManager {
 
     public Long getLastIdElement() {
         return this.collection.getLast().getId();
+    }
+
+    public LabWork getElementByID(long id) {
+        for (LabWork element : collection) {
+            if (element.getId() == id) {
+                return element;
+            }
+        }
+        return null;
     }
 
     public boolean deleteElementByID(long id) {

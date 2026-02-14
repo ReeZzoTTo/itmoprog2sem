@@ -16,7 +16,7 @@ public class InputManager {
         this.context = context;
     }
 
-    public LabWork readLabWork() {
+    public LabWork readLabWork(String uniqueName) {
         this.scanner = this.context.getScanner();
         InputLabWork inputLabWork = new InputLabWork();
         
@@ -29,7 +29,7 @@ public class InputManager {
             inputLabWork.inputPersonalQualitiesMaximum(),
             inputLabWork.inputDifficulty(),
             inputLabWork.inputDiscipline(),
-            this.context.getCommandManager().getArguments()[1]
+            uniqueName
         );
     }
 
