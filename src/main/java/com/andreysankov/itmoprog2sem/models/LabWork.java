@@ -31,6 +31,21 @@ public class LabWork implements Comparable<LabWork>{
         return Integer.compare(this.minimalPoint, other.minimalPoint);
     }
 
+    @Override
+    public String toString() {
+        return "\nID                     : " + this.getId()
+            + "\nName                   : " + this.getName()
+            + "\nCoordinates            : X = " + this.getCoordinates().getX()
+            + "\n                         Y = " + this.getCoordinates().getY()
+            + "\nCreation Date          : " + this.getDate()
+            + "\nMinimal Points         : " + this.getMinimalPoint()
+            + "\nMax Personal Qualities : " + this.getPersonalQualitiesMaximum()
+            + "\nDifficulty             : " + this.getDifficulty()
+            + "\nDiscipline             : Name = " + this.getDiscipline().getName()
+            + "\n                         Lecture Hours = " + this.getDiscipline().getLectureHours()
+            + "\n                         Labs Count = " + this.getDiscipline().getLabsCount();
+    }
+
     public long getId() { return this.id; }
     public String getName() { return this.name; }
     public Coordinates getCoordinates() { return this.coordinates; }

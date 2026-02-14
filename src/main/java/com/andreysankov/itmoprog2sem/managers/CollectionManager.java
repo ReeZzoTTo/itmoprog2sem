@@ -22,5 +22,6 @@ public class CollectionManager {
     }
 
     public Date getInitializationDate() { return this.initializationDate; }
+    public LinkedHashSet<LabWork> getCollection() { return this.collection; }
 
 }
