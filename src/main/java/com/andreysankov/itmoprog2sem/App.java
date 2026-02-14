@@ -3,20 +3,9 @@ package com.andreysankov.itmoprog2sem;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
-import com.andreysankov.itmoprog2sem.commands.AbstractCommand;
-import com.andreysankov.itmoprog2sem.commands.AddCommand;
-import com.andreysankov.itmoprog2sem.commands.ClearCommand;
-import com.andreysankov.itmoprog2sem.commands.ExitCommand;
-import com.andreysankov.itmoprog2sem.commands.HelpCommand;
-import com.andreysankov.itmoprog2sem.commands.InfoCommand;
-import com.andreysankov.itmoprog2sem.commands.RemoveByIdCommand;
-import com.andreysankov.itmoprog2sem.commands.ShowCommand;
+import com.andreysankov.itmoprog2sem.commands.*;
 import com.andreysankov.itmoprog2sem.exceptions.FilenameIsEmpty;
-import com.andreysankov.itmoprog2sem.managers.CollectionManager;
-import com.andreysankov.itmoprog2sem.managers.CommandManager;
-import com.andreysankov.itmoprog2sem.managers.Context;
-import com.andreysankov.itmoprog2sem.managers.FileManager;
-import com.andreysankov.itmoprog2sem.managers.InputManager;
+import com.andreysankov.itmoprog2sem.managers.*;
 
 public class App {
     public static void main( String[] args ) {

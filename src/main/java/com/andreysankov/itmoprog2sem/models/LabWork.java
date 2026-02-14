@@ -11,10 +11,11 @@ public class LabWork implements Comparable<LabWork>{
     private Double personalQualitiesMaximum; //Поле может быть null, Значение поля должно быть больше 0
     private Difficulty difficulty; //Поле не может быть null
     private Discipline discipline; //Поле может быть null
+    private String uniqueName;
 
     public LabWork(
         long id, String name, Coordinates coordinates, Date creationDate, int minimalPoint,
-        Double personalQualitiesMaximum, Difficulty difficulty, Discipline discipline
+        Double personalQualitiesMaximum, Difficulty difficulty, Discipline discipline, String uniqueName
     ) {
         this.id = id;
         this.name = name;
@@ -24,6 +25,7 @@ public class LabWork implements Comparable<LabWork>{
         this.personalQualitiesMaximum = personalQualitiesMaximum;
         this.difficulty = difficulty;
         this.discipline = discipline;
+        this.uniqueName = uniqueName;
     }
 
     @Override
@@ -33,7 +35,8 @@ public class LabWork implements Comparable<LabWork>{
 
     @Override
     public String toString() {
-        return "\nID                     : " + this.getId()
+        return "\nIdentifier Name        : " + this.getUniqueName()
+            + "\nID                     : " + this.getId()
             + "\nName                   : " + this.getName()
             + "\nCoordinates            : X = " + this.getCoordinates().getX()
             + "\n                         Y = " + this.getCoordinates().getY()
@@ -54,5 +57,5 @@ public class LabWork implements Comparable<LabWork>{
     public Double getPersonalQualitiesMaximum() { return this.personalQualitiesMaximum; }
     public Difficulty getDifficulty() { return this.difficulty; }
     public Discipline getDiscipline() { return this.discipline; }
-
+    public String getUniqueName() { return this.uniqueName; }
 }

@@ -28,7 +28,8 @@ public class InputManager {
             inputLabWork.inputMinimalPoint("Укажите минимальное число очков:"),
             inputLabWork.inputPersonalQualitiesMaximum(),
             inputLabWork.inputDifficulty(),
-            inputLabWork.inputDiscipline()    
+            inputLabWork.inputDiscipline(),
+            this.context.getCommandManager().getArguments()[1]
         );
     }
 
