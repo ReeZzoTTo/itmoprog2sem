@@ -44,6 +44,7 @@ public class App {
         commandManager.registerCommand("clear", new ClearCommand(context));
         commandManager.registerCommand("exit", new ExitCommand(context));
         commandManager.registerCommand("history", new HistoryCommand(context));
+        commandManager.registerCommand("average_of_personal_qualities_maximum", new AverageOfPersonalQualititesMaximumCommand(context));
         
         System.out.println("Программа для управления колекцией");
         System.out.println("Чтение файла : " + context.getFileManager().getFileName());
