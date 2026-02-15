@@ -33,6 +33,7 @@ public class App {
         commandManager.registerCommand("add", new AddCommand(context));
         commandManager.registerCommand("update", new UpdateIdCommand(context));
         commandManager.registerCommand("remove_by_id", new RemoveByIdCommand(context));
+        commandManager.registerCommand("save", new SaveCommand(context));
         commandManager.registerCommand("clear", new ClearCommand(context));
         commandManager.registerCommand("exit", new ExitCommand(context));
     
