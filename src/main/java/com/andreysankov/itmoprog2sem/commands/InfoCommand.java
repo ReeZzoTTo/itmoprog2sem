@@ -11,6 +11,7 @@ public class InfoCommand extends AbstractCommand {
 
     @Override
     public boolean execute() {
+        System.out.println("Сведения о коллекции");
         System.out.println("Имя файла коллекции : " + getContext().getFileManager().getFileName());
         System.out.println("Дата инициализации коллекции : " + getContext().getCollectionManager().getInitializationDate());
         System.out.println("Количество элементов коллекции : " + getContext().getCollectionManager().getCollectionSize());

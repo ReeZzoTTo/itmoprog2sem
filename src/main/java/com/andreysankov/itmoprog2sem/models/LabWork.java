@@ -53,12 +53,12 @@ public class LabWork implements Comparable<LabWork>{
 
     public void setId(long id) { this.id = id; }
     public void setDate(Date date) { this.creationDate = date; }
-    public void setCoordinates(Coordinates coordinates) { this.coordinates = coordinates; }
-    public void setMinimalPoint(int minPoint) { this.minimalPoint = minPoint; }
-    public void setPersonalQualitiesMaximum(Double pqm) { this.personalQualitiesMaximum = pqm; }
-    public void setDiffculty(Difficulty difficulty) { this.difficulty = difficulty; }
-    public void setDiscipline(Discipline discipline) { this.discipline = discipline; }
-    public void setUniqueName(String uniqueName) { this.uniqueName = uniqueName; }
+    // public void setCoordinates(Coordinates coordinates) { this.coordinates = coordinates; }
+    // public void setMinimalPoint(int minPoint) { this.minimalPoint = minPoint; }
+    // public void setPersonalQualitiesMaximum(Double pqm) { this.personalQualitiesMaximum = pqm; }
+    // public void setDiffculty(Difficulty difficulty) { this.difficulty = difficulty; }
+    // public void setDiscipline(Discipline discipline) { this.discipline = discipline; }
+    // public void setUniqueName(String uniqueName) { this.uniqueName = uniqueName; }
 
     public long getId() { return this.id; }
     public String getName() { return this.name; }

@@ -15,6 +15,7 @@ public class ShowCommand extends AbstractCommand{
             System.out.println("Коллекция пуста");
         }
         else { 
+            System.out.println("Данные коллекции:");
             getContext().getCollectionManager().getCollection().forEach(labWorkObject -> {
                 System.out.println(labWorkObject.toString());
             });

@@ -12,6 +12,7 @@ public class ClearCommand extends AbstractCommand{
     @Override
     public boolean execute() {
         getContext().getCollectionManager().clearCollection();
+        System.out.println("Коллекция очищена");
         return true;
     }
 }

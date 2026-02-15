@@ -9,6 +9,9 @@ import com.andreysankov.itmoprog2sem.managers.*;
 
 // TODO : разобраться с Date
 
+// java -Dfile.encoding=UTF-8 -jar target/itmoprog2sem-1.0-Lab5.jar
+
+
 public class App {
     public static void main( String[] args ) {
         try {
@@ -41,12 +44,13 @@ public class App {
         commandManager.registerCommand("clear", new ClearCommand(context));
         commandManager.registerCommand("exit", new ExitCommand(context));
         
-        System.out.println("старт чтения");
+        System.out.println("Программа для управления колекцией");
+        System.out.println("Чтение файла : " + context.getFileManager().getFileName());
         context.getCollectionManager().setCollection(context.getFileManager().readFile());
-        System.out.println("Конец чтения");
-        System.out.println("Кодировка - " + System.getProperty("file.encoding"));
+        System.out.println("Чтение файла завершено.\nДля просмотра данных коллекции введите -> show.\nВведите help для списка команд");
         // System.out.println(context.getCollectionManager().getCollection());
-
+        context.getCollectionManager().setInitializationDate(context);
+        
         while (true) {
             String input = context.getScanner().nextLine();
             String[] inputSplit = input.split(" ");

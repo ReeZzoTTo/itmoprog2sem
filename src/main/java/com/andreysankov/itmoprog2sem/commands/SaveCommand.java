@@ -15,6 +15,7 @@ public class SaveCommand extends AbstractCommand {
     public boolean execute() {
         try {
             getContext().getFileManager().saveFile(getContext().getCollectionManager().getCollection());
+            System.out.println("Файл успешно сохранён");
         } catch (IOException e) {
             System.out.println("Ошибка при сохранении файла: " + e.getMessage());
         }

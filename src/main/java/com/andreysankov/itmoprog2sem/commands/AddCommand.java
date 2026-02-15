@@ -13,10 +13,14 @@ public class AddCommand extends AbstractCommand {
 
     @Override
     public boolean execute() {
+        System.out.println("Добавление элемента в коллекцию");
+
         InputManager inputManager = getContext().getInputManager();
         inputManager.setContext(getContext());
         LabWork labWork = inputManager.readLabWork(getContext().getCommandManager().getArguments()[1]);
         getContext().getCollectionManager().addElement(labWork);
+
+        System.out.println("Элемент успешно добавлен в коллекцию. Введите show/info");
 
         return true;
     }

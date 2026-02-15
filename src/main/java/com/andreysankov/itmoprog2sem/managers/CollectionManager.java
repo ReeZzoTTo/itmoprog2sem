@@ -10,7 +10,11 @@ public class CollectionManager {
     private Date initializationDate;
 
     public CollectionManager() {
-        if (this.getCollectionSize() == 0) initializationDate = new Date();
+        // if (this.getCollectionSize() == 0) initializationDate = new Date();
+    }
+
+    public void setInitializationDate(Context context) {
+        this.initializationDate = new Date(context.getFileManager().getFileCreationTime().toMillis());
     }
 
     public void addElement(LabWork element) {
