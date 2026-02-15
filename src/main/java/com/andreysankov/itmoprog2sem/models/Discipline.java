@@ -5,6 +5,8 @@ public class Discipline {
     private Long lectureHours; //Поле не может быть null
     private int labsCount;
 
+    public Discipline() {}
+
     public Discipline(
         String name,
         Long lectureHours,

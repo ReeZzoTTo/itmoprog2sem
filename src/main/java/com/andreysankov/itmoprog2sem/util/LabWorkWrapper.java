@@ -12,7 +12,9 @@ public class LabWorkWrapper {
     @JacksonXmlElementWrapper(useWrapping = false)
     private LinkedHashSet<LabWork> labWork;
 
-    public LabWorkWrapper() {}
+    public LabWorkWrapper() {
+        this.labWork = new LinkedHashSet<>();
+    }
 
     public LabWorkWrapper(LinkedHashSet<LabWork> labWork) {
         this.setLabWork(labWork);

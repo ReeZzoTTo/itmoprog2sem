@@ -5,8 +5,9 @@ import java.util.Scanner;
 
 import com.andreysankov.itmoprog2sem.commands.*;
 import com.andreysankov.itmoprog2sem.exceptions.FilenameIsEmpty;
-// import com.andreysankov.itmoprog2sem.exceptions.FilenameIsEmpty;
 import com.andreysankov.itmoprog2sem.managers.*;
+
+// TODO : разобраться с Date
 
 public class App {
     public static void main( String[] args ) {
@@ -39,7 +40,13 @@ public class App {
         commandManager.registerCommand("save", new SaveCommand(context));
         commandManager.registerCommand("clear", new ClearCommand(context));
         commandManager.registerCommand("exit", new ExitCommand(context));
-    
+        
+        System.out.println("старт чтения");
+        context.getCollectionManager().setCollection(context.getFileManager().readFile());
+        System.out.println("Конец чтения");
+        System.out.println("Кодировка - " + System.getProperty("file.encoding"));
+        // System.out.println(context.getCollectionManager().getCollection());
+
         while (true) {
             String input = context.getScanner().nextLine();
             String[] inputSplit = input.split(" ");

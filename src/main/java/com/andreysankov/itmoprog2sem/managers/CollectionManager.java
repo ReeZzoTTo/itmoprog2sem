@@ -29,6 +29,10 @@ public class CollectionManager {
         return this.collection.getLast().getId();
     }
 
+    public void setCollection(LinkedHashSet<LabWork> collection) {
+        this.collection = collection;
+    }
+
     public LabWork getElementByID(long id) {
         for (LabWork element : collection) {
             if (element.getId() == id) {
