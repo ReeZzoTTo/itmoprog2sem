@@ -69,19 +69,20 @@ public class FileManager {
         File file = new File(this.filename);
 
         if (!file.exists()) {
-            System.out.println("Файл не найден " + this.filename);
-            System.exit(1);
-        }
-
-        try {
-            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
-            XmlMapper xmlMapper = new XmlMapper();
-            LabWorkWrapper labWorkWrapper = xmlMapper.readValue(bis, LabWorkWrapper.class);
-
-            return labWorkWrapper.getLabWork();
-        } catch (IOException e) {
-            System.out.println("Ошибка чтения файла: " + e.getMessage());
+            System.out.println("Файл не найден " + this.filename + "\nБудет создан новый файл. Введите save");
             return new LinkedHashSet<>();
+        }
+        else {
+            try {
+                BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+                XmlMapper xmlMapper = new XmlMapper();
+                LabWorkWrapper labWorkWrapper = xmlMapper.readValue(bis, LabWorkWrapper.class);
+
+                return labWorkWrapper.getLabWork();
+            } catch (IOException e) {
+                System.out.println("Ошибка чтения файла: " + e.getMessage());
+                return new LinkedHashSet<>();
+            }
         }
     }
 }

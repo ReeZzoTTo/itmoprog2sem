@@ -1,5 +1,6 @@
 package com.andreysankov.itmoprog2sem.managers;
 
+import java.nio.file.attribute.FileTime;
 import java.util.Date;
 import java.util.LinkedHashSet;
 
@@ -14,7 +15,13 @@ public class CollectionManager {
     }
 
     public void setInitializationDate(Context context) {
-        this.initializationDate = new Date(context.getFileManager().getFileCreationTime().toMillis());
+        FileTime creationFileTime = context.getFileManager().getFileCreationTime();
+
+        if (creationFileTime == null) {
+            this.initializationDate = new Date();
+        } else {
+            this.initializationDate = new Date(creationFileTime.toMillis());
+        }
     }
 
     public void addElement(LabWork element) {

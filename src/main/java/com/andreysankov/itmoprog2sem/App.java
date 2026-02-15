@@ -48,9 +48,9 @@ public class App {
         System.out.println("Чтение файла : " + context.getFileManager().getFileName());
         context.getCollectionManager().setCollection(context.getFileManager().readFile());
         System.out.println("Чтение файла завершено.\nДля просмотра данных коллекции введите -> show.\nВведите help для списка команд");
-        // System.out.println(context.getCollectionManager().getCollection());
-        context.getCollectionManager().setInitializationDate(context);
         
+        context.getCollectionManager().setInitializationDate(context);
+
         while (true) {
             String input = context.getScanner().nextLine();
             String[] inputSplit = input.split(" ");
