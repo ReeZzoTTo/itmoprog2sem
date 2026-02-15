@@ -7,6 +7,6 @@ public class FilenameIsEmpty extends Exception {
 
     @Override
     public String getMessage() {
-        return "Необходимо ввести имя файла";
+        return super.getMessage();
     }
 }

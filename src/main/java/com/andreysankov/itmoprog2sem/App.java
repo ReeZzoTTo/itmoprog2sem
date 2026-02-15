@@ -5,26 +5,29 @@ import java.util.Scanner;
 
 import com.andreysankov.itmoprog2sem.commands.*;
 import com.andreysankov.itmoprog2sem.exceptions.FilenameIsEmpty;
+// import com.andreysankov.itmoprog2sem.exceptions.FilenameIsEmpty;
 import com.andreysankov.itmoprog2sem.managers.*;
 
 public class App {
     public static void main( String[] args ) {
         try {
-            if (args.length == 0) {
-                throw new FilenameIsEmpty("Необходимо ввести имя файла");
-            }
-        } catch (FilenameIsEmpty exception) {
-            System.out.println(exception.getMessage());
+            String targetFilePath = System.getenv("LABWORK_FILE");
+
+            if (targetFilePath == null) 
+                throw new FilenameIsEmpty("Пустое имя файла. Вероятно ошибка с переменной окружения");
+        } catch (FilenameIsEmpty e) {
+            System.out.println(e.getMessage());
             System.exit(1);
         }
 
         Context context = new Context(
-            new FileManager(args[0]),
+            new FileManager(System.getenv("LABWORK_FILE")),
             new CommandManager(),
             new CollectionManager(),
             new Scanner(System.in, StandardCharsets.UTF_8),
             new InputManager()
         );
+
         CommandManager commandManager = context.getCommandManager();
 
         commandManager.registerCommand("help", new HelpCommand(context));
