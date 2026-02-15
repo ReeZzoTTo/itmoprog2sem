@@ -43,6 +43,7 @@ public class App {
         commandManager.registerCommand("save", new SaveCommand(context));
         commandManager.registerCommand("clear", new ClearCommand(context));
         commandManager.registerCommand("exit", new ExitCommand(context));
+        commandManager.registerCommand("history", new HistoryCommand(context));
         
         System.out.println("Программа для управления колекцией");
         System.out.println("Чтение файла : " + context.getFileManager().getFileName());
@@ -60,6 +61,7 @@ public class App {
             if (command != null) { 
                 context.getCommandManager().setArguments(inputSplit);
                 command.execute(); 
+                context.getCommandManager().addToHistory(inputSplit[0]);
             }
             else { System.out.println("Неизвестная команда : Введите help"); }            
         }
