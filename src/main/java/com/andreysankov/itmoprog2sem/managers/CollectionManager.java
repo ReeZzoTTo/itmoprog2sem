@@ -32,6 +32,16 @@ public class CollectionManager {
         return collection.size(); 
     }
 
+    public LinkedHashSet<String> getElementsUniqueName() {
+        LinkedHashSet<String> elementsUniqueName = new LinkedHashSet<>();
+
+        for (LabWork element : this.collection) {
+            elementsUniqueName.add(element.getUniqueName());
+        }
+
+        return elementsUniqueName;
+    }
+
     public void clearCollection() {
         this.collection.clear();
     }
@@ -47,6 +57,15 @@ public class CollectionManager {
     public LabWork getElementByID(long id) {
         for (LabWork element : collection) {
             if (element.getId() == id) {
+                return element;
+            }
+        }
+        return null;
+    }
+
+    public LabWork getElementByUniqueName(String uniqueName) {
+        for (LabWork element : collection) {
+            if (element.getUniqueName().equals(uniqueName)) {
                 return element;
             }
         }
