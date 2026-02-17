@@ -1,5 +1,7 @@
 package com.andreysankov.itmoprog2sem.commands;
 
+import java.util.Iterator;
+
 import com.andreysankov.itmoprog2sem.managers.Context;
 import com.andreysankov.itmoprog2sem.models.LabWork;
 
@@ -19,12 +21,13 @@ public class RemoveLowerCommand extends AbstractCommand {
             int removeElementsCount = 0;
             LabWork currentElement = getContext().getCollectionManager().getElementByUniqueName(argumentUniqueName);
 
-            //! Проблема итератора при удалении элемента
-            //TODO : решить йоу
+            Iterator<LabWork> iterator = getContext().getCollectionManager().getCollection().iterator();
 
-            for (LabWork element : getContext().getCollectionManager().getCollection()) {
+            while (iterator.hasNext()) {
+                LabWork element = iterator.next();
+
                 if (element.getMinimalPoint() < currentElement.getMinimalPoint()) {
-                    getContext().getCollectionManager().deleteElementByID(element.getId());
+                    iterator.remove();
                     System.out.println(element.getUniqueName() + " успешно удалён");
                     removeElementsCount++;
                 }
