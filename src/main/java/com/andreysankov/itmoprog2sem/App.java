@@ -43,6 +43,7 @@ public class App {
         commandManager.registerCommand("save", new SaveCommand(context));
         commandManager.registerCommand("clear", new ClearCommand(context));
         commandManager.registerCommand("exit", new ExitCommand(context));
+        commandManager.registerCommand("add_if_min", new AddIfMinCommand(context));
         commandManager.registerCommand("remove_lower", new RemoveLowerCommand(context));
         commandManager.registerCommand("history", new HistoryCommand(context));
         commandManager.registerCommand("average_of_personal_qualities_maximum", new AverageOfPersonalQualititesMaximumCommand(context));

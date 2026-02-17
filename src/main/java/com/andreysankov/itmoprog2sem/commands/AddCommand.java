@@ -13,11 +13,19 @@ public class AddCommand extends AbstractCommand {
 
     @Override
     public boolean execute() {
+        String argumentUniqueName;
+        try {
+            argumentUniqueName = getContext().getCommandManager().getArguments()[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Укажите именной идентификатор элементу\n(Команда add требует аргумент)");
+            return true;
+        }
+        
         System.out.println("Добавление элемента в коллекцию");
 
         InputManager inputManager = getContext().getInputManager();
         inputManager.setContext(getContext());
-        LabWork labWork = inputManager.readLabWork(getContext().getCommandManager().getArguments()[1]);
+        LabWork labWork = inputManager.readLabWork(argumentUniqueName);
         getContext().getCollectionManager().addElement(labWork);
 
         System.out.println("Элемент успешно добавлен в коллекцию. Введите show/info");
