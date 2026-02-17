@@ -21,7 +21,7 @@ public class RemoveLowerCommand extends AbstractCommand {
             int removeElementsCount = 0;
             LabWork currentElement = getContext().getCollectionManager().getElementByUniqueName(argumentUniqueName);
 
-            Iterator<LabWork> iterator = getContext().getCollectionManager().getCollection().iterator();
+            Iterator<LabWork> iterator = getContext().getCollectionManager().getIterator();
 
             while (iterator.hasNext()) {
                 LabWork element = iterator.next();

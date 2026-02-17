@@ -2,6 +2,7 @@ package com.andreysankov.itmoprog2sem.managers;
 
 import java.nio.file.attribute.FileTime;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 
 import com.andreysankov.itmoprog2sem.models.LabWork;
@@ -76,6 +77,7 @@ public class CollectionManager {
         return this.collection.removeIf(element -> element.getId() == id);
     }
 
+    public Iterator<LabWork> getIterator() { return this.collection.iterator(); } 
     public Date getInitializationDate() { return this.initializationDate; }
     public LinkedHashSet<LabWork> getCollection() { return this.collection; }
 

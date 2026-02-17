@@ -47,6 +47,7 @@ public class App {
         commandManager.registerCommand("history", new HistoryCommand(context));
         commandManager.registerCommand("average_of_personal_qualities_maximum", new AverageOfPersonalQualititesMaximumCommand(context));
         commandManager.registerCommand("group_counting_by_creation_date", new GroupCountingByCreationDateCommand(context));
+        commandManager.registerCommand("print_field_descending_discipline", new PrintFieldDescendingDisciplineCommand(context));
         
         System.out.println("Программа для управления колекцией");
         System.out.println("Чтение файла : " + context.getFileManager().getFileName());
