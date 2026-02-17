@@ -41,6 +41,7 @@ public class App {
         commandManager.registerCommand("update", new UpdateIdCommand(context));
         commandManager.registerCommand("remove_by_id", new RemoveByIdCommand(context));
         commandManager.registerCommand("save", new SaveCommand(context));
+        commandManager.registerCommand("execute_script", new ExecuteScriptCommand(context));
         commandManager.registerCommand("clear", new ClearCommand(context));
         commandManager.registerCommand("exit", new ExitCommand(context));
         commandManager.registerCommand("add_if_min", new AddIfMinCommand(context));
@@ -57,19 +58,10 @@ public class App {
         
         context.getCollectionManager().setInitializationDate(context);
 
-        while (true) {
-            String input = context.getScanner().nextLine();
-            String[] inputSplit = input.split(" ");
+        Scanner scanner = context.getScanner();
 
-            AbstractCommand command = context.getCommandManager().getCommandList().get(inputSplit[0]);
-
-            if (command != null) { 
-                context.getCommandManager().setArguments(inputSplit);
-                command.execute(); 
-                context.getCommandManager().addToHistory(inputSplit[0]);
-            }
-            else { System.out.println("Неизвестная команда : Введите help"); }            
-        }
+        context.getInputManager().setContext(context);
+        context.getInputManager().readConsole(scanner);
     }
 }
 

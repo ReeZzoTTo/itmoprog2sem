@@ -3,6 +3,7 @@ package com.andreysankov.itmoprog2sem.managers;
 import java.util.Date;
 import java.util.Scanner;
 
+import com.andreysankov.itmoprog2sem.commands.AbstractCommand;
 import com.andreysankov.itmoprog2sem.models.Coordinates;
 import com.andreysankov.itmoprog2sem.models.Difficulty;
 import com.andreysankov.itmoprog2sem.models.Discipline;
@@ -16,8 +17,25 @@ public class InputManager {
         this.context = context;
     }
 
+    public void readConsole(Scanner scanner) {
+        this.scanner = scanner;
+
+        while (scanner.hasNext()) {
+            String input = scanner.nextLine();
+            String[] inputSplit = input.split(" ");
+
+            AbstractCommand command = context.getCommandManager().getCommandList().get(inputSplit[0]);
+
+            if (command != null) { 
+                context.getCommandManager().setArguments(inputSplit);
+                command.execute(); 
+                context.getCommandManager().addToHistory(inputSplit[0]);
+            }
+            else { System.out.println("Неизвестная команда : Введите help"); }            
+        }
+    }
+
     public LabWork readLabWork(String uniqueName) {
-        this.scanner = this.context.getScanner();
         InputLabWork inputLabWork = new InputLabWork();
         
         return new LabWork(
