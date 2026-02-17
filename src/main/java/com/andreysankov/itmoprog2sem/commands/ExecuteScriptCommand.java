@@ -29,6 +29,12 @@ public class ExecuteScriptCommand extends AbstractCommand {
                 System.out.println("Файл не существует");
                 return true;
             }
+            if (getContext().getInputManager().getFileScriptsSet().contains(scriptFileName)) {
+                System.out.println("Обнаружена рекурсия. Выполнение файла прервано");
+                System.exit(1);
+                return true;
+            }
+            getContext().getInputManager().addFileScriptToSet(scriptFileName);
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Укажите путь к файлу");
             return true;

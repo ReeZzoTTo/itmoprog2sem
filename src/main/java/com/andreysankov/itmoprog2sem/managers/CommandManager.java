@@ -25,6 +25,17 @@ public class CommandManager {
         history.add(commandName);
     }
 
+    public String getArgument(int index, String maessage) {
+        String argument;
+        try {
+            argument = this.getArguments()[index];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println(maessage);
+            argument = null;
+        }
+        return argument;
+    }
+
     public void setArguments(String[] arguments) {
         this.arguments = arguments;
     }

@@ -7,10 +7,7 @@ import com.andreysankov.itmoprog2sem.commands.*;
 import com.andreysankov.itmoprog2sem.exceptions.FilenameIsEmpty;
 import com.andreysankov.itmoprog2sem.managers.*;
 
-// TODO : разобраться с Date
-
 // java -Dfile.encoding=UTF-8 -jar target/itmoprog2sem-1.0-Lab5.jar
-
 
 public class App {
     public static void main( String[] args ) {

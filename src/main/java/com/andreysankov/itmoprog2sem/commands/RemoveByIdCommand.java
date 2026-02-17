@@ -11,7 +11,10 @@ public class RemoveByIdCommand extends AbstractCommand{
 
     @Override
     public boolean execute() {
-        Long id = Long.parseLong(getContext().getCommandManager().getArguments()[1]);
+        String argument = getContext().getCommandManager().getArgument(1, "Укажите ID элемента\\n(Команда remove_by_id требует аргумент)");
+        if (argument == null) return true;
+
+        Long id = Long.parseLong(argument);
 
         boolean wasDeleted = getContext().getCollectionManager().deleteElementByID(id);
 

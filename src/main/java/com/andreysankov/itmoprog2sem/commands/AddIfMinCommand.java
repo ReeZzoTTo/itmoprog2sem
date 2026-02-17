@@ -13,13 +13,8 @@ public class AddIfMinCommand extends AbstractCommand {
 
     @Override
     public boolean execute() {
-        String argumentUniqueName;
-        try {
-            argumentUniqueName = getContext().getCommandManager().getArguments()[1];
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Укажите именной идентификатор элементу\n(Команда add_if_min требует аргумент)");
-            return true;
-        }
+        String argumentUniqueName = getContext().getCommandManager().getArgument(1, "Укажите именной идентификатор элементу\\n(Команда add_if_min требует аргумент)");
+        if (argumentUniqueName == null) return true;
 
         int minimum = this.getMinOfMinimalPoint();
 

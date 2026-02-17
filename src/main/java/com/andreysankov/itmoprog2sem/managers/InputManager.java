@@ -1,7 +1,9 @@
 package com.andreysankov.itmoprog2sem.managers;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 import com.andreysankov.itmoprog2sem.commands.AbstractCommand;
 import com.andreysankov.itmoprog2sem.models.Coordinates;
@@ -12,9 +14,18 @@ import com.andreysankov.itmoprog2sem.models.LabWork;
 public class InputManager {
     private Context context;
     private Scanner scanner;
+    private Set<String> fileScriptSet = new HashSet<>();
 
     public void setContext(Context context) {
         this.context = context;
+    }
+
+    public void addFileScriptToSet(String filename) {
+        this.fileScriptSet.add(filename);
+    }
+
+    public Set<String> getFileScriptsSet() {
+        return this.fileScriptSet;
     }
 
     public void readConsole(Scanner scanner) {

@@ -15,8 +15,12 @@ public class UpdateIdCommand extends AbstractCommand {
 
     @Override
     public boolean execute() {
-        String[] arguments = getContext().getCommandManager().getArguments();
-        Long id = Long.parseLong(arguments[1]);
+        String argumentId = getContext().getCommandManager().getArgument(1, "Укажите ID элемента\\n(Команда update требует аргумент)");
+        String argumentUniqueName = getContext().getCommandManager().getArgument(2, "Укажите уникальное имя элемента\\n(Команда update требует аргумент)");
+        if (argumentUniqueName == null || argumentId == null) return true;
+
+
+        Long id = Long.parseLong(argumentId);
         Date currentCreationDate;
         LabWork targetELement = getContext().getCollectionManager().getElementByID(id);
 
@@ -24,7 +28,7 @@ public class UpdateIdCommand extends AbstractCommand {
 
         InputManager inputManager = getContext().getInputManager();
         inputManager.setContext(getContext());
-        LabWork newElement = inputManager.readLabWork(arguments[2]);
+        LabWork newElement = inputManager.readLabWork(argumentUniqueName);
 
         newElement.setId(id);
 
