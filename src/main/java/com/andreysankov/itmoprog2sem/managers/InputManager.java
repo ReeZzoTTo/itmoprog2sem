@@ -6,10 +6,7 @@ import java.util.Scanner;
 import java.util.Set;
 
 import com.andreysankov.itmoprog2sem.commands.AbstractCommand;
-import com.andreysankov.itmoprog2sem.models.Coordinates;
-import com.andreysankov.itmoprog2sem.models.Difficulty;
-import com.andreysankov.itmoprog2sem.models.Discipline;
-import com.andreysankov.itmoprog2sem.models.LabWork;
+import com.andreysankov.itmoprog2sem.models.*;
 
 public class InputManager {
     private Context context;
@@ -76,7 +73,7 @@ public class InputManager {
             System.out.println(message);
             String name = scanner.nextLine();
 
-            while (name == null) {
+            while (name == null || name.length() == 0) {
                 System.out.println("Имя не может быть пустым. Повторите ввод:");
                 name = scanner.nextLine();
             }
@@ -177,15 +174,28 @@ public class InputManager {
         }
     
         private Discipline inputDiscipline() {
+            String disciplineName = this.inputDisciplineName();
+
+            if (disciplineName == null || disciplineName.trim().isEmpty()) {
+                return null;
+            }
+
             return new Discipline(
-                this.inputDisciplineName(),
+                disciplineName,
                 this.inputDisciplineLectureHours(),
                 this.inputDisciplineLabsCount()
             );
         }
 
         private String inputDisciplineName() {
-            return inputName("Создание Дисциплины -> Укажите название дисциплины");
+            System.out.println("Создание Дисциплины -> Укажите название дисциплины");
+            String disciplineName = scanner.nextLine();
+
+            if (disciplineName == null || disciplineName.length() == 0) {
+                return null;
+            }
+
+            return disciplineName;
         }
 
         private Long inputDisciplineLectureHours() {

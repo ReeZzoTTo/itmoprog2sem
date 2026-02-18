@@ -16,6 +16,10 @@ public class AddCommand extends AbstractCommand {
         String argumentUniqueName;
         try {
             argumentUniqueName = getContext().getCommandManager().getArguments()[1];
+            if (getContext().getCollectionManager().getElementsUniqueName().contains(argumentUniqueName)) {
+                System.out.println("Элемент с таким именем уже существует");
+                return true;
+            }
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Укажите именной идентификатор элементу\n(Команда add требует аргумент)");
             return true;

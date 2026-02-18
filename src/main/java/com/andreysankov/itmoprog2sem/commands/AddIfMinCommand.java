@@ -16,6 +16,11 @@ public class AddIfMinCommand extends AbstractCommand {
         String argumentUniqueName = getContext().getCommandManager().getArgument(1, "Укажите именной идентификатор элементу\\n(Команда add_if_min требует аргумент)");
         if (argumentUniqueName == null) return true;
 
+        if (getContext().getCollectionManager().getElementsUniqueName().contains(argumentUniqueName)) {
+            System.out.println("Элемент с таким именем уже существует");
+            return true;
+        }
+
         int minimum = this.getMinOfMinimalPoint();
 
         InputManager inputManager = getContext().getInputManager();

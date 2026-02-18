@@ -11,7 +11,7 @@ public class ExitCommand extends AbstractCommand {
 
     @Override
     public boolean execute() {
-        System.out.println("Завршение сеанса.\nGoodBye :)");
+        System.out.println("Завершение сеанса.\nGoodBye :)");
         System.exit(0);
         return true;
     }

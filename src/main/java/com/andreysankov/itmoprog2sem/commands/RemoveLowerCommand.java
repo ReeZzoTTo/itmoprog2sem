@@ -14,7 +14,9 @@ public class RemoveLowerCommand extends AbstractCommand {
 
     @Override
     public boolean execute() {
-        String argumentUniqueName = getContext().getCommandManager().getArguments()[1];
+        String argumentUniqueName = getContext().getCommandManager().getArgument(1, "Укажите ID элемента\n(Команда remove_lower требует аргумент)");
+        if (argumentUniqueName == null) return true;
+
         if (getContext().getCollectionManager().getElementsUniqueName().contains(argumentUniqueName)) {
             System.out.println("Элемент найден");
 
