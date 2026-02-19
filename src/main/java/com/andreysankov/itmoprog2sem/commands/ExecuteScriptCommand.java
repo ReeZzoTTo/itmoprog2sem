@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
+import com.andreysankov.itmoprog2sem.exceptions.AppException;
 import com.andreysankov.itmoprog2sem.managers.Context;
 
 public class ExecuteScriptCommand extends AbstractCommand {
@@ -26,18 +27,17 @@ public class ExecuteScriptCommand extends AbstractCommand {
             file = new File(scriptFileName);
 
             if (!file.exists()) {
-                System.out.println("Файл не существует");
-                return true;
+                getContext().getErrorManager().setException(new AppException("Файл не существует"));
+                return false;
             }
             if (getContext().getInputManager().getFileScriptsSet().contains(scriptFileName)) {
-                System.out.println("Обнаружена рекурсия. Выполнение файла прервано");
-                System.exit(1);
-                return true;
+                getContext().getErrorManager().setException(new AppException("Обнаружена рекурсия. Выполнение файла прервано"), true);
+                return false;
             }
             getContext().getInputManager().addFileScriptToSet(scriptFileName);
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Укажите путь к файлу");
-            return true;
+            getContext().getErrorManager().setException(new AppException("Укажите путь к файлу"));
+            return false;
         }
 
         try {
@@ -49,7 +49,8 @@ public class ExecuteScriptCommand extends AbstractCommand {
             getContext().getInputManager().readConsole(scanner);
             getContext().setScanner(oldScanner);
         } catch (IOException e) {
-            System.out.println("Ошибка исполнения файла " + e.getMessage());
+            getContext().getErrorManager().setException(new AppException("Ошибка исполнения файла " + e.getMessage()));
+            return false;
         } finally {
             getContext().getInputManager().getFileScriptsSet().remove(scriptFileName);
         }

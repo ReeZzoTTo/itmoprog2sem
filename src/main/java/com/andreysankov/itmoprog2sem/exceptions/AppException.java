@@ -1,7 +1,7 @@
 package com.andreysankov.itmoprog2sem.exceptions;
 
-public class FilenameIsEmpty extends Exception {
-    public FilenameIsEmpty(String message) {
+public class AppException extends Exception {
+    public AppException(String message) {
         super(message);
     }
 

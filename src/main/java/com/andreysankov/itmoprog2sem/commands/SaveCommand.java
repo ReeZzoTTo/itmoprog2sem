@@ -2,6 +2,7 @@ package com.andreysankov.itmoprog2sem.commands;
 
 import java.io.IOException;
 
+import com.andreysankov.itmoprog2sem.exceptions.AppException;
 import com.andreysankov.itmoprog2sem.managers.Context;
 
 public class SaveCommand extends AbstractCommand {
@@ -17,11 +18,10 @@ public class SaveCommand extends AbstractCommand {
             getContext().getFileManager().saveFile(getContext().getCollectionManager().getCollection());
             System.out.println("Файл успешно сохранён");
         } catch (IOException e) {
-            System.out.println("Ошибка при сохранении файла: " + e.getMessage());
+            getContext().getErrorManager().setException(new AppException("Ошибка при сохранении файла: " + e.getMessage()));
+            return false;
         }
         
         return true;
     }
-
-    
 }

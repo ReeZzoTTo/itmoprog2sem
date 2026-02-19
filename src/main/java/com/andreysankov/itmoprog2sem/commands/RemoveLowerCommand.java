@@ -2,6 +2,7 @@ package com.andreysankov.itmoprog2sem.commands;
 
 import java.util.Iterator;
 
+import com.andreysankov.itmoprog2sem.exceptions.AppException;
 import com.andreysankov.itmoprog2sem.managers.Context;
 import com.andreysankov.itmoprog2sem.models.LabWork;
 
@@ -15,7 +16,7 @@ public class RemoveLowerCommand extends AbstractCommand {
     @Override
     public boolean execute() {
         String argumentUniqueName = getContext().getCommandManager().getArgument(1, "Укажите ID элемента\n(Команда remove_lower требует аргумент)");
-        if (argumentUniqueName == null) return true;
+        if (argumentUniqueName == null) return false;
 
         if (getContext().getCollectionManager().getElementsUniqueName().contains(argumentUniqueName)) {
             System.out.println("Элемент найден");
@@ -35,10 +36,11 @@ public class RemoveLowerCommand extends AbstractCommand {
                 }
             }
             System.out.println("Удалено элементов : " + removeElementsCount);
-        } else {
-            System.out.println("Элемент не найден. Создайте его : add");
+            
+            return true;
         }
         
-        return true;
+        getContext().getErrorManager().setException(new AppException("Элемент не найден. Создайте его : add"));
+        return false;
     } 
 }

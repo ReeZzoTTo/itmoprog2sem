@@ -1,5 +1,6 @@
 package com.andreysankov.itmoprog2sem.commands;
 
+import com.andreysankov.itmoprog2sem.exceptions.AppException;
 import com.andreysankov.itmoprog2sem.managers.Context;
 import com.andreysankov.itmoprog2sem.managers.InputManager;
 import com.andreysankov.itmoprog2sem.models.LabWork;
@@ -17,12 +18,12 @@ public class AddCommand extends AbstractCommand {
         try {
             argumentUniqueName = getContext().getCommandManager().getArguments()[1];
             if (getContext().getCollectionManager().getElementsUniqueName().contains(argumentUniqueName)) {
-                System.out.println("Элемент с таким именем уже существует");
-                return true;
+                getContext().getErrorManager().setException(new AppException("Элемент с таким именем уже существует"));
+                return false;
             }
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Укажите именной идентификатор элементу\n(Команда add требует аргумент)");
-            return true;
+            getContext().getErrorManager().setException(new ArrayIndexOutOfBoundsException("Укажите именной идентификатор элементу\n(Команда add требует аргумент)"));
+            return false;
         }
         
         System.out.println("Добавление элемента в коллекцию");

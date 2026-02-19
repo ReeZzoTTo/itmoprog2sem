@@ -1,5 +1,6 @@
 package com.andreysankov.itmoprog2sem.commands;
 
+import com.andreysankov.itmoprog2sem.exceptions.AppException;
 import com.andreysankov.itmoprog2sem.managers.Context;
 
 public class RemoveByIdCommand extends AbstractCommand{
@@ -12,14 +13,18 @@ public class RemoveByIdCommand extends AbstractCommand{
     @Override
     public boolean execute() {
         String argument = getContext().getCommandManager().getArgument(1, "Укажите ID элемента\n(Команда remove_by_id требует аргумент)");
-        if (argument == null) return true;
+        if (argument == null) return false;
 
         Long id = Long.parseLong(argument);
 
         boolean wasDeleted = getContext().getCollectionManager().deleteElementByID(id);
 
-        if (wasDeleted) { System.out.println("Элемент с ID = " + id + " успешно удален"); }
-        else { System.out.println("Элемента с данными ID = " + id + " не существует"); }
-        return true;
+        if (wasDeleted) { 
+            System.out.println("Элемент с ID = " + id + " успешно удален"); 
+            return true;
+        }
+        
+        getContext().getErrorManager().setException(new AppException("Элемента с данными ID = " + id + " не существует"));
+        return false;
     } 
 }

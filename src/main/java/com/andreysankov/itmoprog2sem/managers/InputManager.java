@@ -33,7 +33,9 @@ public class InputManager {
 
             if (command != null) { 
                 context.getCommandManager().setArguments(inputSplit);
-                command.execute(); 
+                if (!command.execute()) {
+                    context.getErrorManager().executeError();
+                } 
                 context.getCommandManager().addToHistory(inputSplit[0]);
             }
             else { System.out.println("Неизвестная команда : Введите help"); }            

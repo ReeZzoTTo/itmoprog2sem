@@ -4,13 +4,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 import com.andreysankov.itmoprog2sem.commands.*;
-import com.andreysankov.itmoprog2sem.exceptions.FilenameIsEmpty;
+import com.andreysankov.itmoprog2sem.exceptions.AppException;
 import com.andreysankov.itmoprog2sem.managers.*;
 
-// java -Dfile.encoding=UTF-8 -jar target/itmoprog2sem-1.0-Lab5.jar
 
 public class App {
     public static void main( String[] args ) {
+        ErrorManager errorManager = new ErrorManager();
+
         try {
             String envName = "LABWORK_FILE";
 
@@ -19,8 +20,8 @@ public class App {
             String targetFilePath = System.getenv(envName.toUpperCase());
 
             if (targetFilePath == null) 
-                throw new FilenameIsEmpty("Пустое имя файла. Вероятно ошибка с переменной окружения");
-        } catch (FilenameIsEmpty e) {
+                throw new AppException("Пустое имя файла. Вероятно ошибка с переменной окружения");
+        } catch (AppException e) {
             System.out.println(e.getMessage());
             System.exit(1);
         }
@@ -30,10 +31,12 @@ public class App {
             new CommandManager(),
             new CollectionManager(),
             new Scanner(System.in, StandardCharsets.UTF_8),
-            new InputManager()
+            new InputManager(),
+            errorManager
         );
 
         CommandManager commandManager = context.getCommandManager();
+        commandManager.setContext(context);
 
         commandManager.registerCommand("help", new HelpCommand(context));
         commandManager.registerCommand("info", new InfoCommand(context));
@@ -54,8 +57,10 @@ public class App {
         
         System.out.println("Программа для управления колекцией");
         System.out.println("Чтение файла : " + context.getFileManager().getFileName());
+
         context.getCollectionManager().setCollection(context.getFileManager().readFile());
         context.getCollectionManager().setDisciplineMap();
+
         System.out.println("Чтение файла завершено.\nДля просмотра данных коллекции введите -> show.\nВведите help для списка команд");
         
         context.getCollectionManager().setInitializationDate(context);

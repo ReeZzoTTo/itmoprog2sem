@@ -10,12 +10,17 @@ public class CommandManager {
     private Map<String, AbstractCommand> commandList = new HashMap<>();
     private String[] arguments;
     private List<String> history = new ArrayList<>();
+    private Context context;
 
     public void registerCommand(
         String commandName, 
         AbstractCommand command
     ) {
         this.commandList.put(commandName, command);
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
     }
 
     public void addToHistory(String commandName) {
@@ -25,12 +30,12 @@ public class CommandManager {
         history.add(commandName);
     }
 
-    public String getArgument(int index, String maessage) {
+    public String getArgument(int index, String message) {
         String argument;
         try {
             argument = this.getArguments()[index];
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println(maessage);
+            context.getErrorManager().setException(new ArrayIndexOutOfBoundsException(message));
             argument = null;
         }
         return argument;

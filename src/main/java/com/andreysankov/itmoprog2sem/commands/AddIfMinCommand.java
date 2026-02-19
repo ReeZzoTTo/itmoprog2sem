@@ -1,5 +1,6 @@
 package com.andreysankov.itmoprog2sem.commands;
 
+import com.andreysankov.itmoprog2sem.exceptions.AppException;
 import com.andreysankov.itmoprog2sem.managers.Context;
 import com.andreysankov.itmoprog2sem.managers.InputManager;
 import com.andreysankov.itmoprog2sem.models.LabWork;
@@ -13,12 +14,12 @@ public class AddIfMinCommand extends AbstractCommand {
 
     @Override
     public boolean execute() {
-        String argumentUniqueName = getContext().getCommandManager().getArgument(1, "Укажите именной идентификатор элементу\\n(Команда add_if_min требует аргумент)");
-        if (argumentUniqueName == null) return true;
+        String argumentUniqueName = getContext().getCommandManager().getArgument(1, "Укажите именной идентификатор элементу\n(Команда add_if_min требует аргумент)");
+        if (argumentUniqueName == null) return false;
 
         if (getContext().getCollectionManager().getElementsUniqueName().contains(argumentUniqueName)) {
-            System.out.println("Элемент с таким именем уже существует");
-            return true;
+            getContext().getErrorManager().setException(new AppException("Элемент с таким именем уже существует"));
+            return false;
         }
 
         int minimum = this.getMinOfMinimalPoint();
@@ -28,14 +29,14 @@ public class AddIfMinCommand extends AbstractCommand {
 
         LabWork labWork = inputManager.readLabWork(argumentUniqueName);
         
-        if (labWork.getMinimalPoint() < minimum) {
+        if (minimum == -1 || labWork.getMinimalPoint() < minimum) {
             getContext().getCollectionManager().addElement(labWork);
             System.out.println("Элемент " + labWork.getUniqueName() + " успешно добавлен в коллекцию");
-        } else {
-            System.out.println("Элемент с указанным значением minimalPoint=" + labWork.getMinimalPoint() + " не является наименьшим\nЭлемент не был добавлен");
+            return true;
         }
+        getContext().getErrorManager().setException(new AppException("Элемент с указанным значением minimalPoint=" + labWork.getMinimalPoint() + " не является наименьшим\nЭлемент не был добавлен"));
 
-        return true;
+        return false;
     }
 
     public int getMinOfMinimalPoint() {
