@@ -64,13 +64,13 @@ public class CollectionManager {
     }
 
     public Long getLastIdElement() {
-        return collection.stream().mapToLong(LabWork::getId).max().orElse(0);
+        return collection.stream().mapToLong(LabWork::getId).max().orElse(1);
     }
 
     public Long generateId() {
         long collectionSize = this.getCollectionSize();
         if (collectionSize == 0) {
-            return 0L;
+            return 1L;
         } else {
             return this.getLastIdElement() + 1;
         }
