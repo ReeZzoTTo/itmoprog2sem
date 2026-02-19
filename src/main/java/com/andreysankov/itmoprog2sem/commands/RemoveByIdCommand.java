@@ -15,8 +15,14 @@ public class RemoveByIdCommand extends AbstractCommand{
         String argument = getContext().getCommandManager().getArgument(1, "Укажите ID элемента\n(Команда remove_by_id требует аргумент)");
         if (argument == null) return false;
 
-        Long id = Long.parseLong(argument);
+        Long id;
 
+        try {
+            id = Long.parseLong(argument);
+        } catch (NumberFormatException e) {
+            getContext().getErrorManager().setException(e);
+            return false;
+        }
         boolean wasDeleted = getContext().getCollectionManager().deleteElementByID(id);
 
         if (wasDeleted) { 

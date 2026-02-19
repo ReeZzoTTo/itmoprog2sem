@@ -11,10 +11,9 @@ import com.andreysankov.itmoprog2sem.managers.*;
 public class App {
     public static void main( String[] args ) {
         ErrorManager errorManager = new ErrorManager();
+        String envName = "LABWORK_FILE";
 
         try {
-            String envName = "LABWORK_FILE";
-
             if (args.length != 0) envName = args[0];
 
             String targetFilePath = System.getenv(envName.toUpperCase());
@@ -27,7 +26,7 @@ public class App {
         }
 
         Context context = new Context(
-            new FileManager(System.getenv(args[0].toUpperCase())),
+            new FileManager(System.getenv(envName.toUpperCase())),
             new CommandManager(),
             new CollectionManager(),
             new Scanner(System.in, StandardCharsets.UTF_8),
