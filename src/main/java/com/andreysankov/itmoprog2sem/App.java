@@ -55,6 +55,7 @@ public class App {
         System.out.println("Программа для управления колекцией");
         System.out.println("Чтение файла : " + context.getFileManager().getFileName());
         context.getCollectionManager().setCollection(context.getFileManager().readFile());
+        context.getCollectionManager().setDisciplineMap();
         System.out.println("Чтение файла завершено.\nДля просмотра данных коллекции введите -> show.\nВведите help для списка команд");
         
         context.getCollectionManager().setInitializationDate(context);

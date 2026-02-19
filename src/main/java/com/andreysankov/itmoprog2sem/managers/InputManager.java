@@ -44,7 +44,7 @@ public class InputManager {
         InputLabWork inputLabWork = new InputLabWork(context);
         
         return new LabWork(
-            inputLabWork.inputId(),
+            context.getCollectionManager().generateId(),
             inputLabWork.inputName("Укажите название:"),
             inputLabWork.inputCoordinates(),
             inputLabWork.inputCreationDate(),

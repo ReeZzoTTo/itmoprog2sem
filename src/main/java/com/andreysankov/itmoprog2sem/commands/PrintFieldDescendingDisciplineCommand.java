@@ -1,10 +1,11 @@
 package com.andreysankov.itmoprog2sem.commands;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import com.andreysankov.itmoprog2sem.managers.Context;
 import com.andreysankov.itmoprog2sem.models.Discipline;
@@ -19,24 +20,25 @@ public class PrintFieldDescendingDisciplineCommand extends AbstractCommand{
 
     @Override
     public boolean execute() {
-        
-        List<Discipline> disciplineList = new ArrayList<>();
+        Set<Discipline> disciplineSet = new HashSet<>();
         Iterator<LabWork> iterator = getContext().getCollectionManager().getIterator();
         
         while (iterator.hasNext()) {
             LabWork element = iterator.next();
 
             if (element.getDiscipline() != null) {
-                disciplineList.add(element.getDiscipline());
+                disciplineSet.add(element.getDiscipline());
             }
         }
 
-        Collections.sort(disciplineList, new Comparator<Discipline>() {
-            @Override
-            public int compare(Discipline d1, Discipline d2) {
-                return d2.getName().compareTo(d1.getName());
-            }
-        });
+        List<Discipline> disciplineList = new ArrayList<>(disciplineSet);
+
+        disciplineList.sort(
+            Comparator.comparing(
+                Discipline::getName,
+                Comparator.nullsLast(Comparator.reverseOrder())
+            )
+        );
 
         for (Discipline discipline : disciplineList) {
             System.out.println("Discipline : " + discipline.getName());

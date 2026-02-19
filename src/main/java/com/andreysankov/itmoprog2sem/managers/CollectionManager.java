@@ -47,6 +47,8 @@ public class CollectionManager {
         this.disciplineMap.put(discipline.getName(), discipline);
     }
 
+    public Map<String, Discipline> getDisciplineMap() { return this.disciplineMap; }
+
     public LinkedHashSet<String> getElementsUniqueName() {
         LinkedHashSet<String> elementsUniqueName = new LinkedHashSet<>();
 
@@ -62,7 +64,16 @@ public class CollectionManager {
     }
 
     public Long getLastIdElement() {
-        return this.collection.getLast().getId();
+        return collection.stream().mapToLong(LabWork::getId).max().orElse(0);
+    }
+
+    public Long generateId() {
+        long collectionSize = this.getCollectionSize();
+        if (collectionSize == 0) {
+            return 0L;
+        } else {
+            return this.getLastIdElement() + 1;
+        }
     }
 
     public void setCollection(LinkedHashSet<LabWork> collection) {

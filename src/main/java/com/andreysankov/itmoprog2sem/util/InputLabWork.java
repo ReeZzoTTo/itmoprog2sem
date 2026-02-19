@@ -1,6 +1,7 @@
 package com.andreysankov.itmoprog2sem.util;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.Scanner;
 
 import com.andreysankov.itmoprog2sem.managers.Context;
@@ -17,14 +18,7 @@ public class InputLabWork {
         this.scanner = this.context.getScanner();
     }    
     
-    public Long inputId() {
-        long collectionSize = context.getCollectionManager().getCollectionSize();
-        if (collectionSize == 0) {
-            return 0L;
-        } else {
-            return context.getCollectionManager().getLastIdElement() + 1;
-        }
-    }
+    
 
     public String inputName(String message) {
         System.out.println(message);
@@ -131,27 +125,38 @@ public class InputLabWork {
     }
 
     public Discipline inputDiscipline() {
+        System.out.println("Хотите указать дисциплину? (yes, если да)");
+
+        String yesOrNot = scanner.nextLine();
+
+        if (!yesOrNot.equalsIgnoreCase("yes")) return null;
+
         String disciplineName = this.inputDisciplineName();
+        Map<String, Discipline> disciplineMap = context.getCollectionManager().getDisciplineMap();
 
-        
-
-        if (disciplineName == null || disciplineName.trim().isEmpty()) {
-            return null;
+        if (disciplineMap.containsKey(disciplineName)) {
+            System.out.println("Текущая дисциплина уже существует");
+            
+            return disciplineMap.get(disciplineName);    
         }
 
-        return new Discipline(
+        Discipline returnableDiscipline = new Discipline(
             disciplineName,
             this.inputDisciplineLectureHours(),
             this.inputDisciplineLabsCount()
         );
+
+        context.getCollectionManager().addDiscipline(returnableDiscipline);
+
+        return returnableDiscipline;
     }
 
     public String inputDisciplineName() {
         System.out.println("Создание Дисциплины -> Укажите название дисциплины");
         String disciplineName = scanner.nextLine();
 
-        if (disciplineName == null || disciplineName.length() == 0) {
-            return null;
+        while (disciplineName == null || disciplineName.length() == 0 || disciplineName.trim().isEmpty()) {
+            System.out.println("Имя дисциплины не может быть пустым");
         }
 
         return disciplineName;

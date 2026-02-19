@@ -46,8 +46,7 @@ public class LabWork implements Comparable<LabWork>{
             + "\nMinimal Points         : " + this.getMinimalPoint()
             + "\nMax Personal Qualities : " + this.getPersonalQualitiesMaximum()
             + "\nDifficulty             : " + this.getDifficulty()
-            + "\nDiscipline             : Name = " + 
-            (this.getDiscipline() == null ? "null" : this.getDiscipline().getName()
+            + (this.getDiscipline() == null ? "" : "\nDiscipline             : Name = " + this.getDiscipline().getName()
             + "\n                         Lecture Hours = " + this.getDiscipline().getLectureHours()
             + "\n                         Labs Count = " + this.getDiscipline().getLabsCount());
     }

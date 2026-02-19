@@ -43,11 +43,16 @@ public class ExecuteScriptCommand extends AbstractCommand {
         try {
             BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
             Scanner scanner = new Scanner(bis, StandardCharsets.UTF_8);
-        
+            Scanner oldScanner = getContext().getScanner();
+
+            getContext().setScanner(scanner);
             getContext().getInputManager().readConsole(scanner);
+            getContext().setScanner(oldScanner);
         } catch (IOException e) {
             System.out.println("Ошибка исполнения файла " + e.getMessage());
-        } 
+        } finally {
+            getContext().getInputManager().getFileScriptsSet().remove(scriptFileName);
+        }
 
         return true;
     }

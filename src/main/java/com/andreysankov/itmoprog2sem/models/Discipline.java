@@ -20,4 +20,19 @@ public class Discipline {
     public String getName() { return this.name; }
     public Long getLectureHours() { return this.lectureHours; }
     public int getLabsCount() { return this.labsCount; }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || this.getClass() != obj.getClass()) return false;
+
+        Discipline that = (Discipline) obj;
+
+        return name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
 }

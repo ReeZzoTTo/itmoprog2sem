@@ -23,6 +23,10 @@ public class Context {
         this.inputManager = inputManager;
     }
 
+    public void setScanner(Scanner scanner) {
+        this.scanner = scanner;
+    }
+
     public FileManager getFileManager() { return this.fileManager; }
     public CommandManager getCommandManager() { return this.commandManager; }
     public CollectionManager getCollectionManager() { return this.collectionManager; }
