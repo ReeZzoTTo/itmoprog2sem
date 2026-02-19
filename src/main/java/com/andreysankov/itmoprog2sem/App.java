@@ -12,7 +12,11 @@ import com.andreysankov.itmoprog2sem.managers.*;
 public class App {
     public static void main( String[] args ) {
         try {
-            String targetFilePath = System.getenv("LABWORK_FILE");
+            String envName = "LABWORK_FILE";
+
+            if (args.length != 0) envName = args[0];
+
+            String targetFilePath = System.getenv(envName.toUpperCase());
 
             if (targetFilePath == null) 
                 throw new FilenameIsEmpty("Пустое имя файла. Вероятно ошибка с переменной окружения");
@@ -22,7 +26,7 @@ public class App {
         }
 
         Context context = new Context(
-            new FileManager(System.getenv("LABWORK_FILE")),
+            new FileManager(System.getenv(args[0].toUpperCase())),
             new CommandManager(),
             new CollectionManager(),
             new Scanner(System.in, StandardCharsets.UTF_8),

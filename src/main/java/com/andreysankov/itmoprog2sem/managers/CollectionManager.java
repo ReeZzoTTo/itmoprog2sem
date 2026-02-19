@@ -2,18 +2,20 @@ package com.andreysankov.itmoprog2sem.managers;
 
 import java.nio.file.attribute.FileTime;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.Map;
 
+import com.andreysankov.itmoprog2sem.models.Discipline;
 import com.andreysankov.itmoprog2sem.models.LabWork;
 
 public class CollectionManager {
     private LinkedHashSet<LabWork> collection = new LinkedHashSet<>();
+    private Map<String, Discipline> disciplineMap = new HashMap<>();
     private Date initializationDate;
-
-    public CollectionManager() {
-        // if (this.getCollectionSize() == 0) initializationDate = new Date();
-    }
+    
+    public CollectionManager() {}
 
     public void setInitializationDate(Context context) {
         FileTime creationFileTime = context.getFileManager().getFileCreationTime();
@@ -31,6 +33,18 @@ public class CollectionManager {
 
     public long getCollectionSize() { 
         return collection.size(); 
+    }
+
+    public void setDisciplineMap() {
+        for (LabWork element : this.collection) {
+            Discipline currentDiscipline = element.getDiscipline();
+    
+            disciplineMap.put(currentDiscipline.getName(), currentDiscipline);
+        }
+    }
+
+    public void addDiscipline(Discipline discipline) {
+        this.disciplineMap.put(discipline.getName(), discipline);
     }
 
     public LinkedHashSet<String> getElementsUniqueName() {
