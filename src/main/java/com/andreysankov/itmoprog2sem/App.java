@@ -10,6 +10,7 @@ import com.andreysankov.itmoprog2sem.commands.*;
 import com.andreysankov.itmoprog2sem.exceptions.AppException;
 import com.andreysankov.itmoprog2sem.managers.*;
 
+// docker run --rm -it -e LABWORK_FILE=/data/data.xml -v ${PWD}\data:/data labwork-docker-app-lab5
 
 public class App {
     public static void main( String[] args ) {

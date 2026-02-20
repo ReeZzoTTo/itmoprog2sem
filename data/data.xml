@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<LabWorks>
+  <labWork>
+    <id>1</id>
+    <name>Консольное приложение</name>
+    <coordinates>
+      <x>49</x>
+      <y>250</y>
+    </coordinates>
+    <minimalPoint>40</minimalPoint>
+    <personalQualitiesMaximum>50.0</personalQualitiesMaximum>
+    <difficulty>INSANE</difficulty>
+    <discipline>
+      <name>Программирование</name>
+      <lectureHours>36</lectureHours>
+      <labsCount>8</labsCount>
+    </discipline>
+    <uniqueName>ProgLab5</uniqueName>
+    <date>1771630205917</date>
+  </labWork>
+</LabWorks>
