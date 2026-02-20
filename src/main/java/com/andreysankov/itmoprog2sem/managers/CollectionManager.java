@@ -29,7 +29,6 @@ public class CollectionManager {
 
     public void addElement(LabWork element) {
         this.collection.add(element);
-        System.out.println("addasdasd" + element.getName());
     }
 
     public long getCollectionSize() { 
@@ -39,7 +38,9 @@ public class CollectionManager {
     public void setDisciplineMap() {
         for (LabWork element : this.collection) {
             Discipline currentDiscipline = element.getDiscipline();
-    
+            
+            if (currentDiscipline == null) continue;
+
             disciplineMap.put(currentDiscipline.getName(), currentDiscipline);
         }
     }
@@ -65,7 +66,7 @@ public class CollectionManager {
     }
 
     public Long getLastIdElement() {
-        return collection.stream().mapToLong(LabWork::getId).max().orElse(1);
+        return collection.stream().mapToLong(LabWork::getId).max().orElse(0);
     }
 
     public Long generateId() {

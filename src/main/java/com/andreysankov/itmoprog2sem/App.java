@@ -1,6 +1,8 @@
 package com.andreysankov.itmoprog2sem;
 
+import java.io.Console;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
@@ -13,6 +15,11 @@ public class App {
     public static void main( String[] args ) {
         ErrorManager errorManager = new ErrorManager();
         String envName = "LABWORK_FILE";
+        
+        Console console = System.console();
+        Charset inCharset = (console != null) ? console.charset() : StandardCharsets.UTF_8;
+        
+        Scanner scanner = new Scanner(new InputStreamReader(System.in, inCharset));
 
         try {
             if (args.length != 0) envName = args[0];
@@ -30,7 +37,7 @@ public class App {
             new FileManager(System.getenv(envName.toUpperCase())),
             new CommandManager(),
             new CollectionManager(),
-            new Scanner(new InputStreamReader(System.in, StandardCharsets.UTF_8)),
+            scanner,
             new InputManager(),
             errorManager
         );
@@ -65,7 +72,7 @@ public class App {
         
         context.getCollectionManager().setInitializationDate(context);
 
-        Scanner scanner = context.getScanner();
+        scanner = context.getScanner();
 
         context.getInputManager().setContext(context);
         context.getInputManager().readConsole(scanner);

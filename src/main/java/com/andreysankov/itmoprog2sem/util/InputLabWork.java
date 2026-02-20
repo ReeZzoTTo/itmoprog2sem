@@ -18,8 +18,6 @@ public class InputLabWork {
         this.scanner = this.context.getScanner();
     }    
     
-    
-
     public String inputName(String message) {
         System.out.println(message);
         String name = scanner.nextLine();
@@ -96,7 +94,12 @@ public class InputLabWork {
 
         while (true) {
             try {
-                personalQualitiesMaximum = Double.parseDouble(scanner.nextLine());
+                String input = scanner.nextLine();
+
+                if (input.trim().isEmpty()) return null;
+
+                personalQualitiesMaximum = Double.parseDouble(input);
+                
                 if (personalQualitiesMaximum <= 0) { System.out.println("Число должно быть >0"); }
                 else { break; }
             } catch (NumberFormatException e) {
@@ -157,6 +160,7 @@ public class InputLabWork {
 
         while (disciplineName == null || disciplineName.length() == 0 || disciplineName.trim().isEmpty()) {
             System.out.println("Имя дисциплины не может быть пустым");
+            disciplineName = scanner.nextLine();
         }
 
         return disciplineName;
