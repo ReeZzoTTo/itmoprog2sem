@@ -1,5 +1,6 @@
 package com.andreysankov.itmoprog2sem;
 
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
@@ -29,7 +30,7 @@ public class App {
             new FileManager(System.getenv(envName.toUpperCase())),
             new CommandManager(),
             new CollectionManager(),
-            new Scanner(System.in, StandardCharsets.UTF_8),
+            new Scanner(new InputStreamReader(System.in, StandardCharsets.UTF_8)),
             new InputManager(),
             errorManager
         );

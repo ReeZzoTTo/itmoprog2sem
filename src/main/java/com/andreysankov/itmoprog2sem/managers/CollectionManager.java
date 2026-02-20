@@ -29,6 +29,7 @@ public class CollectionManager {
 
     public void addElement(LabWork element) {
         this.collection.add(element);
+        System.out.println("addasdasd" + element.getName());
     }
 
     public long getCollectionSize() { 

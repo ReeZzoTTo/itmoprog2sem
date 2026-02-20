@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -24,7 +25,6 @@ public class FileManager {
     private String filename;
 
     public FileManager(String filename) {
-        if (!new File(filename).exists()) {  }
         this.filename = filename;
     } 
 
@@ -75,8 +75,10 @@ public class FileManager {
         else {
             try {
                 BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+                InputStreamReader reader = new InputStreamReader(bis, StandardCharsets.UTF_8);
+                
                 XmlMapper xmlMapper = new XmlMapper();
-                LabWorkWrapper labWorkWrapper = xmlMapper.readValue(bis, LabWorkWrapper.class);
+                LabWorkWrapper labWorkWrapper = xmlMapper.readValue(reader, LabWorkWrapper.class);
 
                 return labWorkWrapper.getLabWork();
             } catch (IOException e) {

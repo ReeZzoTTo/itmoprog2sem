@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
@@ -42,7 +43,7 @@ public class ExecuteScriptCommand extends AbstractCommand {
 
         try {
             BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
-            Scanner scanner = new Scanner(bis, StandardCharsets.UTF_8);
+            Scanner scanner = new Scanner(new InputStreamReader(bis, StandardCharsets.UTF_8));
             Scanner oldScanner = getContext().getScanner();
 
             getContext().setScanner(scanner);

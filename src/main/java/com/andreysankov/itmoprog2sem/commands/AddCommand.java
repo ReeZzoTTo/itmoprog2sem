@@ -34,7 +34,6 @@ public class AddCommand extends AbstractCommand {
         getContext().getCollectionManager().addElement(labWork);
 
         System.out.println("Элемент успешно добавлен в коллекцию. Введите show/info");
-
         return true;
     }
     
