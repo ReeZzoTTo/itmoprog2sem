@@ -14,7 +14,7 @@ public class CollectionManager {
     private LinkedHashSet<LabWork> collection = new LinkedHashSet<>();
     private Map<String, Discipline> disciplineMap = new HashMap<>();
     private Date initializationDate;
-    
+
     public CollectionManager() {}
 
     public void setInitializationDate(Context context) {

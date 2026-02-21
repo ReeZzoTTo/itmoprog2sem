@@ -83,7 +83,9 @@ public class FileManager {
                 return labWorkWrapper.getLabWork();
             } catch (IOException e) {
                 System.out.println("Ошибка чтения файла: " + e.getMessage());
-                return new LinkedHashSet<>();
+                System.out.println("Я не продолжу работу, пока вы не исправите файл!\nТекущий сеанс завершён");
+                System.exit(1);                
+                return null;
             }
         }
     }
