@@ -4,7 +4,7 @@ import com.andreysankov.itmoprog2sem.exceptions.AppException;
 import com.andreysankov.itmoprog2sem.managers.Context;
 import com.andreysankov.itmoprog2sem.models.LabWork;
 
-public class AverageOfPersonalQualititesMaximumCommand extends AbstractCommand {
+public class AverageOfPersonalQualititesMaximumCommand extends Command {
     public AverageOfPersonalQualititesMaximumCommand(Context context) {
         super(context);
         this.setName("average_of_personal_qualities_maximum");
@@ -12,7 +12,7 @@ public class AverageOfPersonalQualititesMaximumCommand extends AbstractCommand {
     }
 
     @Override
-    public boolean execute() {
+    public boolean execute(String[] arguments) {
         int pqmLength = 0;
         Double sumOfPQM = 0.0;
 

@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
 
-import com.andreysankov.itmoprog2sem.commands.AbstractCommand;
+import com.andreysankov.itmoprog2sem.commands.Command;
 import com.andreysankov.itmoprog2sem.models.*;
 import com.andreysankov.itmoprog2sem.util.InputLabWork;
 
@@ -29,11 +29,11 @@ public class InputManager {
             String input = scanner.nextLine();
             String[] inputSplit = input.split(" ");
 
-            AbstractCommand command = context.getCommandManager().getCommandList().get(inputSplit[0]);
+            Command command = context.getCommandManager().getCommandList().get(inputSplit[0].trim());
 
             if (command != null) { 
-                context.getCommandManager().setArguments(inputSplit);
-                if (!command.execute()) {
+                
+                if (!command.execute(inputSplit)) {
                     context.getErrorManager().executeError();
                 } 
                 context.getCommandManager().addToHistory(inputSplit[0]);

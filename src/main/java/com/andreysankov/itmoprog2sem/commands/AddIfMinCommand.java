@@ -5,7 +5,7 @@ import com.andreysankov.itmoprog2sem.managers.Context;
 import com.andreysankov.itmoprog2sem.managers.InputManager;
 import com.andreysankov.itmoprog2sem.models.LabWork;
 
-public class AddIfMinCommand extends AbstractCommand {
+public class AddIfMinCommand extends Command {
     public AddIfMinCommand(Context context) {
         super(context);
         this.setName("add_if_min");
@@ -13,8 +13,8 @@ public class AddIfMinCommand extends AbstractCommand {
     }
 
     @Override
-    public boolean execute() {
-        String argumentUniqueName = getContext().getCommandManager().getArgument(1, "Укажите именной идентификатор элементу\n(Команда add_if_min требует аргумент)");
+    public boolean execute(String[] arguments) {
+        String argumentUniqueName = getContext().getCommandManager().getArgument(arguments,1, "Укажите именной идентификатор элементу\n(Команда add_if_min требует аргумент)");
         if (argumentUniqueName == null) return false;
 
         if (getContext().getCollectionManager().getElementsUniqueName().contains(argumentUniqueName)) {

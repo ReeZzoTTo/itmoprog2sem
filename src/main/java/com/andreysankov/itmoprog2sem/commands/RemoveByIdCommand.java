@@ -3,7 +3,7 @@ package com.andreysankov.itmoprog2sem.commands;
 import com.andreysankov.itmoprog2sem.exceptions.AppException;
 import com.andreysankov.itmoprog2sem.managers.Context;
 
-public class RemoveByIdCommand extends AbstractCommand{
+public class RemoveByIdCommand extends Command{
     public RemoveByIdCommand(Context context) {
         super(context);
         this.setName("remove_by_id");
@@ -11,8 +11,8 @@ public class RemoveByIdCommand extends AbstractCommand{
     }
 
     @Override
-    public boolean execute() {
-        String argument = getContext().getCommandManager().getArgument(1, "Укажите ID элемента\n(Команда remove_by_id требует аргумент)");
+    public boolean execute(String[] arguments) {
+        String argument = getContext().getCommandManager().getArgument(arguments, 1, "Укажите ID элемента\n(Команда remove_by_id требует аргумент)");
         if (argument == null) return false;
 
         Long id;

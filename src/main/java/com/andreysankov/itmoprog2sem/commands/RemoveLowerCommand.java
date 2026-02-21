@@ -6,7 +6,7 @@ import com.andreysankov.itmoprog2sem.exceptions.AppException;
 import com.andreysankov.itmoprog2sem.managers.Context;
 import com.andreysankov.itmoprog2sem.models.LabWork;
 
-public class RemoveLowerCommand extends AbstractCommand {
+public class RemoveLowerCommand extends Command {
     public RemoveLowerCommand(Context context) {
         super(context);
         this.setName("remove_lower");
@@ -14,8 +14,8 @@ public class RemoveLowerCommand extends AbstractCommand {
     }
 
     @Override
-    public boolean execute() {
-        String argumentUniqueName = getContext().getCommandManager().getArgument(1, "Укажите ID элемента\n(Команда remove_lower требует аргумент)");
+    public boolean execute(String[] arguments) {
+        String argumentUniqueName = getContext().getCommandManager().getArgument(arguments, 1, "Укажите ID элемента\n(Команда remove_lower требует аргумент)");
         if (argumentUniqueName == null) return false;
 
         if (getContext().getCollectionManager().getElementsUniqueName().contains(argumentUniqueName)) {

@@ -1,2 +1,21 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<LabWorks/>
+<LabWorks>
+  <labWork>
+    <id>1</id>
+    <name>Приветики</name>
+    <coordinates>
+      <x>5</x>
+      <y>6</y>
+    </coordinates>
+    <minimalPoint>89</minimalPoint>
+    <personalQualitiesMaximum>50.0</personalQualitiesMaximum>
+    <difficulty>IMPOSSIBLE</difficulty>
+    <discipline>
+      <name>disciplinechick</name>
+      <lectureHours>8</lectureHours>
+      <labsCount>9</labsCount>
+    </discipline>
+    <uniqueName>Element</uniqueName>
+    <date>1771679665610</date>
+  </labWork>
+</LabWorks>

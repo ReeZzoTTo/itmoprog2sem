@@ -11,7 +11,7 @@ import com.andreysankov.itmoprog2sem.managers.Context;
 import com.andreysankov.itmoprog2sem.models.Discipline;
 import com.andreysankov.itmoprog2sem.models.LabWork;
 
-public class PrintFieldDescendingDisciplineCommand extends AbstractCommand{
+public class PrintFieldDescendingDisciplineCommand extends Command{
     public PrintFieldDescendingDisciplineCommand(Context context) {
         super(context);
         this.setName("print_field_descending_discipline");
@@ -19,7 +19,7 @@ public class PrintFieldDescendingDisciplineCommand extends AbstractCommand{
     }
 
     @Override
-    public boolean execute() {
+    public boolean execute(String[] arguments) {
         Set<Discipline> disciplineSet = new HashSet<>();
         Iterator<LabWork> iterator = getContext().getCollectionManager().getIterator();
         

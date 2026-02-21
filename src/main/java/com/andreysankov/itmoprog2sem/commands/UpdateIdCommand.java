@@ -6,7 +6,7 @@ import com.andreysankov.itmoprog2sem.managers.Context;
 import com.andreysankov.itmoprog2sem.managers.InputManager;
 import com.andreysankov.itmoprog2sem.models.LabWork;
 
-public class UpdateIdCommand extends AbstractCommand {
+public class UpdateIdCommand extends Command {
     public UpdateIdCommand(Context context) {
         super(context);
         this.setName("update");
@@ -14,10 +14,10 @@ public class UpdateIdCommand extends AbstractCommand {
     }
 
     @Override
-    public boolean execute() {
-        String argumentId = getContext().getCommandManager().getArgument(1, "Укажите ID элемента\n(Команда update требует аргумент)");
+    public boolean execute(String[] arguments) {
+        String argumentId = getContext().getCommandManager().getArgument(arguments, 1, "Укажите ID элемента\n(Команда update требует аргумент)");
         if (argumentId == null) return false;
-        String argumentUniqueName = getContext().getCommandManager().getArgument(2, "Укажите уникальное имя элемента\n(Команда update требует аргумент)");
+        String argumentUniqueName = getContext().getCommandManager().getArgument(arguments, 2, "Укажите уникальное имя элемента\n(Команда update требует аргумент)");
         if (argumentUniqueName == null) return false;
 
         Long id = Long.parseLong(argumentId);

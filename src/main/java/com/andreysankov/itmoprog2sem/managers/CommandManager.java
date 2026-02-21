@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.andreysankov.itmoprog2sem.commands.AbstractCommand;
+import com.andreysankov.itmoprog2sem.commands.Command;
 
 public class CommandManager {
-    private Map<String, AbstractCommand> commandList = new HashMap<>();
+    private Map<String, Command> commandList = new HashMap<>();
     private String[] arguments;
     private List<String> history = new ArrayList<>();
     private Context context;
 
     public void registerCommand(
         String commandName, 
-        AbstractCommand command
+        Command command
     ) {
         this.commandList.put(commandName, command);
     }
@@ -30,10 +30,10 @@ public class CommandManager {
         history.add(commandName);
     }
 
-    public String getArgument(int index, String message) {
+    public String getArgument(String[] arguments, int index, String message) {
         String argument;
         try {
-            argument = this.getArguments()[index];
+            argument = arguments[index];
         } catch (ArrayIndexOutOfBoundsException e) {
             context.getErrorManager().setException(new ArrayIndexOutOfBoundsException(message));
             argument = null;
@@ -47,5 +47,5 @@ public class CommandManager {
 
     public List<String> getHistory() { return this.history; }
     public String[] getArguments() { return this.arguments; }
-    public Map<String, AbstractCommand> getCommandList() { return this.commandList; }
+    public Map<String, Command> getCommandList() { return this.commandList; }
 }

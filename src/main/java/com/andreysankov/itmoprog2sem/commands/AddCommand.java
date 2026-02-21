@@ -5,7 +5,7 @@ import com.andreysankov.itmoprog2sem.managers.Context;
 import com.andreysankov.itmoprog2sem.managers.InputManager;
 import com.andreysankov.itmoprog2sem.models.LabWork;
 
-public class AddCommand extends AbstractCommand {
+public class AddCommand extends Command {
     public AddCommand(Context context) {
         super(context);
         this.setName("add");
@@ -13,10 +13,10 @@ public class AddCommand extends AbstractCommand {
     }
 
     @Override
-    public boolean execute() {
+    public boolean execute(String[] arguments) {
         String argumentUniqueName;
         try {
-            argumentUniqueName = getContext().getCommandManager().getArguments()[1];
+            argumentUniqueName = arguments[1];
             if (getContext().getCollectionManager().getElementsUniqueName().contains(argumentUniqueName)) {
                 getContext().getErrorManager().setException(new AppException("Элемент с таким именем уже существует"));
                 return false;

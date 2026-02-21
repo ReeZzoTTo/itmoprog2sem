@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.andreysankov.itmoprog2sem.managers.Context;
 
-public class HistoryCommand extends AbstractCommand {
+public class HistoryCommand extends Command {
     public HistoryCommand(Context context) {
         super(context);
         this.setName("history");
@@ -12,7 +12,7 @@ public class HistoryCommand extends AbstractCommand {
     }
 
     @Override
-    public boolean execute() {
+    public boolean execute(String[] arguments) {
         System.out.println("Последние 10 команд");
 
         List<String> history = getContext().getCommandManager().getHistory();

@@ -1,5 +1,7 @@
 package com.andreysankov.itmoprog2sem;
 
+//  * Доп - создать историю комманд .bashhistory
+
 import java.io.Console;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
@@ -63,7 +65,7 @@ public class App {
         commandManager.registerCommand("group_counting_by_creation_date", new GroupCountingByCreationDateCommand(context));
         commandManager.registerCommand("print_field_descending_discipline", new PrintFieldDescendingDisciplineCommand(context));
         
-        System.out.println("Программа для управления колекцией");
+        System.out.println("Программа для управления коллекцией");
         System.out.println("Чтение файла : " + context.getFileManager().getFileName());
 
         context.getCollectionManager().setCollection(context.getFileManager().readFile());

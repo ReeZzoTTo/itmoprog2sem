@@ -2,7 +2,7 @@ package com.andreysankov.itmoprog2sem.commands;
 
 import com.andreysankov.itmoprog2sem.managers.Context;
 
-public class InfoCommand extends AbstractCommand {
+public class InfoCommand extends Command {
     public InfoCommand(Context context) {
         super(context);
         this.setName("info");
@@ -10,7 +10,7 @@ public class InfoCommand extends AbstractCommand {
     }
 
     @Override
-    public boolean execute() {
+    public boolean execute(String[] arguments) {
         System.out.println("Сведения о коллекции");
         System.out.println("Имя файла коллекции : " + getContext().getFileManager().getFileName());
         System.out.println("Дата инициализации коллекции : " + getContext().getCollectionManager().getInitializationDate());

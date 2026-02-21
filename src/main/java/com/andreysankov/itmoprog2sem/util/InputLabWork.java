@@ -56,7 +56,7 @@ public class InputLabWork {
                 x = Long.parseLong(scanner.nextLine());
                 break;          //!
             } catch (NumberFormatException e) {
-                System.out.println("Неккоректная форма числа. Повторите ввод:");
+                System.out.println("Некорректная форма числа. Повторите ввод:");
             }
         }
         return x;
@@ -71,7 +71,7 @@ public class InputLabWork {
                 y = Integer.parseInt(scanner.nextLine());
                 break;          //!
             } catch (NumberFormatException e) {
-                System.out.println("Неккоректная форма числа. Повторите ввод:");
+                System.out.println("Некорректная форма числа. Повторите ввод:");
             }
         }
         return y;

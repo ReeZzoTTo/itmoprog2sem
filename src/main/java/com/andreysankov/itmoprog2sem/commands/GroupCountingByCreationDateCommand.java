@@ -6,7 +6,7 @@ import java.util.Map;
 import com.andreysankov.itmoprog2sem.managers.Context;
 import com.andreysankov.itmoprog2sem.models.LabWork;
 
-public class GroupCountingByCreationDateCommand extends AbstractCommand{
+public class GroupCountingByCreationDateCommand extends Command{
     public GroupCountingByCreationDateCommand(Context context) {
         super(context);
         this.setName("group_counting_by_creation_date");
@@ -14,7 +14,7 @@ public class GroupCountingByCreationDateCommand extends AbstractCommand{
     }
 
     @Override
-    public boolean execute() {
+    public boolean execute(String[] arguments) {
         Map<String, Integer> groups = new HashMap<>();
         String dateId;
 

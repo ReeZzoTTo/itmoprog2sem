@@ -11,7 +11,7 @@ import java.util.Scanner;
 import com.andreysankov.itmoprog2sem.exceptions.AppException;
 import com.andreysankov.itmoprog2sem.managers.Context;
 
-public class ExecuteScriptCommand extends AbstractCommand {
+public class ExecuteScriptCommand extends Command {
     public ExecuteScriptCommand(Context context) {
         super(context);
         this.setName("execute_script");
@@ -19,7 +19,7 @@ public class ExecuteScriptCommand extends AbstractCommand {
     }
     
     @Override
-    public boolean execute() {
+    public boolean execute(String[] arguments) {
         String scriptFileName;
         File file;
 

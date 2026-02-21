@@ -2,7 +2,7 @@ package com.andreysankov.itmoprog2sem.commands;
 
 import com.andreysankov.itmoprog2sem.managers.Context;
 
-public class ShowCommand extends AbstractCommand{
+public class ShowCommand extends Command{
     public ShowCommand(Context context) {
         super(context);
         this.setName("show");
@@ -10,7 +10,7 @@ public class ShowCommand extends AbstractCommand{
     }
 
     @Override
-    public boolean execute() {
+    public boolean execute(String[] arguments) {
         if (getContext().getCollectionManager().getCollectionSize() == 0) {
             System.out.println("Коллекция пуста");
         }
