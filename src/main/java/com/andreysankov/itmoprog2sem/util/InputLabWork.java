@@ -2,7 +2,8 @@ package com.andreysankov.itmoprog2sem.util;
 
 import java.util.Date;
 import java.util.Map;
-import java.util.Scanner;
+
+import org.jline.reader.LineReader;
 
 import com.andreysankov.itmoprog2sem.managers.Context;
 import com.andreysankov.itmoprog2sem.models.Coordinates;
@@ -11,20 +12,37 @@ import com.andreysankov.itmoprog2sem.models.Discipline;
 
 public class InputLabWork {
     private Context context;
-    private Scanner scanner;
+    private LineInput lineInput;
+    private LineReader reader;
 
     public InputLabWork(Context context) {
         this.context = context;
-        this.scanner = this.context.getScanner();
+        this.lineInput = this.context.getLineInput();
+
+        if (lineInput instanceof JLineInput jline) {
+            this.reader = jline.getLineReader();
+        }
     }    
     
+    public void disableHistory() {
+        if (reader != null) {
+            reader.setVariable(LineReader.DISABLE_HISTORY, true);
+        }
+    }
+
+    public void enableHistory() {
+        if (reader != null) {
+            reader.setVariable(LineReader.DISABLE_HISTORY, false);
+        }
+    }
+
     public String inputName(String message) {
         System.out.println(message);
-        String name = scanner.nextLine();
+        String name = lineInput.readLine(">> ");
 
         while (name == null || name.length() == 0 || name.trim().isEmpty()) {
             System.out.println("Имя не может быть пустым. Повторите ввод:");
-            name = scanner.nextLine();
+            name = lineInput.readLine(">> ");
         }
 
         return name;
@@ -36,7 +54,7 @@ public class InputLabWork {
 
         while (true) {
             try {
-                minimalPoint = Integer.parseInt(scanner.nextLine());
+                minimalPoint = Integer.parseInt(lineInput.readLine(">> "));
                 if (minimalPoint <= 0) { System.out.println("Число должно быть >0. Повторите ввод:"); }
                 else { break; }
             } catch (NumberFormatException e) {
@@ -53,7 +71,7 @@ public class InputLabWork {
 
         while (true) {
             try {
-                x = Long.parseLong(scanner.nextLine());
+                x = Long.parseLong(lineInput.readLine(">> "));
                 break;          //!
             } catch (NumberFormatException e) {
                 System.out.println("Некорректная форма числа. Повторите ввод:");
@@ -68,7 +86,7 @@ public class InputLabWork {
 
         while (true) {
             try {
-                y = Integer.parseInt(scanner.nextLine());
+                y = Integer.parseInt(lineInput.readLine(">> "));
                 break;          //!
             } catch (NumberFormatException e) {
                 System.out.println("Некорректная форма числа. Повторите ввод:");
@@ -94,7 +112,7 @@ public class InputLabWork {
 
         while (true) {
             try {
-                String input = scanner.nextLine();
+                String input = lineInput.readLine(">> ");
 
                 if (input.trim().isEmpty()) return null;
 
@@ -116,7 +134,7 @@ public class InputLabWork {
 
         while (true) {
             try {
-                String input = scanner.nextLine();
+                String input = lineInput.readLine(">> ");
                 difficulty = Difficulty.valueOf(input.toUpperCase());
                 break;
             } catch (IllegalArgumentException e) {
@@ -130,7 +148,7 @@ public class InputLabWork {
     public Discipline inputDiscipline() {
         System.out.println("Хотите указать дисциплину? (yes, если да)");
 
-        String yesOrNot = scanner.nextLine();
+        String yesOrNot = lineInput.readLine(">> ");
 
         if (!yesOrNot.equalsIgnoreCase("yes")) return null;
 
@@ -156,11 +174,11 @@ public class InputLabWork {
 
     public String inputDisciplineName() {
         System.out.println("Создание Дисциплины -> Укажите название дисциплины");
-        String disciplineName = scanner.nextLine();
+        String disciplineName = lineInput.readLine(">> ");
 
         while (disciplineName == null || disciplineName.length() == 0 || disciplineName.trim().isEmpty()) {
             System.out.println("Имя дисциплины не может быть пустым");
-            disciplineName = scanner.nextLine();
+            disciplineName = lineInput.readLine(">> ");
         }
 
         return disciplineName;
@@ -172,7 +190,7 @@ public class InputLabWork {
 
         while (true) {
             try {  
-                lectureHours = Long.parseLong(scanner.nextLine());
+                lectureHours = Long.parseLong(lineInput.readLine(">> "));
                 if (lectureHours <= 0) { System.out.println("Число должно быть >0. Повторите ввод:"); }
                 else { break; }
             } catch (NumberFormatException e) {

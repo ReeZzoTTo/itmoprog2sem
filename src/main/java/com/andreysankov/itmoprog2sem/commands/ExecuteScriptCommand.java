@@ -10,6 +10,8 @@ import java.util.Scanner;
 
 import com.andreysankov.itmoprog2sem.exceptions.AppException;
 import com.andreysankov.itmoprog2sem.managers.Context;
+import com.andreysankov.itmoprog2sem.util.LineInput;
+import com.andreysankov.itmoprog2sem.util.ScannerInput;
 
 public class ExecuteScriptCommand extends Command {
     public ExecuteScriptCommand(Context context) {
@@ -44,11 +46,11 @@ public class ExecuteScriptCommand extends Command {
         try {
             BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
             Scanner scanner = new Scanner(new InputStreamReader(bis, StandardCharsets.UTF_8));
-            Scanner oldScanner = getContext().getScanner();
+            LineInput oldLineInput = getContext().getLineInput();
 
-            getContext().setScanner(scanner);
-            getContext().getInputManager().readConsole(scanner);
-            getContext().setScanner(oldScanner);
+            getContext().setLineInput(new ScannerInput(scanner));
+            getContext().getInputManager().readScript();
+            getContext().setLineInput(oldLineInput);
         } catch (IOException e) {
             getContext().getErrorManager().setException(new AppException("Ошибка исполнения файла " + e.getMessage()));
             return false;

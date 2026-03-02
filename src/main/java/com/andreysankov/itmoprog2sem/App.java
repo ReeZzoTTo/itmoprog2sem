@@ -3,14 +3,23 @@ package com.andreysankov.itmoprog2sem;
 //  * Доп - создать историю комманд .bashhistory
 
 import java.io.Console;
-import java.io.InputStreamReader;
+import java.io.IOException;
+// import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
+import java.nio.file.Paths;
+// import java.util.Scanner;
+
+import org.jline.reader.LineReader;
+import org.jline.reader.LineReaderBuilder;
+import org.jline.reader.impl.history.DefaultHistory;
+import org.jline.terminal.Terminal;
+import org.jline.terminal.TerminalBuilder;
 
 import com.andreysankov.itmoprog2sem.commands.*;
 import com.andreysankov.itmoprog2sem.exceptions.AppException;
 import com.andreysankov.itmoprog2sem.managers.*;
+import com.andreysankov.itmoprog2sem.util.JLineInput;
 
 // docker run --rm -it -e LABWORK_FILE=/data/data.xml -v ${PWD}\data:/data labwork-docker-app-lab5
 
@@ -22,8 +31,23 @@ public class App {
         Console console = System.console();
         Charset inCharset = (console != null) ? console.charset() : StandardCharsets.UTF_8;
         
-        Scanner scanner = new Scanner(new InputStreamReader(System.in, inCharset));
+        // Scanner scanner = new Scanner(new InputStreamReader(System.in, inCharset));
 
+        LineReader reader = null;
+        Terminal terminal;
+        DefaultHistory history = null;
+        try {   
+            history = new DefaultHistory();
+            terminal = TerminalBuilder.builder().system(true).build();
+            reader = LineReaderBuilder.builder().terminal(terminal).history(history).build();
+            reader.setVariable(LineReader.HISTORY_FILE, Paths.get("/data/.labwork_history"));
+            history.load();
+        } catch (IOException e) {
+            System.out.println("Возникла ошибка : ");
+            e.printStackTrace();
+            System.exit(1);
+        }
+        
         try {
             if (args.length != 0) envName = args[0];
 
@@ -40,7 +64,7 @@ public class App {
             new FileManager(System.getenv(envName.toUpperCase())),
             new CommandManager(),
             new CollectionManager(),
-            scanner,
+            new JLineInput(reader),
             new InputManager(),
             errorManager
         );
@@ -75,10 +99,15 @@ public class App {
         
         context.getCollectionManager().setInitializationDate(context);
 
-        scanner = context.getScanner();
+        // reader = context.getLineInput();
 
         context.getInputManager().setContext(context);
-        context.getInputManager().readConsole(scanner);
+        context.getInputManager().readConsoleInteractive();
+        try {
+            history.save();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 

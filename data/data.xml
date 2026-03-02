@@ -18,4 +18,18 @@
     <uniqueName>Element</uniqueName>
     <date>1771679665610</date>
   </labWork>
+  <labWork>
+    <id>2</id>
+    <name>k</name>
+    <coordinates>
+      <x>79</x>
+      <y>80</y>
+    </coordinates>
+    <minimalPoint>80</minimalPoint>
+    <personalQualitiesMaximum>80.0</personalQualitiesMaximum>
+    <difficulty>INSANE</difficulty>
+    <discipline/>
+    <uniqueName>l</uniqueName>
+    <date>1772460617959</date>
+  </labWork>
 </LabWorks>

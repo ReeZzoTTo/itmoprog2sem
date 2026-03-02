@@ -1,7 +1,6 @@
 package com.andreysankov.itmoprog2sem.managers;
 
 import java.util.HashSet;
-import java.util.Scanner;
 import java.util.Set;
 
 import com.andreysankov.itmoprog2sem.commands.Command;
@@ -24,28 +23,55 @@ public class InputManager {
         return this.fileScriptSet;
     }
 
-    public void readConsole(Scanner scanner) {
-        while (scanner.hasNext()) {
-            String input = scanner.nextLine();
-            String[] inputSplit = input.split(" ");
+    public void readScript() {
+        while (true) {
+            String line = context.getLineInput().readLine("");
+            if (line == null) break;
+            line = line.trim();
+            if (line.isEmpty()) continue;
 
-            Command command = context.getCommandManager().getCommandList().get(inputSplit[0].trim());
+            String[] inputSplit = line.split("\\s+");
+            
+            Command command = context.getCommandManager().getCommandList().get(inputSplit[0]);
 
-            if (command != null) { 
-                
+            if (command != null) {
                 if (!command.execute(inputSplit)) {
                     context.getErrorManager().executeError();
-                } 
+                }
+            } 
+        }
+    }
+ 
+
+    public void readConsoleInteractive() {
+        while (true) {
+            String input = context.getLineInput().readLine("> ");
+            if (input == null) continue;
+
+            input = input.trim();
+            if (input.isEmpty()) continue;
+
+            String[] inputSplit = input.split("\\s+");
+            
+            Command command = context.getCommandManager().getCommandList().get(inputSplit[0]);
+
+            if (command != null) {
+                if (!command.execute(inputSplit)) {
+                    context.getErrorManager().executeError();
+                }
                 context.getCommandManager().addToHistory(inputSplit[0]);
+            } else {
+                System.out.println("Неизвестная команда : Введите help");
             }
-            else { System.out.println("Неизвестная команда : Введите help"); }            
         }
     }
 
     public LabWork readLabWork(String uniqueName) {
         InputLabWork inputLabWork = new InputLabWork(context);
         
-        return new LabWork(
+        inputLabWork.disableHistory();
+
+        LabWork labwork = new LabWork(
             context.getCollectionManager().generateId(),
             inputLabWork.inputName("Укажите название:"),
             inputLabWork.inputCoordinates(),
@@ -56,5 +82,9 @@ public class InputManager {
             inputLabWork.inputDiscipline(),
             uniqueName
         );
+
+        inputLabWork.enableHistory();
+        
+        return labwork;
     }
 }
