@@ -15,7 +15,7 @@ public class ScannerInput implements LineInput {
         try {
             return scanner.nextLine();
         } catch (NoSuchElementException e) {
-            return "exit";
+            return null;
         }
     }
 }

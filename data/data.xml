@@ -28,8 +28,48 @@
     <minimalPoint>80</minimalPoint>
     <personalQualitiesMaximum>80.0</personalQualitiesMaximum>
     <difficulty>INSANE</difficulty>
-    <discipline/>
+    <discipline>
+      <name></name>
+      <lectureHours/>
+      <labsCount>0</labsCount>
+    </discipline>
     <uniqueName>l</uniqueName>
     <date>1772460617959</date>
+  </labWork>
+  <labWork>
+    <id>3</id>
+    <name>      Здарова Дружище!</name>
+    <coordinates>
+      <x>59</x>
+      <y>-90</y>
+    </coordinates>
+    <minimalPoint>67</minimalPoint>
+    <personalQualitiesMaximum>58.0</personalQualitiesMaximum>
+    <difficulty>HARD</difficulty>
+    <discipline>
+      <name>Дисциплина</name>
+      <lectureHours>87</lectureHours>
+      <labsCount>90</labsCount>
+    </discipline>
+    <uniqueName>test_element</uniqueName>
+    <date>1772696549989</date>
+  </labWork>
+  <labWork>
+    <id>4</id>
+    <name>Здарова</name>
+    <coordinates>
+      <x>88</x>
+      <y>88</y>
+    </coordinates>
+    <minimalPoint>8</minimalPoint>
+    <personalQualitiesMaximum>70.0</personalQualitiesMaximum>
+    <difficulty>INSANE</difficulty>
+    <discipline>
+      <name>Дисциплина</name>
+      <lectureHours>87</lectureHours>
+      <labsCount>90</labsCount>
+    </discipline>
+    <uniqueName>Privet</uniqueName>
+    <date>1772697792706</date>
   </labWork>
 </LabWorks>

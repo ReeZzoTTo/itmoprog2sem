@@ -2,11 +2,11 @@ package com.andreysankov.itmoprog2sem;
 
 //  * Доп - создать историю комманд .bashhistory
 
-import java.io.Console;
+// import java.io.Console;
 import java.io.IOException;
 // import java.io.InputStreamReader;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
+// import java.nio.charset.Charset;
+// import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 // import java.util.Scanner;
 
@@ -28,8 +28,8 @@ public class App {
         ErrorManager errorManager = new ErrorManager();
         String envName = "LABWORK_FILE";
         
-        Console console = System.console();
-        Charset inCharset = (console != null) ? console.charset() : StandardCharsets.UTF_8;
+        // Console console = System.console();
+        // Charset inCharset = (console != null) ? console.charset() : StandardCharsets.UTF_8;
         
         // Scanner scanner = new Scanner(new InputStreamReader(System.in, inCharset));
 

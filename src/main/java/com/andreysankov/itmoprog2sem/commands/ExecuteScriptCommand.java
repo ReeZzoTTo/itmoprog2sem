@@ -26,7 +26,7 @@ public class ExecuteScriptCommand extends Command {
         File file;
 
         try {
-            scriptFileName = getContext().getCommandManager().getArguments()[1];
+            scriptFileName = arguments[1];
             file = new File(scriptFileName);
 
             if (!file.exists()) {
