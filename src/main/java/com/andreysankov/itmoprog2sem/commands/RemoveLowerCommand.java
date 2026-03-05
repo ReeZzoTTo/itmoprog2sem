@@ -15,7 +15,7 @@ public class RemoveLowerCommand extends Command {
 
     @Override
     public boolean execute(String[] arguments) {
-        String argumentUniqueName = getContext().getCommandManager().getArgument(arguments, 1, "Укажите ID элемента\n(Команда remove_lower требует аргумент)");
+        String argumentUniqueName = getContext().getCommandManager().getArgument(arguments, 1, "Укажите именной идентификатор элемента\n(Команда remove_lower требует аргумент)");
         if (argumentUniqueName == null) return false;
 
         if (getContext().getCollectionManager().getElementsUniqueName().contains(argumentUniqueName)) {

@@ -1,6 +1,9 @@
 package com.andreysankov.itmoprog2sem;
 
 //  * Доп - создать историю комманд .bashhistory
+//  * show : сортировать по ID
+
+
 
 // import java.io.Console;
 import java.io.IOException;
