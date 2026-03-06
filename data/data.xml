@@ -1,24 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <LabWorks>
   <labWork>
-    <id>2</id>
-    <name>k</name>
-    <coordinates>
-      <x>79</x>
-      <y>80</y>
-    </coordinates>
-    <minimalPoint>80</minimalPoint>
-    <personalQualitiesMaximum>80.0</personalQualitiesMaximum>
-    <difficulty>INSANE</difficulty>
-    <discipline>
-      <name></name>
-      <lectureHours/>
-      <labsCount>0</labsCount>
-    </discipline>
-    <uniqueName>l</uniqueName>
-    <date>1772460617959</date>
-  </labWork>
-  <labWork>
     <id>3</id>
     <name>      Здарова Дружище!</name>
     <coordinates>
@@ -71,5 +53,23 @@
     </discipline>
     <uniqueName>TestLab</uniqueName>
     <date>1772745120748</date>
+  </labWork>
+  <labWork>
+    <id>2</id>
+    <name>jopa</name>
+    <coordinates>
+      <x>8</x>
+      <y>75</y>
+    </coordinates>
+    <minimalPoint>79</minimalPoint>
+    <personalQualitiesMaximum>45.0</personalQualitiesMaximum>
+    <difficulty>HARD</difficulty>
+    <discipline>
+      <name>Приветик</name>
+      <lectureHours>46</lectureHours>
+      <labsCount>78</labsCount>
+    </discipline>
+    <uniqueName>test_2</uniqueName>
+    <date>1772460617959</date>
   </labWork>
 </LabWorks>

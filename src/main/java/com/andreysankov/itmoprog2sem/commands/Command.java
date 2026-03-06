@@ -33,9 +33,4 @@ public abstract class Command {
     public String toString() {
         return name + " (" + description + ")";
     }
-
-    public boolean execute() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'execute'");
-    }
 }

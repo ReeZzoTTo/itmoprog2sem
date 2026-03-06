@@ -32,7 +32,7 @@ public class LabWork implements Comparable<LabWork>{
 
     @Override
     public int compareTo(LabWork other) {
-        return Integer.compare(this.minimalPoint, other.minimalPoint);
+        return Long.compare(this.id, other.id);
     }
 
     @Override

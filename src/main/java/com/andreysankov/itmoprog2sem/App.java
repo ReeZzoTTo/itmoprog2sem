@@ -1,17 +1,9 @@
 package com.andreysankov.itmoprog2sem;
 
 //  * Доп - создать историю комманд .bashhistory
-//  * show : сортировать по ID
 
-
-
-// import java.io.Console;
 import java.io.IOException;
-// import java.io.InputStreamReader;
-// import java.nio.charset.Charset;
-// import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
-// import java.util.Scanner;
 
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
@@ -31,11 +23,6 @@ public class App {
         ErrorManager errorManager = new ErrorManager();
         String envName = "LABWORK_FILE";
         
-        // Console console = System.console();
-        // Charset inCharset = (console != null) ? console.charset() : StandardCharsets.UTF_8;
-        
-        // Scanner scanner = new Scanner(new InputStreamReader(System.in, inCharset));
-
         LineReader reader = null;
         Terminal terminal;
         DefaultHistory history = null;
@@ -101,8 +88,6 @@ public class App {
         System.out.println("Чтение файла завершено.\nДля просмотра данных коллекции введите -> show.\nВведите help для списка команд");
         
         context.getCollectionManager().setInitializationDate(context);
-
-        // reader = context.getLineInput();
 
         context.getInputManager().setContext(context);
         context.getInputManager().readConsoleInteractive();

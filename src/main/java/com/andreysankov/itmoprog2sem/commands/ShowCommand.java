@@ -16,7 +16,7 @@ public class ShowCommand extends Command{
         }
         else { 
             System.out.println("Данные коллекции:");
-            getContext().getCollectionManager().getCollection().forEach(labWorkObject -> {
+            getContext().getCollectionManager().getCollection().stream().sorted().forEach(labWorkObject -> {
                 System.out.println(labWorkObject.toString());
             });
         }
