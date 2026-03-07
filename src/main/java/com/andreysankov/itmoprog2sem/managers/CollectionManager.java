@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.andreysankov.itmoprog2sem.models.Discipline;
 import com.andreysankov.itmoprog2sem.models.LabWork;
@@ -17,6 +18,10 @@ public class CollectionManager {
 
     public CollectionManager() {}
 
+    public void sortCollection() {
+        this.collection = this.collection.stream().sorted().collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+    
     public void setInitializationDate(Context context) {
         FileTime creationFileTime = context.getFileManager().getFileCreationTime();
 

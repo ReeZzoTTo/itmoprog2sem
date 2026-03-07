@@ -15,6 +15,7 @@ public class SaveCommand extends Command {
     @Override
     public boolean execute(String[] arguments) {
         try {
+            getContext().getCollectionManager().sortCollection();
             getContext().getFileManager().saveFile(getContext().getCollectionManager().getCollection());
             System.out.println("Файл успешно сохранён");
         } catch (IOException e) {
