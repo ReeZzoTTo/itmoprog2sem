@@ -1,0 +1,41 @@
+package com.andreysankov.itmoprog2sem.common.commands;
+
+import java.io.IOException;
+import java.util.Date;
+
+import com.andreysankov.itmoprog2sem.common.dto.Request;
+import com.andreysankov.itmoprog2sem.common.dto.Response;
+import com.andreysankov.itmoprog2sem.common.models.LabWork;
+import com.andreysankov.itmoprog2sem.server.managers.Context;
+
+public class AddCommand extends Command implements Savable {
+    public AddCommand(Context context) {
+        super(context);
+        this.setName("add");
+        this.setDescription(" {element} : добавить новый элемент в коллекцию");
+    }
+
+    @Override
+    public Response execute(Request request) {
+        LabWork labWork = request.getLabWork();
+
+        if (labWork == null) {
+            return new Response(false, "Команда add требует объект LabWork");
+        }
+
+        labWork.setId(getContext().getCollectionManager().generateId());
+        labWork.setDate(new Date());
+        
+        getContext().getCollectionManager().addElement(labWork);
+
+        String isSave = save();
+        if (isSave != null) return new Response(false, "Ошибка сохранения файла: " + isSave);
+        
+        return new Response(true, "Элемент успешно добавлен");
+    }   
+    
+    public String save() {
+        try { getContext().getFileManager().saveFile(getContext().getCollectionManager().getCollection()); return null; }
+        catch (IOException e) { return e.getMessage(); }
+    } 
+}
