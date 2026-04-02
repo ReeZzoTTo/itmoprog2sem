@@ -1,75 +1,37 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <LabWorks>
   <labWork>
-    <id>2</id>
-    <name>h</name>
+    <id>1</id>
+    <name>progLab6</name>
     <coordinates>
-      <x>67</x>
-      <y>66</y>
+      <x>465</x>
+      <y>-7895</y>
     </coordinates>
-    <minimalPoint>59</minimalPoint>
-    <personalQualitiesMaximum>59.0</personalQualitiesMaximum>
-    <difficulty>HARD</difficulty>
+    <minimalPoint>180</minimalPoint>
+    <personalQualitiesMaximum>465.0</personalQualitiesMaximum>
+    <difficulty>IMPOSSIBLE</difficulty>
     <discipline>
-      <name>Good</name>
-      <lectureHours>89</lectureHours>
-      <labsCount>90</labsCount>
+      <name>Программирование</name>
+      <lectureHours>46</lectureHours>
+      <labsCount>47</labsCount>
     </discipline>
-    <uniqueName>hello</uniqueName>
-    <date>1772881598637</date>
+    <date>1775152017404</date>
   </labWork>
   <labWork>
     <id>3</id>
-    <name>      Здарова Дружище!</name>
+    <name>test2</name>
     <coordinates>
-      <x>59</x>
-      <y>-90</y>
+      <x>5</x>
+      <y>7</y>
     </coordinates>
-    <minimalPoint>67</minimalPoint>
-    <personalQualitiesMaximum>58.0</personalQualitiesMaximum>
-    <difficulty>HARD</difficulty>
-    <discipline>
-      <name>Дисциплина</name>
-      <lectureHours>87</lectureHours>
-      <labsCount>90</labsCount>
-    </discipline>
-    <uniqueName>test_element</uniqueName>
-    <date>1772696549989</date>
-  </labWork>
-  <labWork>
-    <id>4</id>
-    <name>Здарова</name>
-    <coordinates>
-      <x>88</x>
-      <y>88</y>
-    </coordinates>
-    <minimalPoint>8</minimalPoint>
-    <personalQualitiesMaximum>70.0</personalQualitiesMaximum>
+    <minimalPoint>78</minimalPoint>
+    <personalQualitiesMaximum>123.0</personalQualitiesMaximum>
     <difficulty>INSANE</difficulty>
     <discipline>
-      <name>Дисциплина</name>
-      <lectureHours>87</lectureHours>
-      <labsCount>90</labsCount>
+      <name>Программирование</name>
+      <lectureHours>46</lectureHours>
+      <labsCount>78</labsCount>
     </discipline>
-    <uniqueName>Privet</uniqueName>
-    <date>1772697792706</date>
-  </labWork>
-  <labWork>
-    <id>5</id>
-    <name>Тестовая лаба</name>
-    <coordinates>
-      <x>8</x>
-      <y>78</y>
-    </coordinates>
-    <minimalPoint>66</minimalPoint>
-    <personalQualitiesMaximum>23.0</personalQualitiesMaximum>
-    <difficulty>IMPOSSIBLE</difficulty>
-    <discipline>
-      <name>Дисциплина</name>
-      <lectureHours>87</lectureHours>
-      <labsCount>90</labsCount>
-    </discipline>
-    <uniqueName>TestLab</uniqueName>
-    <date>1772745120748</date>
+    <date>1775153068624</date>
   </labWork>
 </LabWorks>

@@ -78,7 +78,7 @@ public class CollectionManager {
     }
 
     public void setCollection(LinkedHashSet<LabWork> collection) {
-        this.collection = collection;
+        this.collection = collection == null ? new LinkedHashSet<>() : collection;
         this.sortCollection();
     }
 

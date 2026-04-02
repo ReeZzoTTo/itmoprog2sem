@@ -1,7 +1,7 @@
 package com.andreysankov.itmoprog2sem.client;
 
 import com.andreysankov.itmoprog2sem.client.utils.InputLabWork;
-import com.andreysankov.itmoprog2sem.client.utils.LineInput;
+import com.andreysankov.itmoprog2sem.common.util.LineInput;
 import com.andreysankov.itmoprog2sem.common.models.LabWork;
 
 public class LabWorkInputReader {

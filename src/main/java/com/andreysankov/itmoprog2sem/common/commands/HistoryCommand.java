@@ -16,7 +16,7 @@ public class HistoryCommand extends Command {
     @Override
     public Response execute(Request request) {
         StringBuilder responseMessage = new StringBuilder();
-        responseMessage.append("Последние 10 команд");
+        responseMessage.append("Последние 10 команд\n");
 
         List<String> history = getContext().getCommandManager().getHistory();
         

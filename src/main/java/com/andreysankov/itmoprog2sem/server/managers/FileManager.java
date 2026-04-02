@@ -81,8 +81,10 @@ public class FileManager {
 
                 return labWorkWrapper.getLabWork();
             } catch (IOException e) {
+                e.printStackTrace();
                 //*  System.out.println("Ошибка чтения файла: " + e.getMessage()); --- может это в Логах делать            
-                return null;
+                // return null;
+                return new LinkedHashSet<>();
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.andreysankov.itmoprog2sem.client;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
@@ -8,11 +9,14 @@ import org.jline.reader.impl.history.DefaultHistory;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 
-import com.andreysankov.itmoprog2sem.client.utils.LineInput;
+import com.andreysankov.itmoprog2sem.common.util.LineInput;
 import com.andreysankov.itmoprog2sem.common.dto.CommandType;
 import com.andreysankov.itmoprog2sem.common.dto.Request;
 import com.andreysankov.itmoprog2sem.common.dto.Response;
 import com.andreysankov.itmoprog2sem.common.util.JLineInput;
+
+// java -cp .\target\itmoprog2sem-1.0-Lab6.jar com.andreysankov.itmoprog2sem.client.ClientApp
+// java -jar target\itmoprog2sem-1.0-Lab6.jar data/data.xml
 
 public class ClientApp {
     public static void main(String[] args) {
@@ -22,7 +26,7 @@ public class ClientApp {
         DefaultHistory history = null;
         try {   
             history = new DefaultHistory();
-            terminal = TerminalBuilder.builder().system(true).build();
+            terminal = TerminalBuilder.builder().system(true).provider("jni").encoding(StandardCharsets.UTF_8).build();
             reader = LineReaderBuilder.builder().terminal(terminal).history(history).build();
             // reader.setVariable(LineReader.HISTORY_FILE, Paths.get("/data/.labwork_history"));
             history.load();

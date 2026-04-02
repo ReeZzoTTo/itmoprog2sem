@@ -6,6 +6,7 @@ import com.andreysankov.itmoprog2sem.common.models.Coordinates;
 import com.andreysankov.itmoprog2sem.common.models.Difficulty;
 import com.andreysankov.itmoprog2sem.common.models.Discipline;
 import com.andreysankov.itmoprog2sem.common.util.JLineInput;
+import com.andreysankov.itmoprog2sem.common.util.LineInput;
 
 public class InputLabWork {
     private final LineInput lineInput;
