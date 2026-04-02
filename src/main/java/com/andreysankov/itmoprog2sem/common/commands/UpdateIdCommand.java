@@ -1,6 +1,5 @@
 package com.andreysankov.itmoprog2sem.common.commands;
 
-import java.io.IOException;
 import java.util.Date;
 
 import com.andreysankov.itmoprog2sem.common.dto.Request;
@@ -8,24 +7,19 @@ import com.andreysankov.itmoprog2sem.common.dto.Response;
 import com.andreysankov.itmoprog2sem.common.models.LabWork;
 import com.andreysankov.itmoprog2sem.server.managers.Context;
 
-public class UpdateIdCommand extends Command implements Savable {
+public class UpdateIdCommand extends Command {
     public UpdateIdCommand(Context context) {
         super(context);
-        this.setName("update");
+        this.setName("update_id");
         this.setDescription(" id {element} : обновить значение элемента коллекции, id которого равен заданному");
     }
 
     @Override
     public Response execute(Request request) {
-        String argumentId = request.getArgument();
-        if (argumentId == null) return new Response(false, "Укажите ID элемента");
-
-        Long id;
-
-        try {
-            id = Long.parseLong(argumentId);
-        } catch (NumberFormatException e) {
-            return new Response(false, "Аргумент должен быть числом");
+        Long id = request.getArgument().getId();
+        
+        if (id == 0) {
+            return new Response(false, request.getArgument().getResponseMessage());
         }
 
         LabWork newElement = request.getLabWork();
@@ -41,20 +35,14 @@ public class UpdateIdCommand extends Command implements Savable {
         if (targetELement != null) {
             currentCreationDate = targetELement.getDate();
             newElement.setDate(currentCreationDate);
+        } else {
+            newElement.setDate(new Date());
         }
 
         getContext().getCollectionManager().addElement(newElement);
 
         String message = wasDeleted ? "Элемент обновлён" : "Создан новый элемент";
 
-        String isSave = save();
-        if (isSave != null) return new Response(false, "Ошибка сохранения файла: " + isSave);
-
         return new Response(true, message);
     }
-
-    public String save() {
-        try { getContext().getFileManager().saveFile(getContext().getCollectionManager().getCollection()); return null; }
-        catch (IOException e) { return e.getMessage(); }
-    } 
 }

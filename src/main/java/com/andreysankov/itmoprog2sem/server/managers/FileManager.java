@@ -69,7 +69,6 @@ public class FileManager {
         File file = new File(this.filename);
 
         if (!file.exists()) {
-            System.out.println("Файл не найден " + this.filename + "\nБудет создан новый файл. Введите save");
             return new LinkedHashSet<>();
         }
         else {
@@ -82,9 +81,7 @@ public class FileManager {
 
                 return labWorkWrapper.getLabWork();
             } catch (IOException e) {
-                System.out.println("Ошибка чтения файла: " + e.getMessage());
-                System.out.println("Я не продолжу работу, пока вы не исправите файл!\nТекущий сеанс завершён");
-                System.exit(1);                
+                //*  System.out.println("Ошибка чтения файла: " + e.getMessage()); --- может это в Логах делать            
                 return null;
             }
         }

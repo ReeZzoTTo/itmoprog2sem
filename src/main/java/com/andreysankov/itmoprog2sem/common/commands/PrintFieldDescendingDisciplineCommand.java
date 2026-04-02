@@ -22,7 +22,7 @@ public class PrintFieldDescendingDisciplineCommand extends Command{
 
     @Override
     public Response execute(Request request) {
-        String responseMessage = "";
+        StringBuilder responseMessage = new StringBuilder();
         Set<Discipline> disciplineSet = new HashSet<>();
         Iterator<LabWork> iterator = getContext().getCollectionManager().getIterator();
         
@@ -44,12 +44,12 @@ public class PrintFieldDescendingDisciplineCommand extends Command{
         );
 
         for (Discipline discipline : disciplineList) {
-            responseMessage.concat("Discipline : " + discipline.getName() + "\n" 
+            responseMessage.append("Discipline : " + discipline.getName() + "\n" 
                 + "             Lecture hours : " + discipline.getLectureHours() + "\n"
                 + "             Labs count    : " + discipline.getLabsCount() + "\n"
             );
         }
 
-        return new Response(true, responseMessage);
+        return new Response(true, responseMessage.toString());
     }  
 }

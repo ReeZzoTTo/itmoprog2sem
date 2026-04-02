@@ -17,7 +17,7 @@ public class GroupCountingByCreationDateCommand extends Command{
 
     @Override
     public Response execute(Request request) {
-        String responseMessage = "";
+        StringBuilder responseMessage = new StringBuilder();
         Map<String, Integer> groups = new HashMap<>();
         String dateId;
 
@@ -30,10 +30,10 @@ public class GroupCountingByCreationDateCommand extends Command{
         }
 
         groups.forEach((dateKey, element) -> {
-            responseMessage.concat(dateKey + " --- элементов: " + element + '\n');
+            responseMessage.append(dateKey + " --- элементов: " + element + '\n');
         });
 
-        return new Response(true, responseMessage);
+        return new Response(true, responseMessage.toString());
     }
 
 }

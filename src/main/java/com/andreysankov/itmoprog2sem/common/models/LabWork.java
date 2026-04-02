@@ -31,7 +31,7 @@ public class LabWork implements Comparable<LabWork>, Serializable{
 
     @Override
     public int compareTo(LabWork other) {
-        return Long.compare(this.id, other.id);
+        return this.name.compareTo(other.name);
     }
 
     @Override

@@ -1,13 +1,13 @@
 package com.andreysankov.itmoprog2sem.common.commands;
 
-import java.io.IOException;
+import java.util.Date;
 
 import com.andreysankov.itmoprog2sem.common.dto.Request;
 import com.andreysankov.itmoprog2sem.common.dto.Response;
 import com.andreysankov.itmoprog2sem.common.models.LabWork;
 import com.andreysankov.itmoprog2sem.server.managers.Context;
 
-public class AddIfMinCommand extends Command implements Savable {
+public class AddIfMinCommand extends Command {
     public AddIfMinCommand(Context context) {
         super(context);
         this.setName("add_if_min");
@@ -22,14 +22,14 @@ public class AddIfMinCommand extends Command implements Savable {
             return new Response(false, "Команда add_if_min требует объект LabWork");
         }
 
+        labWork.setId(getContext().getCollectionManager().generateId());
+        labWork.setDate(new Date());
+
         int minimum = this.getMinOfMinimalPoint();
 
         if (minimum == -1 || labWork.getMinimalPoint() < minimum) {
             getContext().getCollectionManager().addElement(labWork);
 
-            String isSave = save();
-            if (isSave != null) return new Response(false, "Ошибка сохранения файла: " + isSave);
-        
             return new Response(true, "Элемент успешно добавлен в коллекцию");
         }
         return new Response(false, "Элемент с указанным значением minimalPoint=" + labWork.getMinimalPoint() + " не является наименьшим\nЭлемент не был добавлен");
@@ -49,9 +49,4 @@ public class AddIfMinCommand extends Command implements Savable {
 
         return minimum;
     }
-
-    public String save() {
-        try { getContext().getFileManager().saveFile(getContext().getCollectionManager().getCollection()); return null; }
-        catch (IOException e) { return e.getMessage(); }
-    } 
 }

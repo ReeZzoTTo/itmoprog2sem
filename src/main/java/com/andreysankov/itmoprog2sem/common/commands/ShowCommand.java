@@ -13,15 +13,17 @@ public class ShowCommand extends Command{
 
     @Override
     public Response execute(Request request) {
+        StringBuilder responseMessage = new StringBuilder();
         if (getContext().getCollectionManager().getCollectionSize() == 0) {
-            System.out.println("Коллекция пуста");
+            return new Response(true, "Коллекция пуста");
         }
         else { 
-            System.out.println("Данные коллекции:");
+            responseMessage.append("Данные коллекции:");
+            
             getContext().getCollectionManager().getCollection().stream().sorted().forEach(labWorkObject -> {
-                System.out.println(labWorkObject.toString());
+                responseMessage.append(labWorkObject.toString());
             });
         }
-        return new Response(true, "Список элементов коллекции показан успешно");
+        return new Response(true, responseMessage.toString());
     }
 }

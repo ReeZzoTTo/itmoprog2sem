@@ -13,12 +13,14 @@ public class HelpCommand extends Command {
 
     @Override
     public Response execute(Request request) {
+        StringBuilder responseMessage = new StringBuilder();
+
         this.getContext()
             .getCommandManager()
             .getCommandList()
             .forEach((commandName, command) -> {
-            System.out.println(commandName + command.getDescription());
+            responseMessage.append(commandName + command.getDescription() + "\n");
         });
-        return new Response(true, "Список команд отправлен успешно");
+        return new Response(true, responseMessage.toString());
     }
 }

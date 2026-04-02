@@ -3,12 +3,13 @@ package com.andreysankov.itmoprog2sem.server;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-
+import java.net.SocketTimeoutException;
 import java.util.Date;
 
 import com.andreysankov.itmoprog2sem.common.commands.*;
 import com.andreysankov.itmoprog2sem.common.dto.*;
 import com.andreysankov.itmoprog2sem.server.command.CommandProcessor;
+import com.andreysankov.itmoprog2sem.server.console.*;
 import com.andreysankov.itmoprog2sem.server.managers.*;
 import com.andreysankov.itmoprog2sem.server.network.*;
 
@@ -32,21 +33,26 @@ public class ServerApp {
         collectionManager.setInitializationDate(context);
         collectionManager.setDisciplineMap();
 
+        ServerConsoleHandler consoleHandler = new ServerConsoleHandler(context);
+        ServerConsoleReader consoleReader = new ServerConsoleReader();
+
+
         CommandProcessor processor = new CommandProcessor();
 
         registerCommands(context, commandManager, processor);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            try {
-                collectionManager.sortCollection();
-                fileManager.saveFile(collectionManager.getCollection());
-                System.out.println("Коллекция сохраненеа при завершении сервера");
-            } catch (IOException e) {
-                System.out.println("Ошибка сохранения при завершении: " + e.getMessage());
+            String aboutError = SaveCommand.save(context);
+
+            if (aboutError == null) {
+                System.out.println("Коллекция сохранена при завершении сервера");
+            } else {
+                System.out.println("Ошибка сохранения при завершении: " + aboutError);
             }
         }));
 
         try (DatagramSocket socket = new DatagramSocket(PORT)) {
+            socket.setSoTimeout(200);
             RequestReceiver receiver = new RequestReceiver(socket);
             RequestReader reader = new RequestReader();
             ResponseSender sender = new ResponseSender(socket);
@@ -54,23 +60,30 @@ public class ServerApp {
             System.out.println("Сервер запущен на порту " + PORT);
 
             while (true) {
-                DatagramPacket packet = receiver.receive();
-
-                Response response;
-
-                try {
-                    Request request = reader.read(packet.getData(), packet.getLength());
-                    
-                    System.out.println("[" + new Date() + "] Получен запрос: " + request);
-
-                    commandManager.addToHistory(request.getCommandType().getName());
-                    response = processor.process(request);
-                } catch (Exception e) {
-                    response = new Response(false, "ошибка обработки запроса: " + e.getMessage());
+                String line = consoleReader.readIfReady();
+                if (line != null) {
+                    consoleHandler.handle(line);
                 }
 
-                sender.send(response, packet.getAddress(), packet.getPort());
-                System.out.println("[" + new Date() + "] Ответ отправлен: " + response);
+                try {
+                    DatagramPacket packet = receiver.receive();
+
+                    Response response;
+
+                    try {
+                        Request request = reader.read(packet.getData(), packet.getLength());
+                        
+                        System.out.println("[" + new Date() + "] Получен запрос: " + request);
+
+                        commandManager.addToHistory(request.getCommandType().getName());
+                        response = processor.process(request);
+                    } catch (Exception e) {
+                        response = new Response(false, "ошибка обработки запроса: " + e.getMessage());
+                    }
+
+                    sender.send(response, packet.getAddress(), packet.getPort());
+                    System.out.println("[" + new Date() + "] Ответ отправлен: " + response);
+                } catch (SocketTimeoutException e) {}
             } 
         } catch (IOException e) {
             System.out.println("Ошибка запуска сервера: " + e.getMessage());

@@ -13,11 +13,11 @@ public class InfoCommand extends Command {
 
     @Override
     public Response execute(Request request) {
-        System.out.println("Сведения о коллекции");
-        System.out.println("Имя файла коллекции : " + getContext().getFileManager().getFileName());
-        System.out.println("Дата инициализации коллекции : " + getContext().getCollectionManager().getInitializationDate());
-        System.out.println("Количество элементов коллекции : " + getContext().getCollectionManager().getCollectionSize());
+        String responseMessage = "Сведения о коллекции" + "\n"
+        + "Имя файла коллекции : " + getContext().getFileManager().getFileName() + "\n"
+        + "Дата инициализации коллекции : " + getContext().getCollectionManager().getInitializationDate() + "\n"
+        + "Количество элементов коллекции : " + getContext().getCollectionManager().getCollectionSize() + "\n";
 
-        return new Response(true, "Информация о коллекции предоставлена успешно");
+        return new Response(true, responseMessage);
     }
 }

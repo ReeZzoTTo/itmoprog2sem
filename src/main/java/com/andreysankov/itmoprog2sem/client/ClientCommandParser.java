@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.andreysankov.itmoprog2sem.common.dto.CommandType;
 import com.andreysankov.itmoprog2sem.common.dto.Request;
+import com.andreysankov.itmoprog2sem.common.models.ArgumentId;
 import com.andreysankov.itmoprog2sem.common.models.LabWork;
 
 public class ClientCommandParser {
@@ -27,7 +28,7 @@ public class ClientCommandParser {
     }
 
     public Request parseCommand(CommandType command, String[] userInput) {
-        String argument = null;
+        ArgumentId argument = null;
         LabWork labwork = null;
 
         if (command.isRequiredArgument()) {
@@ -35,12 +36,10 @@ public class ClientCommandParser {
                 System.out.println("Команда " + command.getName() + " требует аргумент (id)");
                 return null;
             }
-            argument = userInput[1];
+            argument = new ArgumentId(userInput[1]);
 
-            try {
-                Long.parseLong(argument);
-            } catch (NumberFormatException e) {
-                System.out.println("Аргумент должен быть числом.");
+            if (argument.getId() == 0) {
+                System.out.println(argument.getResponseMessage());
                 return null;
             }
         }

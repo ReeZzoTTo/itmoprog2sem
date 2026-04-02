@@ -19,6 +19,9 @@ public class AverageOfPersonalQualititesMaximumCommand extends Command {
 
         for (LabWork element : getContext().getCollectionManager().getCollection()) {
             Double pqm = element.getPersonalQualitiesMaximum();
+
+            if (pqm == null) continue;
+
             sumOfPQM += pqm;
             pqmLength += 1;
         }

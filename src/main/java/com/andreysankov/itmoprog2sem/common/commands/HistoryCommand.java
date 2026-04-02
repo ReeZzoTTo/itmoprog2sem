@@ -15,14 +15,15 @@ public class HistoryCommand extends Command {
 
     @Override
     public Response execute(Request request) {
-        String responseMessage = "Последние 10 команд";
+        StringBuilder responseMessage = new StringBuilder();
+        responseMessage.append("Последние 10 команд");
 
         List<String> history = getContext().getCommandManager().getHistory();
         
         for (String command : history) {
-           responseMessage.concat(command + "\n");
+           responseMessage.append(command + "\n");
         }
 
-        return new Response(true, responseMessage);
+        return new Response(true, responseMessage.toString());
     }
 }

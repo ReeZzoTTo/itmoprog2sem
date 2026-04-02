@@ -96,5 +96,4 @@ public class CollectionManager {
     public Iterator<LabWork> getIterator() { return this.collection.iterator(); } 
     public Date getInitializationDate() { return this.initializationDate; }
     public LinkedHashSet<LabWork> getCollection() { return this.collection; }
-
 }

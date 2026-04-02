@@ -1,6 +1,5 @@
 package com.andreysankov.itmoprog2sem.common.commands;
 
-import java.io.IOException;
 import java.util.Date;
 
 import com.andreysankov.itmoprog2sem.common.dto.Request;
@@ -8,7 +7,7 @@ import com.andreysankov.itmoprog2sem.common.dto.Response;
 import com.andreysankov.itmoprog2sem.common.models.LabWork;
 import com.andreysankov.itmoprog2sem.server.managers.Context;
 
-public class AddCommand extends Command implements Savable {
+public class AddCommand extends Command {
     public AddCommand(Context context) {
         super(context);
         this.setName("add");
@@ -27,15 +26,7 @@ public class AddCommand extends Command implements Savable {
         labWork.setDate(new Date());
         
         getContext().getCollectionManager().addElement(labWork);
-
-        String isSave = save();
-        if (isSave != null) return new Response(false, "Ошибка сохранения файла: " + isSave);
         
         return new Response(true, "Элемент успешно добавлен");
     }   
-    
-    public String save() {
-        try { getContext().getFileManager().saveFile(getContext().getCollectionManager().getCollection()); return null; }
-        catch (IOException e) { return e.getMessage(); }
-    } 
 }
