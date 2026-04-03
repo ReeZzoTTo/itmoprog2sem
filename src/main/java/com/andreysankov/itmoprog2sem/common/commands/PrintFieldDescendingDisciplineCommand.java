@@ -1,16 +1,11 @@
 package com.andreysankov.itmoprog2sem.common.commands;
 
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.andreysankov.itmoprog2sem.common.dto.Request;
 import com.andreysankov.itmoprog2sem.common.dto.Response;
 import com.andreysankov.itmoprog2sem.common.models.Discipline;
-import com.andreysankov.itmoprog2sem.common.models.LabWork;
 import com.andreysankov.itmoprog2sem.server.managers.Context;
 
 public class PrintFieldDescendingDisciplineCommand extends Command{
@@ -22,34 +17,22 @@ public class PrintFieldDescendingDisciplineCommand extends Command{
 
     @Override
     public Response execute(Request request) {
-        StringBuilder responseMessage = new StringBuilder();
-        Set<Discipline> disciplineSet = new HashSet<>();
-        Iterator<LabWork> iterator = getContext().getCollectionManager().getIterator();
-        
-        while (iterator.hasNext()) {
-            LabWork element = iterator.next();
-
-            if (element.getDiscipline() != null) {
-                disciplineSet.add(element.getDiscipline());
-            }
-        }
-
-        List<Discipline> disciplineList = new ArrayList<>(disciplineSet);
-
-        disciplineList.sort(
-            Comparator.comparing(
-                Discipline::getName,
-                Comparator.nullsLast(Comparator.reverseOrder())
+        String responseMessage = getContext().getCollectionManager().getCollection().stream()
+            .map(labwork -> labwork.getDiscipline())    
+            .filter(element -> element != null)
+            .distinct()
+            .sorted(
+                Comparator.comparing(
+                    Discipline::getName,
+                    Comparator.nullsLast(Comparator.reverseOrder())
+                )
             )
-        );
-
-        for (Discipline discipline : disciplineList) {
-            responseMessage.append("Discipline : " + discipline.getName() + "\n" 
+            .map(discipline -> "Discipline : " + discipline.getName() + "\n" 
                 + "             Lecture hours : " + discipline.getLectureHours() + "\n"
                 + "             Labs count    : " + discipline.getLabsCount() + "\n"
-            );
-        }
+            )
+            .collect(Collectors.joining());
 
-        return new Response(true, responseMessage.toString());
+        return new Response(true, responseMessage);
     }  
 }

@@ -1,10 +1,12 @@
 package com.andreysankov.itmoprog2sem.common.commands;
 
+import java.util.stream.Collectors;
+
 import com.andreysankov.itmoprog2sem.common.dto.Request;
 import com.andreysankov.itmoprog2sem.common.dto.Response;
 import com.andreysankov.itmoprog2sem.server.managers.Context;
 
-public class ShowCommand extends Command{
+public class ShowCommand extends Command {
     public ShowCommand(Context context) {
         super(context);
         this.setName("show");
@@ -13,17 +15,15 @@ public class ShowCommand extends Command{
 
     @Override
     public Response execute(Request request) {
-        StringBuilder responseMessage = new StringBuilder();
         if (getContext().getCollectionManager().getCollectionSize() == 0) {
             return new Response(true, "Коллекция пуста");
         }
-        else { 
-            responseMessage.append("Данные коллекции:");
-            
-            getContext().getCollectionManager().getCollection().stream().sorted().forEach(labWorkObject -> {
-                responseMessage.append(labWorkObject.toString());
-            });
-        }
-        return new Response(true, responseMessage.toString());
+
+        String responseMessage = getContext().getCollectionManager().getCollection().stream()
+            .sorted()    
+            .map(Object::toString)
+            .collect(Collectors.joining("\n"));
+
+        return new Response(true, responseMessage);
     }
 }

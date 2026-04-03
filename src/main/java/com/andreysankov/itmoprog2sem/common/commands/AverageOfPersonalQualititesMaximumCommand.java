@@ -17,16 +17,14 @@ public class AverageOfPersonalQualititesMaximumCommand extends Command {
         int pqmLength = 0;
         Double sumOfPQM = 0.0;
 
-        for (LabWork element : getContext().getCollectionManager().getCollection()) {
-            Double pqm = element.getPersonalQualitiesMaximum();
+        double average = getContext().getCollectionManager().getCollection().stream()
+            .map(LabWork::getPersonalQualitiesMaximum)
+            .filter(pqm -> pqm != null)
+            .mapToDouble(Double::doubleValue)
+            .average()
+            .orElse(Double.NaN);
 
-            if (pqm == null) continue;
-
-            sumOfPQM += pqm;
-            pqmLength += 1;
-        }
-
-        if (pqmLength == 0) {
+        if (Double.isNaN(average)) {
             return new Response(false, "Коллекция пуста. Введите add чтобы добавить эелемент");
         }
 

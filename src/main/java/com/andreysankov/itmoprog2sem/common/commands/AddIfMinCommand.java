@@ -1,5 +1,6 @@
 package com.andreysankov.itmoprog2sem.common.commands;
 
+import java.util.Comparator;
 import java.util.Date;
 
 import com.andreysankov.itmoprog2sem.common.dto.Request;
@@ -25,28 +26,15 @@ public class AddIfMinCommand extends Command {
         labWork.setId(getContext().getCollectionManager().generateId());
         labWork.setDate(new Date());
 
-        int minimum = this.getMinOfMinimalPoint();
+        LabWork minLabWork = getContext().getCollectionManager().getCollection().stream()
+            .min(Comparator.comparing(LabWork::getMinimalPoint))
+            .orElse(null);
 
-        if (minimum == -1 || labWork.getMinimalPoint() < minimum) {
+        if (minLabWork == null || labWork.getMinimalPoint() < minLabWork.getMinimalPoint()) {
             getContext().getCollectionManager().addElement(labWork);
 
             return new Response(true, "Элемент успешно добавлен в коллекцию");
         }
         return new Response(false, "Элемент с указанным значением minimalPoint=" + labWork.getMinimalPoint() + " не является наименьшим\nЭлемент не был добавлен");
-    }
-
-    public int getMinOfMinimalPoint() {
-        int minimum = -1;
-
-        for (LabWork element : getContext().getCollectionManager().getCollection()) {
-            int currentMinimalPoint = element.getMinimalPoint();
-            
-            if (minimum == -1) minimum = currentMinimalPoint;
-            else {
-                if (currentMinimalPoint < minimum) minimum = currentMinimalPoint;
-            }
-        }
-
-        return minimum;
     }
 }

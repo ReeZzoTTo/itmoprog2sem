@@ -1,11 +1,10 @@
 package com.andreysankov.itmoprog2sem.common.commands;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.andreysankov.itmoprog2sem.common.dto.Request;
 import com.andreysankov.itmoprog2sem.common.dto.Response;
-import com.andreysankov.itmoprog2sem.common.models.LabWork;
 import com.andreysankov.itmoprog2sem.server.managers.Context;
 
 public class GroupCountingByCreationDateCommand extends Command{
@@ -17,23 +16,18 @@ public class GroupCountingByCreationDateCommand extends Command{
 
     @Override
     public Response execute(Request request) {
-        StringBuilder responseMessage = new StringBuilder();
-        Map<String, Integer> groups = new HashMap<>();
-        String dateId;
+        Map<String, Long> groups = getContext().getCollectionManager().getCollection().stream()
+            .collect(Collectors.groupingBy(
+                element -> {
+                    String[] dateSplit = element.getDate().toString().split(" ");
+                    return dateSplit[0] + " " + dateSplit[1] + " " + dateSplit[2];
+                }, Collectors.counting()
+            ));
 
-        for (LabWork element : getContext().getCollectionManager().getCollection()) {
-            String[] dateSplit = element.getDate().toString().split(" ");
-            dateId = dateSplit[0] + " " + dateSplit[1] + " " + dateSplit[2];
-
-            if (!groups.containsKey(dateId)) groups.put(dateId, 1);
-            else groups.put(dateId, groups.get(dateId) + 1);
-        }
-
-        groups.forEach((dateKey, element) -> {
-            responseMessage.append(dateKey + " --- элементов: " + element + '\n');
-        });
+        String responseMessage = groups.entrySet().stream()
+            .map(entry -> entry.getKey() + " --- элементов: " + entry.getValue())
+            .collect(Collectors.joining("\n"));
 
         return new Response(true, responseMessage.toString());
     }
-
 }

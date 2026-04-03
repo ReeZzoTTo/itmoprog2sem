@@ -43,14 +43,6 @@ public class CollectionManager {
     }
 
     public void setDisciplineMap() {
-        for (LabWork element : this.collection) {
-            Discipline currentDiscipline = element.getDiscipline();
-            
-            if (currentDiscipline == null) continue;
-
-            disciplineMap.put(currentDiscipline.getName(), currentDiscipline);
-        }
-
         collection.stream()
             .map(LabWork::getDiscipline)
             .filter(discipline -> discipline != null)

@@ -5,3 +5,4 @@ data/
 .idea/
 .vscode/
 .env
+.src/main/java/com/andreysankov/itmoprog2sem/client/utils/code.txt

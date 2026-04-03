@@ -1,7 +1,8 @@
 package com.andreysankov.itmoprog2sem.common.commands;
 
 import java.util.Date;
-import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.stream.Collectors;
 
 import com.andreysankov.itmoprog2sem.common.dto.Request;
 import com.andreysankov.itmoprog2sem.common.dto.Response;
@@ -18,7 +19,6 @@ public class RemoveLowerCommand extends Command {
     @Override
     public Response execute(Request request) {
         String responseMessage = "";
-        int removeElementsCount = 0;
         LabWork currentElement = request.getLabWork();
 
         if (currentElement == null) {
@@ -28,17 +28,22 @@ public class RemoveLowerCommand extends Command {
         currentElement.setId(getContext().getCollectionManager().generateId());
         currentElement.setDate(new Date());
 
-        Iterator<LabWork> iterator = getContext().getCollectionManager().getIterator();
+        LinkedHashSet<LabWork> collection = getContext().getCollectionManager().getCollection();
 
-        while (iterator.hasNext()) {
-            LabWork element = iterator.next();
+        responseMessage += collection.stream()
+            .filter(element -> element.getMinimalPoint() < currentElement.getMinimalPoint())
+            .map(element -> element.getId() + " === " + element.getName() + "успешно удалён")
+            .collect(Collectors.joining("\n"));
 
-            if (element.getMinimalPoint() < currentElement.getMinimalPoint()) {
-                iterator.remove();
-                responseMessage += element.getId() + " === " + element.getName() + " успешно удалён\n";
-                removeElementsCount++;
-            }
-        }
+        long removeElementsCount = collection.stream()
+            .filter(element -> element.getMinimalPoint() < currentElement.getMinimalPoint())
+            .count();
+
+        LinkedHashSet<LabWork> filteredCollection = collection.stream()
+            .filter(element -> element.getMinimalPoint() >= currentElement.getMinimalPoint())
+            .collect(Collectors.toCollection(LinkedHashSet::new));
+
+        getContext().getCollectionManager().setCollection(filteredCollection);
 
         return new Response(true, responseMessage + "Удалено элементов : " + removeElementsCount);
     } 

@@ -34,4 +34,38 @@
     </discipline>
     <date>1775153068624</date>
   </labWork>
+  <labWork>
+    <id>4</id>
+    <name>testLab2</name>
+    <coordinates>
+      <x>5</x>
+      <y>78</y>
+    </coordinates>
+    <minimalPoint>467</minimalPoint>
+    <personalQualitiesMaximum>787.0</personalQualitiesMaximum>
+    <difficulty>HARD</difficulty>
+    <discipline>
+      <name>ОПД</name>
+      <lectureHours>265</lectureHours>
+      <labsCount>13</labsCount>
+    </discipline>
+    <date>1775159508863</date>
+  </labWork>
+  <labWork>
+    <id>5</id>
+    <name>жопа</name>
+    <coordinates>
+      <x>468</x>
+      <y>-78</y>
+    </coordinates>
+    <minimalPoint>456</minimalPoint>
+    <personalQualitiesMaximum>789.0</personalQualitiesMaximum>
+    <difficulty>HARD</difficulty>
+    <discipline>
+      <name>Приветик</name>
+      <lectureHours>165</lectureHours>
+      <labsCount>4</labsCount>
+    </discipline>
+    <date>1775248801046</date>
+  </labWork>
 </LabWorks>

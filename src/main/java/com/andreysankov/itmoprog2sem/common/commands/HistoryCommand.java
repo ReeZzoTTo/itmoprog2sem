@@ -1,6 +1,6 @@
 package com.andreysankov.itmoprog2sem.common.commands;
 
-import java.util.List;
+import java.util.stream.Collectors;
 
 import com.andreysankov.itmoprog2sem.common.dto.Request;
 import com.andreysankov.itmoprog2sem.common.dto.Response;
@@ -15,15 +15,12 @@ public class HistoryCommand extends Command {
 
     @Override
     public Response execute(Request request) {
-        StringBuilder responseMessage = new StringBuilder();
-        responseMessage.append("Последние 10 команд\n");
+        String responseMessage = "";
+        responseMessage += "Последние 10 команд\n";
 
-        List<String> history = getContext().getCommandManager().getHistory();
-        
-        for (String command : history) {
-           responseMessage.append(command + "\n");
-        }
+        responseMessage += getContext().getCommandManager().getHistory().stream()
+            .collect(Collectors.joining("\n"));
 
-        return new Response(true, responseMessage.toString());
+        return new Response(true, responseMessage);
     }
 }

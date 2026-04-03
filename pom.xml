@@ -24,7 +24,13 @@
             <artifactId>jline-terminal-jni</artifactId>
             <version>3.25.1</version>
          </dependency>  
-          
+        
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.5.15</version>
+        </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
