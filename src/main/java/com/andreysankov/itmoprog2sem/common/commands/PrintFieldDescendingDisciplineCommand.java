@@ -20,7 +20,7 @@ public class PrintFieldDescendingDisciplineCommand extends Command{
         String responseMessage = getContext().getCollectionManager().getCollection().stream()
             .map(labwork -> labwork.getDiscipline())    
             .filter(element -> element != null)
-            // .distinct()
+            .distinct()
             .sorted(
                 Comparator.comparing(
                     Discipline::getName,
