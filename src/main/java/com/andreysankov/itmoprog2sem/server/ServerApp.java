@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketTimeoutException;
-import java.util.Date;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.andreysankov.itmoprog2sem.common.commands.*;
 import com.andreysankov.itmoprog2sem.common.dto.*;
@@ -13,11 +15,18 @@ import com.andreysankov.itmoprog2sem.server.console.*;
 import com.andreysankov.itmoprog2sem.server.managers.*;
 import com.andreysankov.itmoprog2sem.server.network.*;
 
+// docker network create lab6-net
+// docker run -it --rm --name lab6-server --network lab6-net -p 5555:5555/udp -v "C:/Users/dioma/ITp/GitHubProjects/itmoprog2sem/data:/data" -v "C:/Users/dioma/ITp/GitHubProjects/itmoprog2sem/logs:/app/logs" lab6-server
+// docker run -it --rm --network lab6-net -v "C:/Users/dioma/ITp/GitHubProjects/itmoprog2sem/data:/data" lab6-client lab6-server 5555
+
 public class ServerApp {
     private static final int PORT = 5555;
-
+    private static final Logger logger = LoggerFactory.getLogger(ServerApp.class);
     public static void main(String[] args) {
         String fileName = args.length > 0 ? args[0] : "data/collection.xml";
+
+        logger.info("Запуск сервера");
+        logger.info("Файл коллекции: {}", fileName);
 
         FileManager fileManager = new FileManager(fileName);
         CommandManager commandManager = new CommandManager();
@@ -33,21 +42,24 @@ public class ServerApp {
         collectionManager.setInitializationDate(context);
         collectionManager.setDisciplineMap();
 
+        logger.info("Коллекция загружена. Размер коллекции: {}", collectionManager.getCollectionSize());
+
         ServerConsoleHandler consoleHandler = new ServerConsoleHandler(context);
         ServerConsoleReader consoleReader = new ServerConsoleReader();
-
 
         CommandProcessor processor = new CommandProcessor();
 
         registerCommands(context, commandManager, processor);
+        logger.info("Команды зарегистрированы");
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            logger.info("Получен сигнал завершения сервера. Сохраняем коллекцию");
             String aboutError = SaveCommand.save(context);
 
             if (aboutError == null) {
-                System.out.println("Коллекция сохранена при завершении сервера");
+                logger.info("Коллекция успешно сохранена при завершении сервера");
             } else {
-                System.out.println("Ошибка сохранения при завершении: " + aboutError);
+                logger.error("Ошибка сохранения при завершении сервера: {}", aboutError);
             }
         }));
 
@@ -57,7 +69,7 @@ public class ServerApp {
             RequestReader reader = new RequestReader();
             ResponseSender sender = new ResponseSender(socket);
 
-            System.out.println("Сервер запущен на порту " + PORT);
+            logger.info("Сервер запущен на порту {}", PORT);
 
             while (true) {
                 String line = consoleReader.readIfReady();
@@ -73,20 +85,45 @@ public class ServerApp {
                     try {
                         Request request = reader.read(packet.getData(), packet.getLength());
                         
-                        System.out.println("[" + new Date() + "] Получен запрос: " + request);
-
+                        logger.info(
+                            "Получен запрос от {}:{} | команда={} | размер={} байт",
+                            packet.getAddress().getHostAddress(),
+                            packet.getPort(),
+                            request.getCommandType(),
+                            packet.getLength()
+                        );
+                        
                         commandManager.addToHistory(request.getCommandType().getName());
                         response = processor.process(request);
+
+                        logger.info(
+                            "Команда {} обработана. Успех={} ",
+                            request.getCommandType(),
+                            response.isSuccess()
+                        );
+
                     } catch (Exception e) {
+                        logger.error(
+                            "Ошибка обработки запроса от {}:{}",
+                            packet.getAddress().getHostAddress(),
+                            packet.getPort(),
+                            e
+                        );
                         response = new Response(false, "ошибка обработки запроса: " + e.getMessage());
                     }
 
                     sender.send(response, packet.getAddress(), packet.getPort());
-                    System.out.println("[" + new Date() + "] Ответ отправлен: " + response);
+
+                    logger.info(
+                        "Ответ отправлен клиенту {}:{} | успех={}",
+                        packet.getAddress().getHostAddress(),
+                        packet.getPort(),
+                        response.isSuccess()
+                    );
                 } catch (SocketTimeoutException e) {}
             } 
         } catch (IOException e) {
-            System.out.println("Ошибка запуска сервера: " + e.getMessage());
+            logger.error("Ошибка запуска сервера", e);
         }
     }
 

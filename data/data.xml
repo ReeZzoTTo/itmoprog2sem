@@ -18,21 +18,38 @@
     <date>1775152017404</date>
   </labWork>
   <labWork>
-    <id>3</id>
-    <name>test2</name>
+    <id>6</id>
+    <name>scriptTest</name>
     <coordinates>
-      <x>5</x>
-      <y>7</y>
+      <x>10</x>
+      <y>100</y>
     </coordinates>
-    <minimalPoint>78</minimalPoint>
-    <personalQualitiesMaximum>123.0</personalQualitiesMaximum>
-    <difficulty>INSANE</difficulty>
+    <minimalPoint>200</minimalPoint>
+    <personalQualitiesMaximum>5.5</personalQualitiesMaximum>
+    <difficulty>HARD</difficulty>
     <discipline>
-      <name>Программирование</name>
-      <lectureHours>46</lectureHours>
-      <labsCount>78</labsCount>
+      <name>Math</name>
+      <lectureHours>20</lectureHours>
+      <labsCount>4</labsCount>
     </discipline>
-    <date>1775153068624</date>
+    <date>1775287200009</date>
+  </labWork>
+  <labWork>
+    <id>7</id>
+    <name>scriptTest</name>
+    <coordinates>
+      <x>10</x>
+      <y>100</y>
+    </coordinates>
+    <minimalPoint>200</minimalPoint>
+    <personalQualitiesMaximum>5.5</personalQualitiesMaximum>
+    <difficulty>HARD</difficulty>
+    <discipline>
+      <name>Math</name>
+      <lectureHours>20</lectureHours>
+      <labsCount>4</labsCount>
+    </discipline>
+    <date>1775287308969</date>
   </labWork>
   <labWork>
     <id>4</id>
@@ -52,20 +69,20 @@
     <date>1775159508863</date>
   </labWork>
   <labWork>
-    <id>5</id>
-    <name>жопа</name>
+    <id>8</id>
+    <name>Новый Элемент</name>
     <coordinates>
-      <x>468</x>
-      <y>-78</y>
+      <x>46</x>
+      <y>78</y>
     </coordinates>
-    <minimalPoint>456</minimalPoint>
-    <personalQualitiesMaximum>789.0</personalQualitiesMaximum>
+    <minimalPoint>173</minimalPoint>
+    <personalQualitiesMaximum>465.0</personalQualitiesMaximum>
     <difficulty>HARD</difficulty>
     <discipline>
-      <name>Приветик</name>
-      <lectureHours>165</lectureHours>
+      <name>Базы Данных</name>
+      <lectureHours>56</lectureHours>
       <labsCount>4</labsCount>
     </discipline>
-    <date>1775248801046</date>
+    <date>1775287309004</date>
   </labWork>
 </LabWorks>

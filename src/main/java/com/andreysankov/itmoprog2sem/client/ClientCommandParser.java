@@ -19,6 +19,10 @@ public class ClientCommandParser {
         }
     }
 
+    public LabWorkInputReader getLabWorkInputReader() {
+        return this.labWorkInputReader;
+    }
+
     public CommandType getCommand(String key) {
         return this.commands.get(key.toLowerCase());
     }

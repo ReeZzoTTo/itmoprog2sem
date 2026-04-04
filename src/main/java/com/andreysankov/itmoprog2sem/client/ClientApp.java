@@ -38,9 +38,13 @@ public class ClientApp {
 
         JLineInput console = new JLineInput(reader);
 
+        String host = args.length > 0 ? args[0] : "localhost";
+        int port = args.length > 1 ? Integer.parseInt(args[1]) : 5555;
+
         LabWorkInputReader labWorkInputReader = new LabWorkInputReader((LineInput)console);
         ClientCommandParser clientCommandParser = new ClientCommandParser();
-        Client client = new Client("localhost", 5555, 3000);
+        Client client = new Client(host, port, 3000);
+        ScriptExecutor scriptExecutor = new ScriptExecutor(client, clientCommandParser);
 
         clientCommandParser.setLWIReader(labWorkInputReader);
 
@@ -52,8 +56,19 @@ public class ClientApp {
             if (input.isEmpty()) continue;
 
             String[] inputSplit = input.split("\\s+");
-            
-            CommandType commandType = clientCommandParser.getCommand(inputSplit[0]);
+            String commandName = inputSplit[0].toLowerCase();
+
+            if ("execute_script".equals(commandName)) {
+                if (inputSplit.length < 2) {
+                    System.out.println("Команда execute_script требует имя файла.");
+                    continue;
+                }
+
+                scriptExecutor.executeScript(inputSplit[1]);
+                continue;
+            }
+
+            CommandType commandType = clientCommandParser.getCommand(commandName);
 
             if (commandType == CommandType.EXIT) {
                 System.out.println("Завершение клиента");

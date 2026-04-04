@@ -32,7 +32,7 @@ public class RemoveLowerCommand extends Command {
 
         responseMessage += collection.stream()
             .filter(element -> element.getMinimalPoint() < currentElement.getMinimalPoint())
-            .map(element -> element.getId() + " === " + element.getName() + "успешно удалён")
+            .map(element -> "ID-" + element.getId() + " === " + element.getName() + " успешно удалён")
             .collect(Collectors.joining("\n"));
 
         long removeElementsCount = collection.stream()
@@ -45,6 +45,6 @@ public class RemoveLowerCommand extends Command {
 
         getContext().getCollectionManager().setCollection(filteredCollection);
 
-        return new Response(true, responseMessage + "Удалено элементов : " + removeElementsCount);
+        return new Response(true, responseMessage + "\nУдалено элементов : " + removeElementsCount);
     } 
 }

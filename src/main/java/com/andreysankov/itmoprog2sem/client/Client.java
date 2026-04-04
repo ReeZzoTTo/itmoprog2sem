@@ -9,6 +9,7 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
+import java.nio.channels.UnresolvedAddressException;
 
 import com.andreysankov.itmoprog2sem.common.dto.Request;
 import com.andreysankov.itmoprog2sem.common.dto.Response;
@@ -32,9 +33,11 @@ public class Client {
 
             byte[] requestBytes = serialize(request);
             ByteBuffer sendBuffer = ByteBuffer.wrap(requestBytes);
-
-            channel.send(sendBuffer, serverAddress);
-
+            try {
+                channel.send(sendBuffer, serverAddress);
+            } catch (UnresolvedAddressException e) {
+                return new Response(false, "Сервер временно недоступен или не ответил вовремя");
+            }
             ByteBuffer receiveBuffer = ByteBuffer.allocate(65535);
 
             long startTime = System.currentTimeMillis();

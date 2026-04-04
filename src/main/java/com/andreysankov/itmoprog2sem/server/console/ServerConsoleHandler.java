@@ -18,6 +18,14 @@ public class ServerConsoleHandler {
             }
             return "Ошибка сохранения: " + error;
         });
+        commands.put("exit", () -> {
+            String message = this.commands.get("save").get();
+            System.out.println(message);
+            System.out.println("Завершение сервера");
+            System.exit(0);
+            
+            return ""; 
+        });
     }
 
     public void handle(String line) {

@@ -14,9 +14,6 @@ public class AverageOfPersonalQualititesMaximumCommand extends Command {
 
     @Override
     public Response execute(Request request) {
-        int pqmLength = 0;
-        Double sumOfPQM = 0.0;
-
         double average = getContext().getCollectionManager().getCollection().stream()
             .map(LabWork::getPersonalQualitiesMaximum)
             .filter(pqm -> pqm != null)
@@ -28,6 +25,6 @@ public class AverageOfPersonalQualititesMaximumCommand extends Command {
             return new Response(false, "Коллекция пуста. Введите add чтобы добавить эелемент");
         }
 
-        return new Response(true, "Среднее значение квалификации сотрудников : " + sumOfPQM / pqmLength);
+        return new Response(true, "Среднее значение квалификации сотрудников : " + average);
     }
 }

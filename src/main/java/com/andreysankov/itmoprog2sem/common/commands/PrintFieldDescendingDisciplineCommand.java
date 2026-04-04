@@ -20,7 +20,7 @@ public class PrintFieldDescendingDisciplineCommand extends Command{
         String responseMessage = getContext().getCollectionManager().getCollection().stream()
             .map(labwork -> labwork.getDiscipline())    
             .filter(element -> element != null)
-            .distinct()
+            // .distinct()
             .sorted(
                 Comparator.comparing(
                     Discipline::getName,
@@ -31,7 +31,7 @@ public class PrintFieldDescendingDisciplineCommand extends Command{
                 + "             Lecture hours : " + discipline.getLectureHours() + "\n"
                 + "             Labs count    : " + discipline.getLabsCount() + "\n"
             )
-            .collect(Collectors.joining());
+            .collect(Collectors.joining("\n"));
 
         return new Response(true, responseMessage);
     }  

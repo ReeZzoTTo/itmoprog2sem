@@ -1,0 +1,4 @@
+FROM eclipse-temurin:21-jre
+WORKDIR /app
+COPY ./target/itmoprog2sem-1.0-Lab6.jar app.jar
+ENTRYPOINT ["java", "-cp", "/app/app.jar", "com.andreysankov.itmoprog2sem.client.ClientApp"]
