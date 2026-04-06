@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketTimeoutException;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,9 @@ import com.andreysankov.itmoprog2sem.server.command.CommandProcessor;
 import com.andreysankov.itmoprog2sem.server.console.*;
 import com.andreysankov.itmoprog2sem.server.managers.*;
 import com.andreysankov.itmoprog2sem.server.network.*;
+
+// docker build -t lab6-server .
+// docker build -t lab6-client -f Dockerfile.client
 
 // docker network create lab6-net
 // docker run -it --rm --name lab6-server --network lab6-net -p 5555:5555/udp -v "C:/Users/dioma/ITp/GitHubProjects/itmoprog2sem/data:/data" -v "C:/Users/dioma/ITp/GitHubProjects/itmoprog2sem/logs:/app/logs" lab6-server
@@ -111,8 +115,15 @@ public class ServerApp {
                         );
                         response = new Response(false, "ошибка обработки запроса: " + e.getMessage());
                     }
+                    
+                    List<ResponseChunk> chunks = ResponseChunker.split(response);
+                    sender.sendChunks(chunks, packet.getAddress(), packet.getPort());
 
-                    sender.send(response, packet.getAddress(), packet.getPort());
+                    logger.info(
+                        "Подготовлен ответ длиной {} символов, чанков: {}",
+                        response.getMessage() == null ? 0 : response.getMessage().length(),
+                        chunks.size()
+                    );
 
                     logger.info(
                         "Ответ отправлен клиенту {}:{} | успех={}",

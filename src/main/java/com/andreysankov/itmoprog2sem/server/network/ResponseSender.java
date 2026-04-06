@@ -7,8 +7,10 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.List;
 
 import com.andreysankov.itmoprog2sem.common.dto.Response;
+import com.andreysankov.itmoprog2sem.common.dto.ResponseChunk;
 import com.andreysankov.itmoprog2sem.common.util.SerializationUtils;
 
 public class ResponseSender {
@@ -34,5 +36,24 @@ public class ResponseSender {
             port,
             responseBytes.length
         );
+    }
+
+    public void sendChunks(List<ResponseChunk> responseChunks, InetAddress address, int port) 
+    throws IOException {
+        for (ResponseChunk chunk : responseChunks) {
+            byte[] responseChunkBytes = SerializationUtils.serialize(chunk);
+            DatagramPacket packet = new DatagramPacket(responseChunkBytes, responseChunkBytes.length, address, port);
+
+            socket.send(packet);
+
+            logger.debug(
+                 "Отправлена часть ответа {}/{} клиенту {}:{}",
+                chunk.getPartIndex() + 1,
+                chunk.getTotalParts(),
+                address.getHostAddress(),
+                port
+            );
+        }
+        
     }
 }

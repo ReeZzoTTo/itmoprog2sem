@@ -10,9 +10,12 @@ import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.nio.channels.UnresolvedAddressException;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.andreysankov.itmoprog2sem.common.dto.Request;
 import com.andreysankov.itmoprog2sem.common.dto.Response;
+import com.andreysankov.itmoprog2sem.common.dto.ResponseChunk;
 
 public class Client {
     private final String host;
@@ -38,9 +41,14 @@ public class Client {
             } catch (UnresolvedAddressException e) {
                 return new Response(false, "Сервер временно недоступен или не ответил вовремя");
             }
-            ByteBuffer receiveBuffer = ByteBuffer.allocate(65535);
 
+            ByteBuffer receiveBuffer = ByteBuffer.allocate(65535);
             long startTime = System.currentTimeMillis();
+
+            Map<Integer, String> parts = new HashMap<>();
+            String requestId = null;
+            int totalParts = -1;
+            boolean succes = false;
 
             while (System.currentTimeMillis() - startTime < timeoutMillis) {
                 receiveBuffer.clear();
@@ -51,7 +59,33 @@ public class Client {
                     byte[] responseBytes = new byte[receiveBuffer.remaining()];
                     receiveBuffer.get(responseBytes);
 
-                    return deserialize(responseBytes);
+                    Object obj = deserialize(responseBytes);
+
+                    if (obj instanceof ResponseChunk chunk) {
+                        if (requestId == null) {
+                            requestId = chunk.getRequestId();
+                            totalParts = chunk.getTotalParts();
+                            succes = chunk.isSuccess();
+                        }
+
+                        if (chunk.getRequestId().equals(requestId)) {
+                            parts.put(chunk.getPartIndex(), chunk.getPayload());
+
+                            if (parts.size() == totalParts) {
+                                StringBuilder fullMessage = new StringBuilder();
+
+                                for (int i = 0; i < totalParts; i++) {
+                                    fullMessage.append(parts.getOrDefault(i, ""));
+                                }
+
+                                return new Response(succes, fullMessage.toString() + "\nПолучено символов: " + fullMessage.length() + "\nПолучено символов: " + fullMessage.length());
+                            }
+                        }
+                    } else if (obj instanceof Response response) {
+                        return response;
+                    } else {
+                        return new Response(false, "Получен объект неизвестного типа");
+                    }
                 }
 
                 try {
@@ -76,10 +110,10 @@ public class Client {
         return byteStream.toByteArray();
     }
 
-    private Response deserialize(byte[] data) throws IOException, ClassNotFoundException {
+    private Object deserialize(byte[] data) throws IOException, ClassNotFoundException {
         ByteArrayInputStream byteStream = new ByteArrayInputStream(data);
         ObjectInputStream objectStream = new ObjectInputStream(byteStream);
 
-        return (Response) objectStream.readObject();
+        return objectStream.readObject();
     }
 }

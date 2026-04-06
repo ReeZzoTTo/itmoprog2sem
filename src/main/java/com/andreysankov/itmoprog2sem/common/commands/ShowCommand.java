@@ -19,6 +19,8 @@ public class ShowCommand extends Command {
             return new Response(true, "Коллекция пуста");
         }
 
+        // * при 64246 в файле мы можем передать. Условно 60 000 возьмем
+
         String responseMessage = getContext().getCollectionManager().getCollection().stream()
             .sorted()    
             .map(Object::toString)

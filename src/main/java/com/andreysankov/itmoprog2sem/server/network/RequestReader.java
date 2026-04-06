@@ -8,10 +8,9 @@ import org.slf4j.Logger;
 
 import com.andreysankov.itmoprog2sem.common.dto.Request;
 import com.andreysankov.itmoprog2sem.common.util.SerializationUtils;
-import com.andreysankov.itmoprog2sem.server.ServerApp;
 
 public class RequestReader {
-    private static final Logger logger = LoggerFactory.getLogger(ServerApp.class);
+    private static final Logger logger = LoggerFactory.getLogger(RequestReader.class);
 
     public Request read(byte[] data, int length) throws IOException, ClassNotFoundException {
         byte[] actualData = Arrays.copyOf(data, length);

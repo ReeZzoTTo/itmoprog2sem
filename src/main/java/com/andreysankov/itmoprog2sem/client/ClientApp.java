@@ -28,7 +28,6 @@ public class ClientApp {
             history = new DefaultHistory();
             terminal = TerminalBuilder.builder().system(true).provider("jni").encoding(StandardCharsets.UTF_8).build();
             reader = LineReaderBuilder.builder().terminal(terminal).history(history).build();
-            // reader.setVariable(LineReader.HISTORY_FILE, Paths.get("/data/.labwork_history"));
             history.load();
         } catch (IOException e) {
             System.out.println("Возникла ошибка : ");
