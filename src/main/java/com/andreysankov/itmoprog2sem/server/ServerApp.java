@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketTimeoutException;
+import java.sql.SQLException;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -13,6 +15,7 @@ import com.andreysankov.itmoprog2sem.common.commands.*;
 import com.andreysankov.itmoprog2sem.common.dto.*;
 import com.andreysankov.itmoprog2sem.server.command.CommandProcessor;
 import com.andreysankov.itmoprog2sem.server.console.*;
+import com.andreysankov.itmoprog2sem.server.database.DatabaseManager;
 import com.andreysankov.itmoprog2sem.server.managers.*;
 import com.andreysankov.itmoprog2sem.server.network.*;
 
@@ -27,22 +30,28 @@ public class ServerApp {
     private static final int PORT = 5555;
     private static final Logger logger = LoggerFactory.getLogger(ServerApp.class);
     public static void main(String[] args) {
-        String fileName = args.length > 0 ? args[0] : "data/collection.xml";
+        // logger.info("Запуск сервера");
+        // logger.info("Файл коллекции: {}", fileName);
 
-        logger.info("Запуск сервера");
-        logger.info("Файл коллекции: {}", fileName);
-
-        FileManager fileManager = new FileManager(fileName);
+        DatabaseManager databaseManager = new DatabaseManager();
         CommandManager commandManager = new CommandManager();
         CollectionManager collectionManager = new CollectionManager();
 
-        Context context = new Context(
-            fileManager, 
+        try {
+            databaseManager.initialize();
+            System.out.println("База данных успешно инициализирована");
+        } catch (SQLException e) {
+            System.err.println("При инициализации базы данных произошла ошибка: " + e.getMessage());
+            return;
+        }
+
+        Context context = new Context( 
             commandManager, 
-            collectionManager
+            collectionManager,
+            databaseManager
         );
 
-        collectionManager.setCollection(fileManager.readFile());
+        collectionManager.setCollection(new LinkedHashSet<>());
         collectionManager.setInitializationDate(context);
         collectionManager.setDisciplineMap();
 
@@ -57,14 +66,7 @@ public class ServerApp {
         logger.info("Команды зарегистрированы");
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            logger.info("Получен сигнал завершения сервера. Сохраняем коллекцию");
-            String aboutError = SaveCommand.save(context);
-
-            if (aboutError == null) {
-                logger.info("Коллекция успешно сохранена при завершении сервера");
-            } else {
-                logger.error("Ошибка сохранения при завершении сервера: {}", aboutError);
-            }
+            // logger.info("Получен сигнал завершения сервера. Сохраняем коллекцию");
         }));
 
         try (DatagramSocket socket = new DatagramSocket(PORT)) {

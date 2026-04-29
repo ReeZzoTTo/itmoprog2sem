@@ -1,23 +1,24 @@
 package com.andreysankov.itmoprog2sem.server.managers;
 
+import com.andreysankov.itmoprog2sem.server.database.DatabaseManager;
 
 public class Context {
-    private final FileManager fileManager;
+    private final DatabaseManager databaseManager;
     private final CommandManager commandManager;
     private final CollectionManager collectionManager;
 
     public Context(
-        FileManager fileManager,
         CommandManager commandManager,
-        CollectionManager collectionManager
+        CollectionManager collectionManager,
+        DatabaseManager databaseManager
     ) {
-        this.fileManager = fileManager;
         this.commandManager = commandManager;
         this.collectionManager = collectionManager;
+        this.databaseManager = databaseManager;
     }
 
-    public FileManager getFileManager() {
-        return fileManager;
+    public DatabaseManager getDatabaseManager() {
+        return databaseManager;
     }
 
     public CommandManager getCommandManager() {

@@ -25,11 +25,11 @@ public class CollectionManager {
     }
 
     public void setInitializationDate(Context context) {
-        FileTime creationFileTime = context.getFileManager().getFileCreationTime();
+        // FileTime creationFileTime = context.getFileManager().getFileCreationTime();
 
-        this.initializationDate = creationFileTime == null
-            ? new Date()
-            : new Date(creationFileTime.toMillis());
+        // this.initializationDate = creationFileTime == null
+        //     ? new Date()
+        //     : new Date(creationFileTime.toMillis());
     }
 
     public void addElement(LabWork element) {

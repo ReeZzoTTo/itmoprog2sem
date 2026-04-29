@@ -14,7 +14,7 @@ public class InfoCommand extends Command {
     @Override
     public Response execute(Request request) {
         String responseMessage = "Сведения о коллекции" + "\n"
-        + "Имя файла коллекции : " + getContext().getFileManager().getFileName() + "\n"
+        // + "Имя файла коллекции : " + getContext().getFileManager().getFileName() + "\n"
         + "Дата инициализации коллекции : " + getContext().getCollectionManager().getInitializationDate() + "\n"
         + "Количество элементов коллекции : " + getContext().getCollectionManager().getCollectionSize() + "\n";
 
