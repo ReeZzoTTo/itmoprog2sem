@@ -11,9 +11,11 @@ import com.andreysankov.itmoprog2sem.common.models.LabWork;
 public class ClientCommandParser {
     private Map<String, CommandType> commands = new HashMap<>();
     private LabWorkInputReader labWorkInputReader;
-    private RequestBuilder requestBuilder = new RequestBuilder();
+    private RequestBuilder requestBuilder;
 
-    public ClientCommandParser() {
+    public ClientCommandParser(UserCredentials credentials) {
+        this.requestBuilder = new RequestBuilder(credentials);
+
         for (CommandType value : CommandType.values()) {
             this.commands.put(value.getName(), value);
         }

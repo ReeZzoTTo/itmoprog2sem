@@ -20,10 +20,10 @@ import com.andreysankov.itmoprog2sem.common.util.JLineInput;
 
 public class ClientApp {
     public static void main(String[] args) {
-        
         LineReader reader = null;
         Terminal terminal;
         DefaultHistory history = null;
+
         try {   
             history = new DefaultHistory();
             terminal = TerminalBuilder.builder().system(true).provider("jni").encoding(StandardCharsets.UTF_8).build();
@@ -41,7 +41,30 @@ public class ClientApp {
         int port = args.length > 1 ? Integer.parseInt(args[1]) : 5555;
 
         LabWorkInputReader labWorkInputReader = new LabWorkInputReader((LineInput)console);
-        ClientCommandParser clientCommandParser = new ClientCommandParser();
+
+        String login = "";
+        String password = "";
+
+        System.out.println("Введите данные пользователя:");
+
+        while (login.isBlank()) {
+            String inputLogin = console.readLine("Логин >> ");
+            if (inputLogin == null) {
+                continue;
+            }
+            login = inputLogin.trim();
+        }
+
+        while (password.isBlank()) {
+            String inputPassword = console.readLine("Пароль >> ");
+            if (inputPassword == null) {
+                continue;
+            }
+            password = inputPassword.trim();
+        }
+
+        UserCredentials userCredentials = new UserCredentials(login, password);
+        ClientCommandParser clientCommandParser = new ClientCommandParser(userCredentials);
         Client client = new Client(host, port, 3000);
         ScriptExecutor scriptExecutor = new ScriptExecutor(client, clientCommandParser);
 
