@@ -15,7 +15,10 @@ public enum CommandType {
     HISTORY("history", false, false),
     AVERAGE_OF_PERSONAL_QUALITIES_MAXIMUM("average_of_personal_qualities_maximum", false, false),
     GROUP_COUNTING_BY_CREATION_DATE("group_counting_by_creation_date", false, false),
-    PRINT_FIELD_DESCENDING_DISCIPLINE("print_field_descending_discipline", false, false);
+    PRINT_FIELD_DESCENDING_DISCIPLINE("print_field_descending_discipline", false, false),
+
+    REGISTER("register", false, false),
+    LOGIN("login", false, false);
 
     private final String commandName;
     private final boolean requiresArgument;

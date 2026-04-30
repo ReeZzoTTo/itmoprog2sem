@@ -12,19 +12,29 @@ public class Request implements Serializable {
     private final ArgumentId argument;
     private final LabWork labwork;
 
+    private final String login;
+    private final String password;
+
     public Request(
         CommandType commandType,
         ArgumentId argument,
-        LabWork labwork
+        LabWork labwork,
+        String login,
+        String password
     ) {
         this.commandType = commandType;
         this.argument = argument;
         this.labwork = labwork;
+        this.login = login;
+        this.password = password;
     }
 
     public CommandType getCommandType() { return this.commandType; }
     public ArgumentId getArgument() { return this.argument; }
     public LabWork getLabWork() { return this.labwork; }
+    public String getLogin() { return this.login; }
+    public String getPassword() { return this.password; }
+
 
     @Override
     public String toString() {
@@ -32,6 +42,7 @@ public class Request implements Serializable {
                 "commandType=" + this.commandType +
                 ", argument='" + this.argument + '\'' +
                 ", labWork=" + this.labwork +
+                ", login=" + this.login +
                 '}';
     }
 }

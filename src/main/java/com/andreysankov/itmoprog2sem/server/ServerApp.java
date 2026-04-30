@@ -158,7 +158,9 @@ public class ServerApp {
         PrintFieldDescendingDisciplineCommand printDiscipline = new PrintFieldDescendingDisciplineCommand(context);
         GroupCountingByCreationDateCommand group              = new GroupCountingByCreationDateCommand(context);
         AverageOfPersonalQualititesMaximumCommand average     = new AverageOfPersonalQualititesMaximumCommand(context);
-                
+        RegisterCommand register = new RegisterCommand(context);
+        LoginCommand login       = new LoginCommand(context);
+        
         commandManager.registerCommand("add", add);
         commandManager.registerCommand("add_if_min", addIfMin);
         commandManager.registerCommand("average_of_personal_qualities_maximum", average);
@@ -172,6 +174,8 @@ public class ServerApp {
         commandManager.registerCommand("remove_lower", removeLower);
         commandManager.registerCommand("show", show);
         commandManager.registerCommand("update_id", updateId);
+        commandManager.registerCommand("register", register);
+        commandManager.registerCommand("login", login);
 
         processor.register(CommandType.ADD, add);
         processor.register(CommandType.ADD_IF_MIN, addIfMin);
@@ -186,5 +190,7 @@ public class ServerApp {
         processor.register(CommandType.REMOVE_LOWER, removeLower);
         processor.register(CommandType.SHOW, show);
         processor.register(CommandType.UPDATE_ID, updateId);
+        processor.register(CommandType.REGISTER, register);
+        processor.register(CommandType.LOGIN, login);
     }
 }
