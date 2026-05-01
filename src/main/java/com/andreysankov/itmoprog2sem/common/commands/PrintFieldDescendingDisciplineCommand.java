@@ -32,7 +32,10 @@ public class PrintFieldDescendingDisciplineCommand extends Command{
                 + "             Labs count    : " + discipline.getLabsCount() + "\n"
             )
             .collect(Collectors.joining("\n"));
-
+        
+        if (responseMessage.isBlank()) {
+            return new Response(true, "В коллекции нет элементов с указанными дисциплинами");
+        }
         return new Response(true, responseMessage);
     }  
 }

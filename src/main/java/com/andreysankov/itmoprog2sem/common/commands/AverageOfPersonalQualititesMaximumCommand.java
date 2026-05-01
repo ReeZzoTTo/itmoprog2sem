@@ -22,7 +22,7 @@ public class AverageOfPersonalQualititesMaximumCommand extends Command {
             .orElse(Double.NaN);
 
         if (Double.isNaN(average)) {
-            return new Response(false, "Коллекция пуста. Введите add чтобы добавить эелемент");
+            return new Response(false, "Нет элементов с указанным personalQualitiesMaximum");
         }
 
         return new Response(true, "Среднее значение квалификации сотрудников : " + average);

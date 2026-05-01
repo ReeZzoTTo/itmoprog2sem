@@ -16,6 +16,11 @@ public class GroupCountingByCreationDateCommand extends Command{
 
     @Override
     public Response execute(Request request) {
+
+        if (getContext().getCollectionManager().getCollectionSize() == 0) {
+            return new Response(true, "Коллекция пуста");
+        }
+
         Map<String, Long> groups = getContext().getCollectionManager().getCollection().stream()
             .collect(Collectors.groupingBy(
                 element -> {
@@ -28,6 +33,6 @@ public class GroupCountingByCreationDateCommand extends Command{
             .map(entry -> entry.getKey() + " --- элементов: " + entry.getValue())
             .collect(Collectors.joining("\n"));
 
-        return new Response(true, responseMessage.toString());
+        return new Response(true, responseMessage);
     }
 }

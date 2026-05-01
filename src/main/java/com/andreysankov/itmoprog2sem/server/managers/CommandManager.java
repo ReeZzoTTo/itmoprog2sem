@@ -8,8 +8,8 @@ import java.util.Map;
 import com.andreysankov.itmoprog2sem.common.commands.Command;
 
 public class CommandManager {
-    private Map<String, Command> commandList = new HashMap<>();
-    private List<String> history = new ArrayList<>();
+    private final Map<String, Command> commandList = new HashMap<>();
+    private final List<String> history = new ArrayList<>();
     
     public synchronized void registerCommand(
         String commandName, 
@@ -25,6 +25,6 @@ public class CommandManager {
         history.add(commandName);
     }
 
-    public synchronized List<String> getHistory() { return this.history; }
-    public synchronized Map<String, Command> getCommandList() { return this.commandList; }
+    public synchronized List<String> getHistory() { return new ArrayList<>(this.history); }
+    public synchronized Map<String, Command> getCommandList() { return new HashMap<>(this.commandList); }
 }
