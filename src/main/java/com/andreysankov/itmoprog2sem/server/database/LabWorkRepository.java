@@ -40,9 +40,6 @@ public class LabWorkRepository {
 
             return collection;
 
-        } catch (SQLException e) {
-            System.err.println("Ошибка чтения базы данных: " + e.getMessage());
-            return new LinkedHashSet<>();
         }
     }
 

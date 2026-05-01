@@ -5,7 +5,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketTimeoutException;
 import java.sql.SQLException;
-import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -51,7 +50,12 @@ public class ServerApp {
             databaseManager
         );
 
-        collectionManager.setCollection(new LinkedHashSet<>());
+        try {
+            collectionManager.setCollection(context.getLabWorkRepository().loadCollection());
+        } catch (SQLException e) {
+            System.err.println("Ошибка при загрузке коллекции в память: " + e.getMessage());
+            System.exit(1);
+        }
         collectionManager.setInitializationDate(context);
         collectionManager.setDisciplineMap();
 

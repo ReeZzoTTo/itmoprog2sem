@@ -1,6 +1,7 @@
 package com.andreysankov.itmoprog2sem.server.managers;
 
 import com.andreysankov.itmoprog2sem.server.database.DatabaseManager;
+import com.andreysankov.itmoprog2sem.server.database.LabWorkRepository;
 import com.andreysankov.itmoprog2sem.server.database.UserRepository;
 
 public class Context {
@@ -8,6 +9,7 @@ public class Context {
     private final CommandManager commandManager;
     private final CollectionManager collectionManager;
     private final UserRepository userRepository;
+    private final LabWorkRepository labWorkRepository;
 
     public Context(
         CommandManager commandManager,
@@ -18,6 +20,7 @@ public class Context {
         this.collectionManager = collectionManager;
         this.databaseManager = databaseManager;
         this.userRepository = new UserRepository(databaseManager);
+        this.labWorkRepository = new LabWorkRepository(databaseManager);
     }
 
     public DatabaseManager getDatabaseManager() {
@@ -34,5 +37,9 @@ public class Context {
 
     public UserRepository getUserRepository() {
         return userRepository;
+    }
+
+    public LabWorkRepository getLabWorkRepository() {
+        return labWorkRepository;
     }
 }
