@@ -18,74 +18,83 @@ public class CollectionManager {
 
     public CollectionManager() {}
 
-    public void sortCollection() {
+    public synchronized void sortCollection() {
         this.collection = this.collection.stream()
             .sorted((a, b) -> a.getName().compareToIgnoreCase(b.getName()))
             .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
-    public void setInitializationDate(Context context) {
-        // FileTime creationFileTime = context.getFileManager().getFileCreationTime();
-
-        // this.initializationDate = creationFileTime == null
-        //     ? new Date()
-        //     : new Date(creationFileTime.toMillis());
+    public synchronized void setInitializationDate() {
+        this.initializationDate = new Date();
     }
 
-    public void addElement(LabWork element) {
+    public synchronized void addElement(LabWork element) {
         this.collection.add(element);
+
+        if (element.getDiscipline() != null) {
+            this.addDiscipline(element.getDiscipline());
+        }
 
         this.sortCollection();
     }
 
-    public long getCollectionSize() { 
+    public synchronized long getCollectionSize() { 
         return collection.size(); 
     }
 
-    public void setDisciplineMap() {
+    public synchronized void setDisciplineMap() {
+        this.disciplineMap.clear();
+
         collection.stream()
             .map(LabWork::getDiscipline)
             .filter(discipline -> discipline != null)
             .forEach(discipline -> disciplineMap.put(discipline.getName(), discipline));
     }
 
-    public void addDiscipline(Discipline discipline) {
-        this.disciplineMap.put(discipline.getName(), discipline);
+    public synchronized void addDiscipline(Discipline discipline) {
+        if (discipline != null) {
+            this.disciplineMap.put(discipline.getName(), discipline);
+        }
     }
 
-    public Map<String, Discipline> getDisciplineMap() { return this.disciplineMap; }
+    public synchronized Map<String, Discipline> getDisciplineMap() { return new HashMap<>(this.disciplineMap); }
 
-    public void clearCollection() {
+    public synchronized void clearCollection() {
         this.collection.clear();
+        this.disciplineMap.clear();
     }
 
-    public Long getLastIdElement() {
-        return collection.stream().mapToLong(LabWork::getId).max().orElse(0);
-    }
+    // public Long getLastIdElement() {
+    //     return collection.stream().mapToLong(LabWork::getId).max().orElse(0);
+    // }
 
-    public Long generateId() {
-        return this.getCollectionSize() == 0
-            ? 1L
-            : this.getLastIdElement() + 1;
-    }
+    // public Long generateId() {
+    //     return this.getCollectionSize() == 0
+    //         ? 1L
+    //         : this.getLastIdElement() + 1;
+    // }
 
-    public void setCollection(LinkedHashSet<LabWork> collection) {
+    public synchronized void setCollection(LinkedHashSet<LabWork> collection) {
         this.collection = collection == null ? new LinkedHashSet<>() : collection;
         this.sortCollection();
     }
 
-    public LabWork getElementByID(long id) {
+    public synchronized LabWork getElementByID(long id) {
         return collection.stream()
             .filter(element -> element.getId() == id)
             .findFirst()
             .orElse(null);
     }
 
-    public boolean deleteElementByID(long id) {
-        return this.collection.removeIf(element -> element.getId() == id);
+    public synchronized boolean deleteElementByID(long id) {
+        boolean removed = this.collection.removeIf(element -> element.getId() == id);
+
+        if (removed) this.setDisciplineMap();
+
+        return removed;
     }
 
-    public Iterator<LabWork> getIterator() { return this.collection.iterator(); } 
-    public Date getInitializationDate() { return this.initializationDate; }
-    public LinkedHashSet<LabWork> getCollection() { return this.collection; }
+    public synchronized Iterator<LabWork> getIterator() { return new LinkedHashSet<>(this.collection).iterator(); } 
+    public synchronized Date getInitializationDate() { return this.initializationDate; }
+    public synchronized LinkedHashSet<LabWork> getCollection() { return new LinkedHashSet<>(this.collection); }
 }

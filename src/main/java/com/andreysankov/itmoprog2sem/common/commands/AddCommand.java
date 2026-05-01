@@ -1,5 +1,6 @@
 package com.andreysankov.itmoprog2sem.common.commands;
 
+import java.sql.SQLException;
 import java.util.Date;
 
 import com.andreysankov.itmoprog2sem.common.dto.Request;
@@ -22,11 +23,25 @@ public class AddCommand extends Command {
             return new Response(false, "Команда add требует объект LabWork");
         }
 
-        labWork.setId(getContext().getCollectionManager().generateId());
+        String ownerLogin = request.getLogin();
+
+        if (ownerLogin == null || ownerLogin.isBlank()) {
+            return new Response(false, "Не указан логин пользователя");
+        }
+ 
         labWork.setDate(new Date());
-        
-        getContext().getCollectionManager().addElement(labWork);
-        
-        return new Response(true, "Элемент успешно добавлен");
+        labWork.setOwnerLogin(ownerLogin);
+
+        try {
+            long generatedId = getContext().getLabWorkRepository().insertLabWork(labWork, ownerLogin);
+            labWork.setId(generatedId);
+            
+            getContext().getCollectionManager().addElement(labWork);
+            
+            return new Response(true, "Элемент успешно добавлен");
+
+        } catch (SQLException e) {
+            return new Response(false, "Не удалось добавить элемент в БД: " + e.getMessage());
+        }
     }   
 }

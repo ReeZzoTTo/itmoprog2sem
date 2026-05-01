@@ -56,7 +56,7 @@ public class ServerApp {
             System.err.println("Ошибка при загрузке коллекции в память: " + e.getMessage());
             System.exit(1);
         }
-        collectionManager.setInitializationDate(context);
+        collectionManager.setInitializationDate();
         collectionManager.setDisciplineMap();
 
         logger.info("Коллекция загружена. Размер коллекции: {}", collectionManager.getCollectionSize());
