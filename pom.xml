@@ -7,7 +7,7 @@
 
     <groupId>com.andreysankov.itmoprog2sem</groupId>
     <artifactId>itmoprog2sem</artifactId>
-    <version>1.0-Lab6</version>
+    <version>1.0-Lab7</version>
 
     <name>itmoprog2sem</name>
 
@@ -24,7 +24,7 @@
             <artifactId>postgresql</artifactId>
             <version>42.7.4</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.jline</groupId>
             <artifactId>jline-terminal-jni</artifactId>

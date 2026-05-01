@@ -85,7 +85,7 @@ public class CommandProcessor {
             boolean authorized = this.context.getUserRepository().checkCredentials(login, password);
 
             if (!authorized) {
-                return new Response(false, "Команда недоступна: пользователь не авторизован");
+                return new Response(false, "Команда недоступна: пользователь не авторизован.\nДля авторизации введите login.\nДля регистрации - сначала register. Затем login");
             }
 
             return new Response(true, "Пользователь авторизован");

@@ -1,0 +1,53 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: lab7-postgres
+    environment:
+      POSTGRES_DB: studs
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    networks:
+      - lab7-net
+    volumes:
+      - lab7-postgres-data:/var/lib/postgresql/data
+
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: lab7-server
+    depends_on:
+      - postgres
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: studs
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+    ports:
+      - "5555:5555/udp"
+    networks:
+      - lab7-net
+    stdin_open: true
+    tty: true
+
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    container_name: lab7-client
+    depends_on:
+      - server
+    networks:
+      - lab7-net
+    stdin_open: true
+    tty: true
+    command: ["lab7-server", "5555"]
+
+networks:
+  lab7-net:
+
+volumes:
+  lab7-postgres-data:

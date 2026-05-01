@@ -1,5 +1,9 @@
 package com.andreysankov.itmoprog2sem.server;
 
+// docker compose build
+// docker compose up postgres server
+// docker compose run --rm client
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
