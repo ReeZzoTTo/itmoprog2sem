@@ -78,6 +78,67 @@ public class LabWorkRepository {
         } 
     }
 
+    public boolean deleteElement(long elementId, String owner) throws SQLException {
+        String sqlQuery = """
+            DELETE FROM labworks 
+            WHERE id = ?     
+            AND owner_login = ?
+        """;
+        
+        try (
+            Connection connection = databaseManager.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)
+        ) {
+            preparedStatement.setLong(1, elementId);
+            preparedStatement.setString(2, owner);
+
+            return preparedStatement.executeUpdate() == 1;
+        }
+    }
+
+    public int deleteAllByOwner(String owner) throws SQLException {
+        String sqlQuery = """
+            DELETE FROM labworks
+            WHERE owner_login = ?        
+        """;
+        try (
+            Connection connection = databaseManager.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)
+        ) {
+            preparedStatement.setString(1, owner);
+
+            return preparedStatement.executeUpdate();
+        }
+    }
+
+    public boolean updateElement(LabWork element, long id, String owner) throws SQLException {
+        String sqlQuery = """
+            UPDATE labworks
+            SET name = ?,
+                coordinates_x = ?,
+                coordinates_y = ?,
+                creation_date = ?,
+                minimal_point = ?,
+                personal_qualities_maximum = ?,
+                difficulty = ?::difficulty_type,
+                discipline_name = ?,
+                discipline_lecture_hours = ?,
+                discipline_labs_count = ?
+            WHERE owner_login = ? AND id = ?
+        """;
+
+        try (
+            Connection connection = databaseManager.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)
+        ) {
+            fillLabWorkToStatement(preparedStatement, element, owner);
+
+            preparedStatement.setLong(12, id);
+
+            return preparedStatement.executeUpdate() == 1;
+        }
+    }
+
     private void fillLabWorkToStatement(
         PreparedStatement statement,
         LabWork labWork,
