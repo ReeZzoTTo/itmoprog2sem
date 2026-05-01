@@ -96,6 +96,24 @@ public class LabWorkRepository {
         }
     }
 
+    public int deleteLowerByOwner(int minimalPoint, String ownerLogin) throws SQLException {
+        String sqlQuery = """
+            DELETE FROM labworks
+            WHERE owner_login = ?
+            AND minimal_point < ?
+        """;
+
+        try (
+            Connection connection = databaseManager.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)
+        ) {
+            preparedStatement.setString(1, ownerLogin);
+            preparedStatement.setInt(2, minimalPoint);
+
+            return preparedStatement.executeUpdate();
+        }
+    }
+
     public int deleteAllByOwner(String owner) throws SQLException {
         String sqlQuery = """
             DELETE FROM labworks

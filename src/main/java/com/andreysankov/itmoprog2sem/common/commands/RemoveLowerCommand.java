@@ -1,6 +1,6 @@
 package com.andreysankov.itmoprog2sem.common.commands;
 
-import java.util.Date;
+import java.sql.SQLException;
 import java.util.LinkedHashSet;
 import java.util.stream.Collectors;
 
@@ -18,33 +18,50 @@ public class RemoveLowerCommand extends Command {
 
     @Override
     public Response execute(Request request) {
-        String responseMessage = "";
         LabWork currentElement = request.getLabWork();
 
         if (currentElement == null) {
             return new Response(false, "Команда remove_lower требует объект LabWork");
         }
 
-        currentElement.setId(getContext().getCollectionManager().generateId());
-        currentElement.setDate(new Date());
+        String ownerLogin = request.getLogin();
 
-        LinkedHashSet<LabWork> collection = getContext().getCollectionManager().getCollection();
+        if (ownerLogin == null || ownerLogin.isBlank()) {
+            return new Response(false, "Не указан логин пользователя");
+        }
 
-        responseMessage += collection.stream()
-            .filter(element -> element.getMinimalPoint() < currentElement.getMinimalPoint())
+        int minimalPoint = currentElement.getMinimalPoint();
+
+        LinkedHashSet<LabWork> collection = getContext()
+            .getCollectionManager()
+            .getCollection();
+
+        String removedElementsMessage = collection.stream()
+            .filter(element -> ownerLogin.equals(element.getOwnerLogin()))
+            .filter(element -> element.getMinimalPoint() < minimalPoint)
             .map(element -> "ID-" + element.getId() + " === " + element.getName() + " успешно удалён")
             .collect(Collectors.joining("\n"));
 
-        long removeElementsCount = collection.stream()
-            .filter(element -> element.getMinimalPoint() < currentElement.getMinimalPoint())
-            .count();
+        try {
+            int deletedFromDatabase = getContext()
+                .getLabWorkRepository()
+                .deleteLowerByOwner(minimalPoint, ownerLogin);
 
-        LinkedHashSet<LabWork> filteredCollection = collection.stream()
-            .filter(element -> element.getMinimalPoint() >= currentElement.getMinimalPoint())
-            .collect(Collectors.toCollection(LinkedHashSet::new));
+            getContext()
+                .getCollectionManager()
+                .deleteLowerByOwner(minimalPoint, ownerLogin);
 
-        getContext().getCollectionManager().setCollection(filteredCollection);
+            if (deletedFromDatabase == 0) {
+                return new Response(false, "Нет ваших элементов, меньших чем заданный");
+            }
 
-        return new Response(true, responseMessage + "\nУдалено элементов : " + removeElementsCount);
-    } 
+            return new Response(
+                true,
+                removedElementsMessage + "\nУдалено ваших элементов: " + deletedFromDatabase
+            );
+
+        } catch (SQLException e) {
+            return new Response(false, "Ошибка базы данных при удалении элементов: " + e.getMessage());
+        }
+    }
 }

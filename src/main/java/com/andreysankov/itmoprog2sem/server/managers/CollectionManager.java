@@ -94,6 +94,31 @@ public class CollectionManager {
         return removed;
     }
 
+    public synchronized int deleteElementsByOwner(String ownerLogin) {
+        int oldSize = this.collection.size();
+
+        this.collection.removeIf(element ->
+            ownerLogin.equals(element.getOwnerLogin())
+        );
+
+        this.setDisciplineMap();
+
+        return oldSize - this.collection.size();
+    }
+
+    public synchronized int deleteLowerByOwner(int minimalPoint, String ownerLogin) {
+        int oldSize = this.collection.size();
+
+        this.collection.removeIf(element ->
+            ownerLogin.equals(element.getOwnerLogin())
+                && element.getMinimalPoint() < minimalPoint
+        );
+
+        this.setDisciplineMap();
+
+        return oldSize - this.collection.size();
+    }
+
     public synchronized Iterator<LabWork> getIterator() { return new LinkedHashSet<>(this.collection).iterator(); } 
     public synchronized Date getInitializationDate() { return this.initializationDate; }
     public synchronized LinkedHashSet<LabWork> getCollection() { return new LinkedHashSet<>(this.collection); }

@@ -3,9 +3,12 @@ package com.andreysankov.itmoprog2sem.server;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.SocketTimeoutException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,8 +72,16 @@ public class ServerApp {
         registerCommands(context, commandManager, processor);
         logger.info("Команды зарегистрированы");
 
+        ExecutorService readPool = Executors.newFixedThreadPool(4);
+        ExecutorService processPool = Executors.newFixedThreadPool(8);
+        ExecutorService sendPool = Executors.newCachedThreadPool();
+
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            // logger.info("Получен сигнал завершения сервера. Сохраняем коллекцию");
+            logger.info("Получен сигнал завершения сервера. Завершаем пул потоков");
+
+            readPool.shutdownNow();
+            processPool.shutdownNow();
+            sendPool.shutdownNow();
         }));
 
         try (DatagramSocket socket = new DatagramSocket(PORT)) {
@@ -90,53 +101,97 @@ public class ServerApp {
                 try {
                     DatagramPacket packet = receiver.receive();
 
-                    Response response;
+                    byte[] packetData = packet.getData();
+                    int packetLength = packet.getLength();
+                    InetAddress clientAddress = packet.getAddress();
+                    int clientPort = packet.getPort();
 
-                    try {
-                        Request request = reader.read(packet.getData(), packet.getLength());
-                        
-                        logger.info(
-                            "Получен запрос от {}:{} | команда={} | размер={} байт",
-                            packet.getAddress().getHostAddress(),
-                            packet.getPort(),
-                            request.getCommandType(),
-                            packet.getLength()
-                        );
-                        
-                        commandManager.addToHistory(request.getCommandType().getName());
-                        response = processor.process(request);
+                    readPool.submit(() -> {
+                        try {
+                            Request request = reader.read(packetData, packetLength);
 
-                        logger.info(
-                            "Команда {} обработана. Успех={} ",
-                            request.getCommandType(),
-                            response.isSuccess()
-                        );
+                            logger.info(
+                                "Получен запрос от {}:{} | команда={} | размер={} байт",
+                                clientAddress.getHostAddress(),
+                                clientPort,
+                                request.getCommandType(),
+                                packetLength
+                            );
 
-                    } catch (Exception e) {
-                        logger.error(
-                            "Ошибка обработки запроса от {}:{}",
-                            packet.getAddress().getHostAddress(),
-                            packet.getPort(),
-                            e
-                        );
-                        response = new Response(false, "ошибка обработки запроса: " + e.getMessage());
-                    }
-                    
-                    List<ResponseChunk> chunks = ResponseChunker.split(response);
-                    sender.sendChunks(chunks, packet.getAddress(), packet.getPort());
+                            processPool.submit(() -> {
+                                Response response;
 
-                    logger.info(
-                        "Подготовлен ответ длиной {} символов, чанков: {}",
-                        response.getMessage() == null ? 0 : response.getMessage().length(),
-                        chunks.size()
-                    );
+                                try {
+                                    commandManager.addToHistory(request.getCommandType().getName());
+                                    response = processor.process(request);
 
-                    logger.info(
-                        "Ответ отправлен клиенту {}:{} | успех={}",
-                        packet.getAddress().getHostAddress(),
-                        packet.getPort(),
-                        response.isSuccess()
-                    );
+                                    logger.info(
+                                        "Команда {} обработана. Успех={}",
+                                        request.getCommandType(),
+                                        response.isSuccess()
+                                    );
+
+                                } catch (Exception e) {
+                                    logger.error(
+                                        "Ошибка обработки команды от {}:{}",
+                                        clientAddress.getHostAddress(),
+                                        clientPort,
+                                        e
+                                    );
+                                    response = new Response(false, "Ошибка обработки команды: " + e.getMessage());
+                                }
+
+                                Response finalResponse = response;
+
+                                sendPool.submit(() -> {
+                                    try {
+                                        List<ResponseChunk> chunks = ResponseChunker.split(finalResponse);
+
+                                        sender.sendChunks(chunks, clientAddress, clientPort);
+
+                                        logger.info(
+                                            "Ответ отправлен клиенту {}:{} | успех={}",
+                                            clientAddress.getHostAddress(),
+                                            clientPort,
+                                            finalResponse.isSuccess()
+                                        );
+
+                                    } catch (Exception e) {
+                                        logger.error(
+                                            "Ошибка отправки ответа клиенту {}:{}",
+                                            clientAddress.getHostAddress(),
+                                            clientPort,
+                                            e
+                                        );
+                                    }
+                                });
+                            });
+
+                        } catch (Exception e) {
+                            logger.error(
+                                "Ошибка чтения запроса от {}:{}",
+                                clientAddress.getHostAddress(),
+                                clientPort,
+                                e
+                            );
+
+                            Response response = new Response(false, "Ошибка чтения запроса: " + e.getMessage());
+
+                            sendPool.submit(() -> {
+                                try {
+                                    List<ResponseChunk> chunks = ResponseChunker.split(response);
+                                    sender.sendChunks(chunks, clientAddress, clientPort);
+                                } catch (Exception sendException) {
+                                    logger.error(
+                                        "Ошибка отправки сообщения об ошибке клиенту {}:{}",
+                                        clientAddress.getHostAddress(),
+                                        clientPort,
+                                        sendException
+                                    );
+                                }
+                            });
+                        }
+                    });   
                 } catch (SocketTimeoutException e) {}
             } 
         } catch (IOException e) {

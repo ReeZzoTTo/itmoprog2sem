@@ -21,7 +21,7 @@ public class ResponseSender {
         this.socket = socket;
     }
 
-    public void send(
+    public synchronized void send(
         Response response,
         InetAddress address,
         int port
@@ -38,7 +38,7 @@ public class ResponseSender {
         );
     }
 
-    public void sendChunks(List<ResponseChunk> responseChunks, InetAddress address, int port) 
+    public synchronized void sendChunks(List<ResponseChunk> responseChunks, InetAddress address, int port) 
     throws IOException {
         for (ResponseChunk chunk : responseChunks) {
             byte[] responseChunkBytes = SerializationUtils.serialize(chunk);

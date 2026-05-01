@@ -11,20 +11,20 @@ public class CommandManager {
     private Map<String, Command> commandList = new HashMap<>();
     private List<String> history = new ArrayList<>();
     
-    public void registerCommand(
+    public synchronized void registerCommand(
         String commandName, 
         Command command
     ) {
         this.commandList.put(commandName, command);
     }
 
-    public void addToHistory(String commandName) {
+    public synchronized void addToHistory(String commandName) {
         if (this.history.size() == 10) {
-            this.history.removeFirst();
+            this.history.remove(0);
         }
         history.add(commandName);
     }
 
-    public List<String> getHistory() { return this.history; }
-    public Map<String, Command> getCommandList() { return this.commandList; }
+    public synchronized List<String> getHistory() { return this.history; }
+    public synchronized Map<String, Command> getCommandList() { return this.commandList; }
 }

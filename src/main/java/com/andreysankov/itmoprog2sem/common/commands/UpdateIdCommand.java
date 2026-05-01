@@ -1,6 +1,6 @@
 package com.andreysankov.itmoprog2sem.common.commands;
 
-import java.util.Date;
+import java.sql.SQLException;
 
 import com.andreysankov.itmoprog2sem.common.dto.Request;
 import com.andreysankov.itmoprog2sem.common.dto.Response;
@@ -16,33 +16,61 @@ public class UpdateIdCommand extends Command {
 
     @Override
     public Response execute(Request request) {
-        Long id = request.getArgument().getId();
-        
+         Long id = request.getArgument().getId();
+
         if (id == 0) {
             return new Response(false, request.getArgument().getResponseMessage());
         }
 
-        LabWork newElement = request.getLabWork();
-        if (newElement == null) return new Response(false, "");
+        String ownerLogin = request.getLogin();
 
-        Date currentCreationDate;
-        LabWork targetELement = getContext().getCollectionManager().getElementByID(id);
-
-        boolean wasDeleted = getContext().getCollectionManager().deleteElementByID(id);
-
-        newElement.setId(id);
-
-        if (targetELement != null) {
-            currentCreationDate = targetELement.getDate();
-            newElement.setDate(currentCreationDate);
-        } else {
-            newElement.setDate(new Date());
+        if (ownerLogin == null || ownerLogin.isBlank()) {
+            return new Response(false, "Не указан логин пользователя");
         }
 
-        getContext().getCollectionManager().addElement(newElement);
+        LabWork newElement = request.getLabWork();
 
-        String message = wasDeleted ? "Элемент обновлён" : "Создан новый элемент";
+        if (newElement == null) {
+            return new Response(false, "Команда update_id требует объект LabWork");
+        }
 
-        return new Response(true, message);
+        LabWork oldElement = getContext()
+            .getCollectionManager()
+            .getElementByID(id);
+
+        if (oldElement == null) {
+            return new Response(false, "Элемента с ID = " + id + " не существует");
+        }
+
+        if (!ownerLogin.equals(oldElement.getOwnerLogin())) {
+            return new Response(false, "Нельзя обновить элемент с ID = " + id + ": он принадлежит другому пользователю");
+        }
+
+        newElement.setId(id);
+        newElement.setDate(oldElement.getDate());
+        newElement.setOwnerLogin(ownerLogin);
+
+        try {
+            boolean updatedInDatabase = getContext()
+                .getLabWorkRepository()
+                .updateElement(newElement, id, ownerLogin);
+
+            if (!updatedInDatabase) {
+                return new Response(false, "Не удалось обновить элемент: объект принадлежит другому пользователю или уже удалён");
+            }
+
+            getContext()
+                .getCollectionManager()
+                .deleteElementByID(id);
+
+            getContext()
+                .getCollectionManager()
+                .addElement(newElement);
+
+            return new Response(true, "Элемент с ID = " + id + " успешно обновлён");
+
+        } catch (SQLException e) {
+            return new Response(false, "Ошибка базы данных при обновлении элемента: " + e.getMessage());
+        }
     }
 }
