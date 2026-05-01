@@ -60,7 +60,7 @@ public class ServerApp {
         ServerConsoleHandler consoleHandler = new ServerConsoleHandler(context);
         ServerConsoleReader consoleReader = new ServerConsoleReader();
 
-        CommandProcessor processor = new CommandProcessor();
+        CommandProcessor processor = new CommandProcessor(context);
 
         registerCommands(context, commandManager, processor);
         logger.info("Команды зарегистрированы");

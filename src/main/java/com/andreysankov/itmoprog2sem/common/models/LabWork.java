@@ -12,6 +12,7 @@ public class LabWork implements Comparable<LabWork>, Serializable{
     private Double personalQualitiesMaximum; //Поле может быть null, Значение поля должно быть больше 0
     private Difficulty difficulty; //Поле не может быть null
     private Discipline discipline; //Поле может быть null
+    private String ownerLogin;
 
     public LabWork() {}
 
@@ -47,11 +48,13 @@ public class LabWork implements Comparable<LabWork>, Serializable{
             + "\nDifficulty             : " + this.getDifficulty()
             + (this.getDiscipline() == null ? "" : "\nDiscipline             : Name = " + this.getDiscipline().getName()
             + "\n                         Lecture Hours = " + this.getDiscipline().getLectureHours()
-            + "\n                         Labs Count = " + this.getDiscipline().getLabsCount());
+            + "\n                         Labs Count = " + this.getDiscipline().getLabsCount())
+            + "\nOwnerLogin             : " + this.getOwnerLogin();
     }
 
     public void setId(long id) { this.id = id; }
     public void setDate(Date date) { this.creationDate = date; }
+    public void setOwnerLogin(String login) { this.ownerLogin = login; }
 
     public long getId() { return this.id; }
     public String getName() { return this.name; }
@@ -61,4 +64,5 @@ public class LabWork implements Comparable<LabWork>, Serializable{
     public Double getPersonalQualitiesMaximum() { return this.personalQualitiesMaximum; }
     public Difficulty getDifficulty() { return this.difficulty; }
     public Discipline getDiscipline() { return this.discipline; }
+    public String getOwnerLogin() { return this.ownerLogin; }
 }
