@@ -10,16 +10,7 @@ public class ServerConsoleHandler {
     private final Map<String, Supplier<String>> commands = new HashMap<>();
 
     public ServerConsoleHandler(Context context) {
-        // commands.put("save", () -> {
-        //     String error = SaveCommand.save(context);
-        //     if (error == null) {
-        //         return "Коллекция успешно сохранена.";
-        //     }
-        //     return "Ошибка сохранения: " + error;
-        // });
         commands.put("exit", () -> {
-            String message = this.commands.get("save").get();
-            System.out.println(message);
             System.out.println("Завершение сервера");
             System.exit(0);
             

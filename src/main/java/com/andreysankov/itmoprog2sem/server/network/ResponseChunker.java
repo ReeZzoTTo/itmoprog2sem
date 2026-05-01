@@ -16,8 +16,9 @@ public class ResponseChunker {
 
         List<ResponseChunk> chunkList = new ArrayList<>();
         
-        if (responseMessage == null) {
+        if (responseMessage == null || responseMessage.isEmpty()) {
             chunkList.add(new ResponseChunk(requestId, response.isSuccess(), 0, 1, ""));
+            return chunkList;
         }
 
         int total_parts = (int) Math.ceil((double) responseMessage.length() / CHUNK_SIZE);
