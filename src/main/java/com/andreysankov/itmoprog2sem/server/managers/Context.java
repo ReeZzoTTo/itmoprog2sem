@@ -10,6 +10,7 @@ public class Context {
     private final CollectionManager collectionManager;
     private final UserRepository userRepository;
     private final LabWorkRepository labWorkRepository;
+    private static Context instance;
 
     public Context(
         CommandManager commandManager,
@@ -21,6 +22,13 @@ public class Context {
         this.databaseManager = databaseManager;
         this.userRepository = new UserRepository(databaseManager);
         this.labWorkRepository = new LabWorkRepository(databaseManager);
+        if(instance == null) {
+            instance = this;
+        }
+    }
+
+    public static Context getInstance() {
+        return instance;
     }
 
     public DatabaseManager getDatabaseManager() {

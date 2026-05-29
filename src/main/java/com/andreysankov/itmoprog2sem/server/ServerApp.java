@@ -1,7 +1,9 @@
 package com.andreysankov.itmoprog2sem.server;
 
 // docker compose build
-// docker compose up postgres server
+
+// docker compose up server
+// docker compose up postgres 
 // docker compose run --rm client
 
 import java.io.IOException;
@@ -36,9 +38,8 @@ public class ServerApp {
     private static final int PORT = 5555;
     private static final Logger logger = LoggerFactory.getLogger(ServerApp.class);
     public static void main(String[] args) {
-        // logger.info("Запуск сервера");
-        // logger.info("Файл коллекции: {}", fileName);
-
+        logger.info("Запуск сервера");
+        
         DatabaseManager databaseManager = new DatabaseManager();
         CommandManager commandManager = new CommandManager();
         CollectionManager collectionManager = new CollectionManager();
