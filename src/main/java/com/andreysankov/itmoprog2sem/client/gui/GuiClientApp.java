@@ -1,5 +1,7 @@
 package com.andreysankov.itmoprog2sem.client.gui;
 
+// docker compose up --build -d postgres server
+
 import javax.swing.SwingUtilities;
 
 public class GuiClientApp {

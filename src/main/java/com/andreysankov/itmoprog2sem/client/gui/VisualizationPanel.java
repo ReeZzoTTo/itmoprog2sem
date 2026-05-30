@@ -25,14 +25,21 @@ public class VisualizationPanel extends JPanel {
     private final Map<Long, Rectangle> objectBounds = new HashMap<>();
     private final Map<Long, Double> animationProgress = new HashMap<>();
 
+    private final LocalizationManager localization;
+
     private final String currentUser;
     private final ObjectEditListener editListener;
 
     private final Timer animationTimer;
 
-    public VisualizationPanel(String currentUser, ObjectEditListener editListener) {
+    public VisualizationPanel(
+        String currentUser,
+        ObjectEditListener editListener,
+        LocalizationManager localization
+    ) {
         this.currentUser = currentUser;
         this.editListener = editListener;
+        this.localization = localization;
 
         setPreferredSize(new Dimension(500, 350));
         setBackground(Color.WHITE);
@@ -104,8 +111,8 @@ public class VisualizationPanel extends JPanel {
                 this,
                 """
                 ID: %s
-                Название: %s
-                Владелец: %s
+                %s: %s
+                %s: %s
                 X: %s
                 Y: %s
                 Minimal point: %s
@@ -113,7 +120,9 @@ public class VisualizationPanel extends JPanel {
                 Difficulty: %s
                 """.formatted(
                         labWork.getId(),
+                        localization.get("table.name"),
                         labWork.getName(),
+                        localization.get("visualization.owner"),
                         labWork.getOwnerLogin(),
                         labWork.getCoordinates() == null ? "" : labWork.getCoordinates().getX(),
                         labWork.getCoordinates() == null ? "" : labWork.getCoordinates().getY(),
@@ -121,7 +130,7 @@ public class VisualizationPanel extends JPanel {
                         labWork.getPersonalQualitiesMaximum(),
                         labWork.getDifficulty()
                 ),
-                "Информация об объекте",
+                localization.get("visualization.info_title"),
                 JOptionPane.INFORMATION_MESSAGE
         );
     }
@@ -156,7 +165,7 @@ public class VisualizationPanel extends JPanel {
         }
 
         g2.setColor(Color.GRAY);
-        g2.drawString("Область визуализации объектов", 10, 20);
+        g2.drawString(localization.get("visualization.title"), 10, 20);
     }
 
     private void drawLabWork(Graphics2D g2, LabWork labWork) {

@@ -15,9 +15,10 @@ import com.andreysankov.itmoprog2sem.client.Client;
 import com.andreysankov.itmoprog2sem.common.dto.CommandType;
 import com.andreysankov.itmoprog2sem.common.dto.Request;
 import com.andreysankov.itmoprog2sem.common.dto.Response;
-
+import java.util.Locale;
 public class AuthFrame extends JFrame {
     private final Client client;
+    private final LocalizationManager localization = new LocalizationManager(Locale.of("ru", "RU"));
 
     private final JTextField loginField = new JTextField();
     private final JPasswordField passwordField = new JPasswordField();
@@ -25,26 +26,28 @@ public class AuthFrame extends JFrame {
     public AuthFrame(String host, int port) {
         this.client = new Client(host, port, 3000);
 
-        setTitle("Авторизация");
-        setSize(380, 220);
-        setLocationRelativeTo(null);
+        setTitle(localization.get("auth.title"));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         initLayout();
+
+        pack();
+        setMinimumSize(getSize());
+        setLocationRelativeTo(null);
     }
 
     private void initLayout() {
         JPanel formPanel = new JPanel(new GridLayout(2, 2, 10, 10));
         formPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
 
-        formPanel.add(new JLabel("Логин:"));
+        formPanel.add(new JLabel(localization.get("auth.login")));
         formPanel.add(loginField);
 
-        formPanel.add(new JLabel("Пароль:"));
+        formPanel.add(new JLabel(localization.get("auth.password")));
         formPanel.add(passwordField);
 
-        JButton loginButton = new JButton("Войти");
-        JButton registerButton = new JButton("Зарегистрироваться");
+        JButton loginButton = new JButton(localization.get("auth.sign_in"));
+        JButton registerButton = new JButton(localization.get("auth.register"));
 
         loginButton.addActionListener(e -> authenticate(CommandType.LOGIN));
         registerButton.addActionListener(e -> authenticate(CommandType.REGISTER));
@@ -63,10 +66,10 @@ public class AuthFrame extends JFrame {
 
         if (login.isBlank() || password.isBlank()) {
             JOptionPane.showMessageDialog(
-                    this,
-                    "Введите логин и пароль",
-                    "Ошибка",
-                    JOptionPane.ERROR_MESSAGE
+                this,
+                localization.get("auth.empty_fields"),
+                localization.get("message.error"),
+                JOptionPane.ERROR_MESSAGE
             );
             return;
         }
@@ -85,7 +88,7 @@ public class AuthFrame extends JFrame {
             JOptionPane.showMessageDialog(
                     this,
                     response.getMessage(),
-                    "Успешно",
+                    localization.get("message.success"),
                     JOptionPane.INFORMATION_MESSAGE
             );
 
@@ -96,7 +99,7 @@ public class AuthFrame extends JFrame {
             JOptionPane.showMessageDialog(
                     this,
                     response.getMessage(),
-                    "Ошибка",
+                    localization.get("message.error"),
                     JOptionPane.ERROR_MESSAGE
             );
         }

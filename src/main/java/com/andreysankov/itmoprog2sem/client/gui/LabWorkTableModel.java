@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -16,20 +17,21 @@ import com.andreysankov.itmoprog2sem.common.models.LabWork;
 public class LabWorkTableModel extends AbstractTableModel {
     private final List<LabWork> allLabWorks = new ArrayList<>();
     private final List<LabWork> visibleLabWorks = new ArrayList<>();
-    private Locale locale = new Locale("ru", "RU");
-    private final String[] columns = {
-        "ID",
-        "Название",
-        "X",
-        "Y",
-        "Дата создания",
-        "Min points",
-        "Max qualities",
-        "Difficulty",
-        "Discipline name",
-        "Lecture hours",
-        "Labs count",
-        "Owner"
+    private Locale locale = Locale.of("ru", "RU");
+    private LocalizationManager localization;
+    private final String[] columnKeys = {
+            "table.id",
+            "table.name",
+            "table.x",
+            "table.y",
+            "table.creation_date",
+            "table.min_points",
+            "table.max_qualities",
+            "table.difficulty",
+            "table.discipline_name",
+            "table.lecture_hours",
+            "table.labs_count",
+            "table.owner"
     };
 
     private int filterColumn = -1;
@@ -37,6 +39,11 @@ public class LabWorkTableModel extends AbstractTableModel {
 
     private int sortColumn = -1;
     private boolean sortAscending = true;
+
+    public void setLocalization(LocalizationManager localization) {
+        this.localization = localization;
+        fireTableStructureChanged();
+    }
 
     public void setLocale(Locale locale) {
         this.locale = locale;
@@ -76,7 +83,13 @@ public class LabWorkTableModel extends AbstractTableModel {
     }
 
     public String[] getColumns() {
-        return columns;
+        String[] names = new String[columnKeys.length];
+
+        for (int i = 0; i < columnKeys.length; i++) {
+            names[i] = localization == null ? columnKeys[i] : localization.get(columnKeys[i]);
+        }
+
+        return names;
     }
 
     private void applyFilterAndSort() {
@@ -174,12 +187,12 @@ public class LabWorkTableModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return columns.length;
+       return columnKeys.length;
     }
 
     @Override
     public String getColumnName(int column) {
-        return columns[column];
+        return localization == null ? columnKeys[column] : localization.get(columnKeys[column]);
     }
 
     @Override
@@ -193,18 +206,20 @@ public class LabWorkTableModel extends AbstractTableModel {
                 locale
         );
 
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(locale);
+
         return switch (columnIndex) {
             case 0 -> labWork.getId();
             case 1 -> labWork.getName();
-            case 2 -> labWork.getCoordinates() == null ? "" : labWork.getCoordinates().getX();
-            case 3 -> labWork.getCoordinates() == null ? "" : labWork.getCoordinates().getY();
+            case 2 -> labWork.getCoordinates() == null ? "" : numberFormat.format(labWork.getCoordinates().getX());
+            case 3 -> labWork.getCoordinates() == null ? "" : numberFormat.format(labWork.getCoordinates().getY());
             case 4 -> labWork.getDate() == null ? "" : dateFormat.format(labWork.getDate());
-            case 5 -> labWork.getMinimalPoint();
-            case 6 -> labWork.getPersonalQualitiesMaximum();
+            case 5 -> numberFormat.format(labWork.getMinimalPoint());
+            case 6 -> labWork.getPersonalQualitiesMaximum() == null ? "" : numberFormat.format(labWork.getPersonalQualitiesMaximum());
             case 7 -> labWork.getDifficulty();
             case 8 -> discipline == null ? "" : discipline.getName();
-            case 9 -> discipline == null ? "" : discipline.getLectureHours();
-            case 10 -> discipline == null ? "" : discipline.getLabsCount();
+            case 9 -> discipline == null ? "" : numberFormat.format(discipline.getLectureHours());
+            case 10 -> discipline == null ? "" : numberFormat.format(discipline.getLabsCount());
             case 11 -> labWork.getOwnerLogin();
             default -> "";
         };

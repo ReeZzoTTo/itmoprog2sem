@@ -20,7 +20,8 @@ import com.andreysankov.itmoprog2sem.common.models.Discipline;
 import com.andreysankov.itmoprog2sem.common.models.LabWork;
 
 public class LabWorkDialog extends JDialog {
-     private boolean saved = false;
+    private boolean saved = false;
+    private final LocalizationManager localization;
 
     private final JTextField nameField = new JTextField();
     private final JTextField xField = new JTextField();
@@ -36,10 +37,13 @@ public class LabWorkDialog extends JDialog {
 
     private LabWork result;
 
-    public LabWorkDialog(Frame owner, LabWork existingLabWork) {
+    public LabWorkDialog(Frame owner, LabWork existingLabWork, LocalizationManager localizationManager) {
         super(owner, true);
+        this.localization = localizationManager;
 
-        setTitle(existingLabWork == null ? "Добавить объект" : "Редактировать объект");
+        setTitle(existingLabWork == null
+            ? localization.get("dialog.add_title")
+            : localization.get("dialog.edit_title"));
         initLayout();
 
         if (existingLabWork != null) {
@@ -55,35 +59,35 @@ public class LabWorkDialog extends JDialog {
         JPanel formPanel = new JPanel(new GridLayout(9, 2, 8, 8));
         formPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 10, 15));
 
-        formPanel.add(new JLabel("Название:"));
+        formPanel.add(new JLabel(localization.get("dialog.name")));
         formPanel.add(nameField);
 
-        formPanel.add(new JLabel("X:"));
+        formPanel.add(new JLabel(localization.get("dialog.x")));
         formPanel.add(xField);
 
-        formPanel.add(new JLabel("Y:"));
+        formPanel.add(new JLabel(localization.get("dialog.y")));
         formPanel.add(yField);
 
-        formPanel.add(new JLabel("Minimal point:"));
+        formPanel.add(new JLabel(localization.get("dialog.minimal_point")));
         formPanel.add(minimalPointField);
 
-        formPanel.add(new JLabel("Personal qualities maximum:"));
+        formPanel.add(new JLabel(localization.get("dialog.max_qualities")));
         formPanel.add(personalQualitiesMaximumField);
 
-        formPanel.add(new JLabel("Difficulty:"));
+        formPanel.add(new JLabel(localization.get("dialog.difficulty")));
         formPanel.add(difficultyBox);
 
-        formPanel.add(new JLabel("Discipline name:"));
+        formPanel.add(new JLabel(localization.get("dialog.discipline_name")));
         formPanel.add(disciplineNameField);
 
-        formPanel.add(new JLabel("Lecture hours:"));
+        formPanel.add(new JLabel(localization.get("dialog.lecture_hours")));
         formPanel.add(lectureHoursField);
 
-        formPanel.add(new JLabel("Labs count:"));
+        formPanel.add(new JLabel(localization.get("dialog.labs_count")));
         formPanel.add(labsCountField);
 
-        JButton saveButton = new JButton("Сохранить");
-        JButton cancelButton = new JButton("Отмена");
+        JButton saveButton = new JButton(localization.get("dialog.save"));
+        JButton cancelButton = new JButton(localization.get("dialog.cancel"));
 
         saveButton.addActionListener(e -> save());
         cancelButton.addActionListener(e -> dispose());
@@ -125,7 +129,7 @@ public class LabWorkDialog extends JDialog {
             String name = nameField.getText().trim();
 
             if (name.isBlank()) {
-                throw new IllegalArgumentException("Название не может быть пустым");
+                throw new IllegalArgumentException(localization.get("message.name_empty"));
             }
 
             Long x = Long.parseLong(xField.getText().trim());
@@ -134,7 +138,7 @@ public class LabWorkDialog extends JDialog {
             int minimalPoint = Integer.parseInt(minimalPointField.getText().trim());
 
             if (minimalPoint <= 0) {
-                throw new IllegalArgumentException("Minimal point должен быть больше 0");
+                throw new IllegalArgumentException(localization.get("message.minimal_point_positive"));
             }
 
             Double personalQualitiesMaximum = null;
@@ -145,7 +149,7 @@ public class LabWorkDialog extends JDialog {
                 );
 
                 if (personalQualitiesMaximum <= 0) {
-                    throw new IllegalArgumentException("Personal qualities maximum должен быть больше 0");
+                    throw new IllegalArgumentException(localization.get("message.max_qualities_positive"));
                 }
             }
 
@@ -159,7 +163,7 @@ public class LabWorkDialog extends JDialog {
 
             if (!disciplineName.isBlank() || !lectureHoursText.isBlank() || !labsCountText.isBlank()) {
                 if (disciplineName.isBlank() || lectureHoursText.isBlank() || labsCountText.isBlank()) {
-                    throw new IllegalArgumentException("Если дисциплина указана, заполните все поля дисциплины");
+                    throw new IllegalArgumentException(localization.get("message.discipline_full"));
                 }
 
                 Long lectureHours = Long.parseLong(lectureHoursText);
@@ -184,16 +188,16 @@ public class LabWorkDialog extends JDialog {
 
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(
-                    this,
-                    "Проверьте числовые поля",
-                    "Ошибка ввода",
-                    JOptionPane.ERROR_MESSAGE
+                this,
+                localization.get("message.number_error"),
+                localization.get("message.input_error"),
+                JOptionPane.ERROR_MESSAGE
             );
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(
                     this,
                     e.getMessage(),
-                    "Ошибка ввода",
+                    localization.get("message.input_error"),
                     JOptionPane.ERROR_MESSAGE
             );
         }

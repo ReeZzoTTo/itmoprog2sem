@@ -23,12 +23,16 @@ import javax.swing.SwingUtilities;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.util.Locale;
+
 import javax.swing.Timer;
 
 public class MainFrame extends JFrame {
     private final Client client;
     private final String login;
     private final String password;
+
+    private final LocalizationManager localization = new LocalizationManager(Locale.of("ru", "RU"));
 
     private boolean loadingCollection = false;
     private final Timer autoRefreshTimer = new Timer(3000, e -> loadCollection(false));
@@ -38,9 +42,9 @@ public class MainFrame extends JFrame {
 
     private final VisualizationPanel visualizationPanel;
 
-    private final JButton addButton = new JButton("Добавить");
-    private final JButton editButton = new JButton("Редактировать");
-    private final JButton deleteButton = new JButton("Удалить");
+    private final JButton addButton = new JButton();
+    private final JButton editButton = new JButton();
+    private final JButton deleteButton = new JButton();
 
     private final JComboBox<String> filterColumnBox = new JComboBox<>(tableModel.getColumns());
     private final JTextField filterField = new JTextField(18);
@@ -51,11 +55,32 @@ public class MainFrame extends JFrame {
             "По убыванию"
     });
 
+    private final JLabel userLabel = new JLabel();
+
+    private final JButton refreshButton = new JButton();
+    private final JButton applyFilterButton = new JButton();
+    private final JButton resetFilterButton = new JButton();
+    private final JButton applySortButton = new JButton();
+
+    private final JLabel filterLabel = new JLabel();
+    private final JLabel sortLabel = new JLabel();
+    private final JLabel languageLabel = new JLabel();
+
+    private final JComboBox<String> languageBox = new JComboBox<>(new String[]{
+            "Русский",
+            "Eesti",
+            "Shqip",
+            "English (India)"
+    });
+
     public MainFrame(Client client, String login, String password) {
         this.client = client;
         this.login = login;
         this.password = password;
-        this.visualizationPanel = new VisualizationPanel(login, this::editLabWork);
+        this.visualizationPanel = new VisualizationPanel(login, this::editLabWork, localization);
+
+        tableModel.setLocalization(localization);
+        tableModel.setLocale(localization.getLocale());
 
         setTitle("Лаб.раб.№8 — Управление коллекцией лабораторных работ");
         setSize(1100, 600);
@@ -75,36 +100,35 @@ public class MainFrame extends JFrame {
     }
 
     private void initLayout() {
-        JLabel userLabel = new JLabel("Текущий пользователь: " + login);
         userLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        JButton refreshButton = new JButton("Обновить");
         refreshButton.addActionListener(e -> loadCollection());
 
-        JButton applyFilterButton = new JButton("Применить фильтр");
         applyFilterButton.addActionListener(e -> applyFilterAndSort());
 
-        JButton resetFilterButton = new JButton("Сбросить");
         resetFilterButton.addActionListener(e -> {
             filterField.setText("");
             tableModel.setFilter(-1, "");
             visualizationPanel.setLabWorks(tableModel.getVisibleLabWorks());
         });
 
-        JButton applySortButton = new JButton("Применить сортировку");
         applySortButton.addActionListener(e -> applyFilterAndSort());
+
+        languageBox.addActionListener(e -> changeLanguage());
 
         JPanel userPanel = new JPanel(new BorderLayout());
         userPanel.add(userLabel, BorderLayout.WEST);
         userPanel.add(refreshButton, BorderLayout.EAST);
 
         JPanel controlPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        controlPanel.add(new JLabel("Фильтр по:"));
+
+        controlPanel.add(filterLabel);
         controlPanel.add(filterColumnBox);
         controlPanel.add(filterField);
         controlPanel.add(applyFilterButton);
         controlPanel.add(resetFilterButton);
-        controlPanel.add(new JLabel("Сортировать по:"));
+
+        controlPanel.add(sortLabel);
         controlPanel.add(sortColumnBox);
         controlPanel.add(sortDirectionBox);
         controlPanel.add(applySortButton);
@@ -112,6 +136,9 @@ public class MainFrame extends JFrame {
         controlPanel.add(addButton);
         controlPanel.add(editButton);
         controlPanel.add(deleteButton);
+
+        controlPanel.add(languageLabel);
+        controlPanel.add(languageBox);
 
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.add(userPanel, BorderLayout.NORTH);
@@ -122,9 +149,9 @@ public class MainFrame extends JFrame {
         JScrollPane scrollPanel = new JScrollPane(table);
 
         JSplitPane splitPane = new JSplitPane(
-            JSplitPane.VERTICAL_SPLIT,
-            scrollPanel,
-            visualizationPanel
+                JSplitPane.VERTICAL_SPLIT,
+                scrollPanel,
+                visualizationPanel
         );
 
         splitPane.setResizeWeight(0.45);
@@ -132,7 +159,7 @@ public class MainFrame extends JFrame {
 
         add(topPanel, BorderLayout.NORTH);
         add(splitPane, BorderLayout.CENTER);
-        
+
         table.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
@@ -145,6 +172,9 @@ public class MainFrame extends JFrame {
         addButton.addActionListener(e -> addLabWork());
         editButton.addActionListener(e -> editSelectedLabWork());
         deleteButton.addActionListener(e -> deleteSelectedLabWork());
+
+        updateComboBoxItems();
+        updateTexts();
     }
 
     private void applyFilterAndSort() {
@@ -160,6 +190,77 @@ public class MainFrame extends JFrame {
         visualizationPanel.setLabWorks(tableModel.getVisibleLabWorks());
     }
 
+    private void changeLanguage() {
+        int index = languageBox.getSelectedIndex();
+
+        Locale newLocale = switch (index) {
+            case 0 -> Locale.of("ru", "RU");
+            case 1 -> Locale.of("et", "EE");
+            case 2 -> Locale.of("sq", "AL");
+            case 3 -> Locale.of("en", "IN");
+            default -> Locale.of("ru", "RU");
+        };
+
+        localization.setLocale(newLocale);
+        tableModel.setLocale(newLocale);
+        tableModel.setLocalization(localization);
+
+        updateComboBoxItems();
+        updateTexts();
+
+        visualizationPanel.repaint();
+    }
+
+    private void updateTexts() {
+        setTitle(localization.get("app.title"));
+
+        userLabel.setText(localization.get("main.current_user") + " " + login);
+        refreshButton.setText(localization.get("main.refresh"));
+
+        filterLabel.setText(localization.get("main.filter_by"));
+        applyFilterButton.setText(localization.get("main.apply_filter"));
+        resetFilterButton.setText(localization.get("main.reset"));
+
+        sortLabel.setText(localization.get("main.sort_by"));
+        applySortButton.setText(localization.get("main.apply_sort"));
+
+        addButton.setText(localization.get("main.add"));
+        editButton.setText(localization.get("main.edit"));
+        deleteButton.setText(localization.get("main.delete"));
+
+        languageLabel.setText(localization.get("main.language"));
+    }
+
+    private void updateComboBoxItems() {
+        int filterIndex = filterColumnBox.getSelectedIndex();
+        int sortIndex = sortColumnBox.getSelectedIndex();
+        int sortDirectionIndex = sortDirectionBox.getSelectedIndex();
+
+        filterColumnBox.removeAllItems();
+        sortColumnBox.removeAllItems();
+
+        for (String column : tableModel.getColumns()) {
+            filterColumnBox.addItem(column);
+            sortColumnBox.addItem(column);
+        }
+
+        sortDirectionBox.removeAllItems();
+        sortDirectionBox.addItem(localization.get("main.sort_asc"));
+        sortDirectionBox.addItem(localization.get("main.sort_desc"));
+
+        if (filterIndex >= 0 && filterIndex < filterColumnBox.getItemCount()) {
+            filterColumnBox.setSelectedIndex(filterIndex);
+        }
+
+        if (sortIndex >= 0 && sortIndex < sortColumnBox.getItemCount()) {
+            sortColumnBox.setSelectedIndex(sortIndex);
+        }
+
+        if (sortDirectionIndex >= 0 && sortDirectionIndex < sortDirectionBox.getItemCount()) {
+            sortDirectionBox.setSelectedIndex(sortDirectionIndex);
+        }
+    }
+
     private void loadCollection() {
         loadCollection(true);
     }
@@ -173,11 +274,11 @@ public class MainFrame extends JFrame {
 
         new Thread(() -> {
             Request request = new Request(
-                    CommandType.GET_COLLECTION,
-                    null,
-                    null,
-                    login,
-                    password
+                CommandType.GET_COLLECTION,
+                null,
+                null,
+                login,
+                password
             );
 
             Response response = client.sendRequest(request);
@@ -202,7 +303,7 @@ public class MainFrame extends JFrame {
     }
 
     private void addLabWork() {
-        LabWorkDialog dialog = new LabWorkDialog(this, null);
+        LabWorkDialog dialog = new LabWorkDialog(this, null, localization);
         dialog.setVisible(true);
 
         if (!dialog.isSaved()) {
@@ -224,7 +325,7 @@ public class MainFrame extends JFrame {
         LabWork selected = getSelectedLabWork();
 
         if (selected == null) {
-            showError("Выберите объект для редактирования");
+            showError(localization.get("message.choose_edit"));
             return;
         }
 
@@ -233,11 +334,11 @@ public class MainFrame extends JFrame {
 
     private void editLabWork(LabWork selected) {
         if (!login.equals(selected.getOwnerLogin())) {
-            showError("Можно редактировать только свои объекты");
+            showError(localization.get("message.only_own_edit"));
             return;
         }
 
-        LabWorkDialog dialog = new LabWorkDialog(this, selected);
+        LabWorkDialog dialog = new LabWorkDialog(this, selected, localization);
         dialog.setVisible(true);
 
         if (!dialog.isSaved()) {
@@ -259,14 +360,14 @@ public class MainFrame extends JFrame {
         LabWork selected = getSelectedLabWork();
 
         if (selected == null) {
-            showError("Выберите объект для удаления");
+            showError(localization.get("message.choose_delete"));
             return;
         }
 
         int answer = JOptionPane.showConfirmDialog(
             this,
-            "Удалить объект с ID = " + selected.getId() + "?",
-            "Подтверждение",
+            localization.get("message.confirm_delete") + " " + selected.getId() + "?",
+            localization.get("message.confirm_title"),
             JOptionPane.YES_NO_OPTION
         );
 
@@ -302,7 +403,7 @@ public class MainFrame extends JFrame {
             JOptionPane.showMessageDialog(
                     this,
                     response.getMessage(),
-                    "Успешно",
+                    localization.get("message.success"),
                     JOptionPane.INFORMATION_MESSAGE
             );
 
@@ -316,7 +417,7 @@ public class MainFrame extends JFrame {
         JOptionPane.showMessageDialog(
                 this,
                 message,
-                "Ошибка",
+                localization.get("message.error"),
                 JOptionPane.ERROR_MESSAGE
         );
     }
