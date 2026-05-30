@@ -19,14 +19,19 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import javax.swing.Timer;
 
 public class MainFrame extends JFrame {
     private final Client client;
     private final String login;
     private final String password;
+
+    private boolean loadingCollection = false;
+    private final Timer autoRefreshTimer = new Timer(3000, e -> loadCollection(false));
 
     private final LabWorkTableModel tableModel = new LabWorkTableModel();
     private final JTable table = new JTable(tableModel);
@@ -57,9 +62,16 @@ public class MainFrame extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                autoRefreshTimer.stop();
+            }
+        });
+
         initLayout();
         loadCollection();
+        autoRefreshTimer.start();
     }
 
     private void initLayout() {
@@ -149,26 +161,44 @@ public class MainFrame extends JFrame {
     }
 
     private void loadCollection() {
-        Request request = new Request(
-                CommandType.GET_COLLECTION,
-                null,
-                null,
-                login,
-                password
-        );
+        loadCollection(true);
+    }
 
-        Response response = client.sendRequest(request);
-
-        if (response instanceof CollectionResponse collectionResponse) {
-            if (collectionResponse.isSuccess()) {
-                tableModel.setLabWorks(collectionResponse.getCollection());
-                visualizationPanel.setLabWorks(tableModel.getVisibleLabWorks());
-            } else {
-                showError(collectionResponse.getMessage());
-            }
-        } else {
-            showError(response.getMessage());
+    private void loadCollection(boolean showErrors) {
+        if (loadingCollection) {
+            return;
         }
+
+        loadingCollection = true;
+
+        new Thread(() -> {
+            Request request = new Request(
+                    CommandType.GET_COLLECTION,
+                    null,
+                    null,
+                    login,
+                    password
+            );
+
+            Response response = client.sendRequest(request);
+
+            SwingUtilities.invokeLater(() -> {
+                try {
+                    if (response instanceof CollectionResponse collectionResponse) {
+                        if (collectionResponse.isSuccess()) {
+                            tableModel.setLabWorks(collectionResponse.getCollection());
+                            visualizationPanel.setLabWorks(tableModel.getVisibleLabWorks());
+                        } else if (showErrors) {
+                            showError(collectionResponse.getMessage());
+                        }
+                    } else if (showErrors) {
+                        showError(response.getMessage());
+                    }
+                } finally {
+                    loadingCollection = false;
+                }
+            });
+        }).start();
     }
 
     private void addLabWork() {
