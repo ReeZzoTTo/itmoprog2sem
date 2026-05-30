@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
@@ -29,6 +30,8 @@ public class MainFrame extends JFrame {
 
     private final LabWorkTableModel tableModel = new LabWorkTableModel();
     private final JTable table = new JTable(tableModel);
+
+    private final VisualizationPanel visualizationPanel;
 
     private final JButton addButton = new JButton("Добавить");
     private final JButton editButton = new JButton("Редактировать");
@@ -47,12 +50,14 @@ public class MainFrame extends JFrame {
         this.client = client;
         this.login = login;
         this.password = password;
+        this.visualizationPanel = new VisualizationPanel(login, this::editLabWork);
 
-        setTitle("Лабораторная работа №8");
+        setTitle("Лаб.раб.№8 — Управление коллекцией лабораторных работ");
         setSize(1100, 600);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        
         initLayout();
         loadCollection();
     }
@@ -71,6 +76,7 @@ public class MainFrame extends JFrame {
         resetFilterButton.addActionListener(e -> {
             filterField.setText("");
             tableModel.setFilter(-1, "");
+            visualizationPanel.setLabWorks(tableModel.getVisibleLabWorks());
         });
 
         JButton applySortButton = new JButton("Применить сортировку");
@@ -103,8 +109,17 @@ public class MainFrame extends JFrame {
 
         JScrollPane scrollPanel = new JScrollPane(table);
 
+        JSplitPane splitPane = new JSplitPane(
+            JSplitPane.VERTICAL_SPLIT,
+            scrollPanel,
+            visualizationPanel
+        );
+
+        splitPane.setResizeWeight(0.45);
+        splitPane.setDividerLocation(250);
+
         add(topPanel, BorderLayout.NORTH);
-        add(scrollPanel, BorderLayout.CENTER);
+        add(splitPane, BorderLayout.CENTER);
         
         table.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
@@ -129,6 +144,8 @@ public class MainFrame extends JFrame {
 
         tableModel.setFilter(filterColumn, filterText);
         tableModel.setSort(sortColumn, ascending);
+
+        visualizationPanel.setLabWorks(tableModel.getVisibleLabWorks());
     }
 
     private void loadCollection() {
@@ -145,6 +162,7 @@ public class MainFrame extends JFrame {
         if (response instanceof CollectionResponse collectionResponse) {
             if (collectionResponse.isSuccess()) {
                 tableModel.setLabWorks(collectionResponse.getCollection());
+                visualizationPanel.setLabWorks(tableModel.getVisibleLabWorks());
             } else {
                 showError(collectionResponse.getMessage());
             }
@@ -180,6 +198,10 @@ public class MainFrame extends JFrame {
             return;
         }
 
+        editLabWork(selected);
+    }
+
+    private void editLabWork(LabWork selected) {
         if (!login.equals(selected.getOwnerLogin())) {
             showError("Можно редактировать только свои объекты");
             return;
@@ -193,11 +215,11 @@ public class MainFrame extends JFrame {
         }
 
         Request request = new Request(
-            CommandType.UPDATE_ID,
-            new ArgumentId(String.valueOf(selected.getId())),
-            dialog.getLabWork(),
-            login,
-            password
+                CommandType.UPDATE_ID,
+                new ArgumentId(String.valueOf(selected.getId())),
+                dialog.getLabWork(),
+                login,
+                password
         );
 
         sendChangingRequest(request);
