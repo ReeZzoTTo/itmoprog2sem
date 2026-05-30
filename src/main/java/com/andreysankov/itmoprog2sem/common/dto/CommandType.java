@@ -18,7 +18,9 @@ public enum CommandType {
     PRINT_FIELD_DESCENDING_DISCIPLINE("print_field_descending_discipline", false, false),
 
     REGISTER("register", false, false),
-    LOGIN("login", false, false);
+    LOGIN("login", false, false),
+
+    GET_COLLECTION("get_collection", false, false);
 
     private final String commandName;
     private final boolean requiresArgument;

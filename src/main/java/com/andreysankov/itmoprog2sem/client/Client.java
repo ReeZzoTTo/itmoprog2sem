@@ -78,7 +78,7 @@ public class Client {
                                     fullMessage.append(parts.getOrDefault(i, ""));
                                 }
 
-                                return new Response(succes, fullMessage.toString() + "\nПолучено символов: " + fullMessage.length() + "\nПолучено символов: " + fullMessage.length());
+                                return new Response(succes, fullMessage.toString());
                             }
                         }
                     } else if (obj instanceof Response response) {

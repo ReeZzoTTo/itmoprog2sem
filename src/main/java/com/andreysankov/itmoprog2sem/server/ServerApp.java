@@ -150,9 +150,12 @@ public class ServerApp {
 
                                 sendPool.submit(() -> {
                                     try {
-                                        List<ResponseChunk> chunks = ResponseChunker.split(finalResponse);
-
-                                        sender.sendChunks(chunks, clientAddress, clientPort);
+                                        if (finalResponse instanceof CollectionResponse) {
+                                            sender.send(finalResponse, clientAddress, clientPort);
+                                        } else {
+                                            List<ResponseChunk> chunks = ResponseChunker.split(finalResponse);
+                                            sender.sendChunks(chunks, clientAddress, clientPort);
+                                        }
 
                                         logger.info(
                                             "Ответ отправлен клиенту {}:{} | успех={}",
@@ -224,7 +227,8 @@ public class ServerApp {
         AverageOfPersonalQualititesMaximumCommand average     = new AverageOfPersonalQualititesMaximumCommand(context);
         RegisterCommand register = new RegisterCommand(context);
         LoginCommand login       = new LoginCommand(context);
-        
+        GetCollectionCommand getCollection = new GetCollectionCommand(context);
+
         commandManager.registerCommand("add", add);
         commandManager.registerCommand("add_if_min", addIfMin);
         commandManager.registerCommand("average_of_personal_qualities_maximum", average);
@@ -240,6 +244,7 @@ public class ServerApp {
         commandManager.registerCommand("update_id", updateId);
         commandManager.registerCommand("register", register);
         commandManager.registerCommand("login", login);
+        commandManager.registerCommand("get_collection", getCollection);
 
         processor.register(CommandType.ADD, add);
         processor.register(CommandType.ADD_IF_MIN, addIfMin);
@@ -256,5 +261,6 @@ public class ServerApp {
         processor.register(CommandType.UPDATE_ID, updateId);
         processor.register(CommandType.REGISTER, register);
         processor.register(CommandType.LOGIN, login);
+        processor.register(CommandType.GET_COLLECTION, getCollection);
     }
 }
